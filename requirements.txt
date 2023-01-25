@@ -33,6 +33,7 @@ psycopg2-binary==2.9.3
 pycparser==2.21
 PyJWT==2.6.0
 python-dateutil==2.8.2
+python-dotenv==0.21.1
 python-stdnum==1.18
 python3-openid==3.2.0
 pytz==2022.7.1
@@ -42,5 +43,6 @@ s3transfer==0.6.0
 six==1.16.0
 sqlparse==0.4.3
 urllib3==1.26.14
+validate-docbr==1.10.0
 webencodings==0.5.1
 whitenoise==6.3.0
