@@ -146,7 +146,7 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_ACCESS_KEY_ID = "AKIA3IGFR2TDI5MN3YFP"
 AWS_SECRET_ACCESS_KEY = "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"
-AWS_STORAGE_BUCKET_NAME = "emagrecimento-definitivo-access-bucket"
+AWS_STORAGE_BUCKET_NAME = "newemagrecimento2"
 AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
@@ -157,7 +157,6 @@ AWS_S3_FILE_OVERWRITE = True
 AWS_HEADERS = {
     'Access-Control-Allow-Origin': '*',
 }
-AWS_DEFAULT_ACL = None
 STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
 MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
 
