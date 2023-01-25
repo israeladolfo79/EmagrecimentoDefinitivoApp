@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Sucesso!{% endblock %}
+{% block header %}
+<link rel="stylesheet" href="{% static 'core/css/dashboard.css' %}" />
+{% endblock %}
+{% block conteudo %}
+
+<div class="container my-3"style="padding-bottom: 15vh">
+    <h1 class="font-weight-bold" style="color: #2b6ca3;padding-top: 10vh;padding-bottom: 4vh">Estamos processando o seu pagamento!</h1>
+    <p>Obrigado por comprar conosco.</p>
+    <p>Em até 2 Horas os Planos Alimentares serão adicionados em sua conta.</p>
+    <p style="padding-bottom: 5vh">Em caso de dúvidas pode entrar em contato comigo pelas informações contidas na barra de navegação.</p>
+    <a href="{% url 'index' %}"  class="btn btn-success py-2 px-3" style="background-color: #2b6ca3;border:none;max-width: 200px; font-weight: bold;">Início</a>
+    
+</div>
+{% include 'parciais/_footer.html' %}
+
+{% endblock %}

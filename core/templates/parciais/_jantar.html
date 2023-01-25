@@ -1,0 +1,79 @@
+<div class="container text-center my-2"style="font-weight: 600;">
+    <div class="row ">
+        <div class="col-md-2 cinza-medio d-flex justify-content-center align-items-center">
+            <div class="row">
+                <div class="col-md-12 text-center"><p><b>Jantar</b></p> </div>
+                {% if jantar %}
+                
+                <div class="col-md-12"><p class="text-center"><b>{{jantar}}h</b></p></div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-8 cinza-claro">
+            <div class="row">
+                <div class="col-md-12 p-1">
+                    <p><span style="color: #339966">Salada de folhas livre (mínimo 3 folhas)</span> <b>+ Colher SOPA de
+                            Farinha de Linhaça</b></p>
+                    <p style="color: #ff0000">Tomate, Cenoura, Beterraba, Pepino, Palmito <span
+                            style="color: #800080">(Opcional)</span></p>
+                </div>
+                <div class="col-md-12 amarelo" style="color: #ff0000">
+                    +
+                </div>
+                <div class="col-md-12">
+                    <p>Tempero: <span style="color: #339966">limão, acetato ou vinagre
+                            {% if kcal > 1201 %}
+                            +</span> <span>1 colher </span style="color: #ff0000"> SOPA <span
+                                style="color: #ff0000">Azeite</span>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="col-md-12 text-light cinza-medio">
+                    +
+                </div>
+                <div class="col-md-12 azul-claro">
+                    <p>Legumes <span style="color: #ff0000">- 100g</span> (peso cozido)</p>
+                </div>
+                <div class="col-md-12 text-light cinza-medio text-light">
+                    +
+                </div>
+                {% if kcal > 1600 %}
+                <div class="col-md-12 azul-claro">
+                    <p><span style="color: #ff0000">200g (peso cru)</span> de <span style="color: #ff0000">ou</span> Abobora,
+                        Batata Doce, Mandioca, Mandioquinha, Cará, Inhame <span style="color: #ff0000">ou</span></p>
+                    <p><span style="color: #ff0000">3</span> colheres de Servir de Arroz (não todos os dias) <span
+                        style="color: #ff0000">ou</span></p>
+                    <p><span style="color: #ff0000">160g (peso cozido)</span> de <b>Macarrão sem Trigo (Gão de Bico ou
+                            Mandioca)</b></p>
+                </div>
+                {% else %}
+                <div class="col-md-12  azul-claro">
+                    <p><span style="color: #ff0000">100g (peso cru)</span> de <span style="color: #ff0000">ou</span> Abobora,
+                        Batata Doce, Mandioca, Mandioquinha, Cará, Inhame ou</p>
+                    <p><span style="color: #ff0000">2</span> colheres de Servir de Arroz (não todos os dias) ou</p>
+                    <p><span style="color: #ff0000">110g (peso cozido)</span> de <b>Macarrão sem Trigo (Gão de Bico ou
+                            Mandioca)</b></p>
+                </div>
+                {% endif %}
+                <div class="col-md-12 text-light" style="background-color: #7f84a8">
+                    <p class="text-light">é permitido variar as formas de preparação</p>
+                </div>
+                <div class="col-md-12 text-light cinza-medio">
+                    +
+                </div>
+                <div class="col-md-12 azul-claro">
+                    <p><b>Proteína: 100g</b> (peso cru) / <b>80g</b> (peso preparada) <b>ou</b> Tamanho da <b>Palma da
+                            Mão</b></p>
+                </div>
+                {% if kcal > 2200 %}
+                <div class="col-md-12 cinza-medio">
+                    +
+                </div>
+                <div class="col-md-12">
+                    <p><b>1</b> fruta</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

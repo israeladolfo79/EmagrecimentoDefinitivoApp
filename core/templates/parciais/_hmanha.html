@@ -1,0 +1,58 @@
+<div class="container text-center my-2"style="font-weight: 600;">
+    <div class="row ">
+        <div class="cinza-medio col-md-2 d-flex justify-content-center align-items-center">
+            <div class="row">
+                <div class="col-md-12 text-center"><p><b>Café da Manhã</b> </p> </div>
+                {% if cafe_da_manha %}
+                
+                <div class="col-md-12"><p class="text-center"><b>{{ cafe_da_manha }}h</b></p></div>
+                {% endif %}
+            </div>
+            
+        </div>
+        <div class="col-md-8 cinza-claro">
+            <div class="row">
+                <div class="col-md-12 p-1">
+                    <p><span style="color: #0066CC">130 kcal em Carboidrato</span> (Pão [Grãos, Wrap, Francês], Torrada,
+                        Tapioca, Granola,<br> Aveia, Flocos Milho)</p>
+                </div>
+                <div class="col-md-12 cinza-medio">
+                    +
+                </div>
+                <div class="col-md-12 p-1">
+                    <p>2 fatias de Peito de Peru <b>ou</b> Presunto sem capa de gordura</p>
+                    <p><b>1</b> ovo</p>
+                    <p><b>50g</b> Proteina Animal (atum / frango desfiado)</p>
+                    <p><b>1</b> Colher SOPA de Mel <b>(1x no dia) ou</b> Mel de Agave</p>
+                    <p><b>2 colheres de Sopa ou:</b> Homus <b>ou</b> Caponata <b>ou</b> Coalhada Seca <b>ou</b> Cottage
+                    </p>
+                    <p><b>4</b> fatias de Salame</p>
+                    <p><b>1 colher de SOPA</b> de Geléia <span style="color: #FF0000">DIET</span> <b>ou</b> Pasta de
+                        Amendoim ou Manteiga ou Maionese</p>
+                    <p><b>1</b> Fatia de Mussarela</p>
+                    <p><b>2</b> Fatias de Mussarela de Bufala</p>
+                    <p><b>1</b> Fatia de Queijo Branco <b>ou</b> Mortadela</p>
+                    <p><b>1 colher de Sopa ou</b>: Requeijão ou Creme de Queijo</p>
+                    <p><b>200 ml</b> de Iogurte <span style="color: #FF0000">DIET</span> <b>ou 200 ml</b> de Leite</p>
+                </div>
+                <div class="col-md-12 cinza-escuro">
+                    <p>Escolha <span class="text-light">DUAS</span> opções</p>
+                </div>
+                <div class="col-md-12 cinza-medio">
+                    +
+                </div>
+                <div class="col-md-12">
+                    <p>Café ou Chá (Adoçante: Xilitol, Eritritol ou Stevia)</p>
+                </div>
+                {% if kcal > 1800 %}
+                <div class="col-md-12 cinza-medio">
+                    +
+                </div>
+                <div class="col-md-12">
+                    <p><b>1</b> fruta</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

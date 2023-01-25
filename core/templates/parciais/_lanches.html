@@ -1,0 +1,87 @@
+<div class="container text-center my-3">
+    <div class="row text-light">
+        <div class="col-md-2 d-flex justify-content-center align-items-center cinza-medio">
+            <p><b>Lanches</b></p>
+        </div>
+        <div class="col-md-8 cinza-claro">
+            <div class="row text-center">
+                <div class="col-md-12">
+                    <p><b>100 kcal</b> Sementes</p>
+                    <p><b>100 kcal</b> Frutas Secas</p>
+                    <p><b>20g</b> de Chips de Coco</p>
+                    <p><b>1</b> Mix de Sementes e Frutas Secas</p>
+                    <p><b>1</b> Iogurte sem adição de açúcar <b>ou</b> 2 Polenguinhos</p>
+                    <p><b>200 ml</b> Leite</p>
+                    <p><b>100 kcal</b> Bolacha</p>
+                    <p><b>30g</b> de: Aveia, Chia, Linhaça <b>ou</b> Granola DIET</p>
+                    <p><b>30g</b> de Milho para Pipoca</p>
+                    <p><b>30g</b> de Crispy de Milho</p>
+                    <p><b>15g</b> de Pasta de Amendoim</p>
+                    <p><b>1</b> colher Sopa Mel (1x no dia)</p>
+                    <p><b>1</b> colher Sopa Mel de Agave</p>
+                    <p><b>1</b> Leite Fermentado</p>
+                    <p><b>1</b> Paçoca DIET</p>
+                    <p><b>100 kcal</b> Salgadinho</p>
+                    <p><b>100 kcal</b> Outros Salgadinhos (1x na semana)</p>
+                    <p><b>120 kcal</b> Doce (1x no dia)</p>
+                    <p><b>120 kcal</b> Açaí DIET</p>
+                    <p><b>1</b> Fruta in natura</p>
+                    <p><b>1</b> Barra de Proteína DIET</p>
+                    <p><b>1</b> Barra de Cereal DIET</p>
+                </div>
+                <div class="col-md-12 cinza-escuro">
+                    {% if not kcal > 1400 %}
+                    <p>LANCHE <span class="text-danger">2</span> - {% if lanche_2 %}{{lanche_2}}h{% endif %} - Escolher
+                        <span class="text-light">UMA</span> opção
+                    </p>
+                    <p style="background-color: #BFBFBF">LANCHE <span class="text-danger">3</span> - {% if lanche_3 %}{{lanche_3}}h{% endif %} - Escolher
+                        <span class="text-light">UMA</span> opção
+                    </p>
+                    {% elif not kcal > 1800 %}
+                    <p>LANCHE <span class="text-danger">2</span> - {% if lanche_2 %}{{lanche_2}}h{% endif %} - Escolher
+                        <span class="text-light">UMA</span> opção
+                    </p>
+                    <p style="background-color: #BFBFBF">LANCHE <span class="text-danger">3</span> - {% if lanche_3 %}{{lanche_3}}h{% endif %} - Escolher
+                        <span class="text-light">DUAS</span> opções
+                    </p>
+                    {% elif not kcal > 1900 %}
+                    <p>LANCHE <span class="text-danger">2</span> - {% if lanche_2 %}{{lanche_2}}h{% endif %} - Escolher
+                        <span class="text-light">DUAS</span> opções
+                    </p>
+                    <p style="background-color: #BFBFBF">LANCHE <span class="text-danger">3</span> - {% if lanche_3 %}{{lanche_3}}h{% endif %} - Escolher
+                        <span class="text-light">DUAS</span> opções
+                    </p>
+                    {% elif not kcal > 2300 %}
+                    <p>LANCHE <span class="text-danger">2</span> - {% if lanche_2 %}{{lanche_2}}h{% endif %} - Escolher
+                        <span class="text-light">DUAS</span> opções
+                    </p>
+                    <p style="background-color: #BFBFBF">LANCHE <span class="text-danger">3</span> - {% if lanche_3 %}{{lanche_3}}h{% endif %} - Escolher
+                        <span class="text-light">TRÊS</span> opções
+                    </p>
+                    {% elif not kcal > 2500 %}
+                    <p>LANCHE <span class="text-danger">2</span> - {% if lanche_2 %}{{lanche_2}}h{% endif %} - Escolher
+                        <span class="text-light">TRÊS</span> opções
+                    </p>
+                    <p style="background-color: #BFBFBF">LANCHE <span class="text-danger">3</span> - {% if lanche_3 %}{{lanche_3}}h{% endif %}- Escolher
+                        <span class="text-light">TRÊS</span> opções
+                    </p>
+                    {% elif not kcal > 2600 %}
+                    <p>LANCHE <span class="text-danger">2</span> - {% if lanche_2 %}{{lanche_2}}h{% endif %} - Escolher
+                        <span class="text-light">TRÊS</span> opções
+                    </p>
+                    <p style="background-color: #BFBFBF">LANCHE <span class="text-danger">3</span> - {% if lanche_3 %}{{lanche_3}}h{% endif %} - Escolher
+                        <span class="text-light">QUATRO</span> opções
+                    </p>
+                    {% else %}
+                    <p>LANCHE <span class="text-danger">2</span> - {% if lanche_2 %}{{lanche_2}}h{% endif %} - Escolher
+                        <span class="text-light">QUATRO</span> opções
+                    </p>
+                    <p style="background-color: #BFBFBF">LANCHE <span class="text-danger">3</span> - {% if lanche_3 %}{{lanche_3}}h{% endif %} - Escolher
+                        <span class="text-light">QUATRO</span> opções
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

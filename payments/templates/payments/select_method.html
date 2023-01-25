@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Método de Pagamento!{% endblock %}
+{% block header %}
+<link rel="stylesheet" href="{% static 'core/css/dashboard.css' %}" />
+<style>
+    .link-pagamento{
+        -webkit-filter: drop-shadow(12px 12px 7px rgba(0,0,0,0.7));
+        filter: drop-shadow(12px 12px 12px 7px rgba(0,0,0,0.7));
+        display: block;
+        transform: scale(0.9);
+        transition-duration: 0.3s;
+    }
+    a.link-pagamento:hover{
+        transform: scale(1);
+    }
+</style>
+{% endblock %}
+{% block conteudo %}
+<script src="https://sdk.mercadopago.com/js/v2"></script>
+<div class="container " style="padding-bottom: 0vh!important; margin-bottom: -10vh!important">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="font-weight-bold" style="font-size: 1.75rem;color: #2b6ca3;">Confira os dados do seu pedido e clique em Pagar</h1>
+
+            <div class="card border-0 bg-light px-4 py-1">
+                <p>{{order.pacote_de_planos.descricao|safe}}</p>
+                <p>Serão adicionadas <span style="color: #2b6ca3">{{order.pacote_de_planos.quantidade}}</span> avaliações em sua conta após a confirmação do pagamento.</p>
+            
+            </div>
+            <b >Ao clicar em "Pagar" você estará concordando com nossos <a href="{% url 'termos_e_condicoes' %}" target="_blank" style="color: blue">Temos e Condições</a>.</b>
+            
+        </div>
+        <div class="container mt-1">
+            <div class="d-block mx-auto">
+                <div class="pastel"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Adicione as credenciais do SDK
+          const mp = new MercadoPago('{{PUBLIC_KEY}}', {
+                locale: 'pt-BR'
+          });
+        
+          // Inicialize o checkout
+          mp.checkout({
+              preference: {
+                  id: '{{preference_id}}'
+              },
+              render: {
+                    container: '.pastel', // Indique o nome da class onde será exibido o botão de pagamento
+                    label: 'Pagar', // Muda o texto do botão de pagamento (opcional)
+              }
+        });
+        </script>
+</div>
+{% include 'parciais/_footer.html' %}
+
+{% endblock %}

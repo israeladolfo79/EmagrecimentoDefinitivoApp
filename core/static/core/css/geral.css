@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');  
+
+  .texto{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+  }
+.roboto{
+  font-family: 'Roboto', sans-serif!important;
+}
+.ul-special{
+    font-size:17px!important; 
+    text-transform: none!important; 
+    letter-spacing: normal;
+    font-family: 'roboto', sans-serif!important;
+}
+.ul-special button{
+    background-color: transparent; 
+    border: none; 
+    color: white;
+    font-size:17px; 
+    text-transform: none; 
+    letter-spacing: normal;
+}
+.ul-special button:hover{
+    border-bottom: 3px solid white
+}
+
+nav {
+    display: flex!important;
+    justify-content: space-around!important;
+    align-items: center!important;
+    height: 12vh!important;
+    background: #2b6ca3;
+  }
+  
+  .nav-item {
+    background-color: #4472c4;
+    border-top: 1px solid white;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+  }
+  
+  nav h2 {
+    padding-top: 5px;
+    color: white;
+    font-family: 'gotham', sans-serif!important;
+    font-size: 35px; 
+    letter-spacing: 2px;
+    font-weight: 400!important;
+  }
+  
+  
+  .nav-list {
+    display: flex;
+    list-style: none;
+  }
+  
+  .nav-list li {
+    letter-spacing: 3px;
+    margin-left: 32px;
+    margin-top: 12px
+  }
+  
+  .mobile-menus {
+    display: none;
+    cursor: pointer;
+  }
+  
+  .mobile-menus div {
+    width: 32px;
+    height: 2px;
+    background-color: #fff;
+    margin: 8px;
+  }

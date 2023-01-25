@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Falha!{% endblock %}
+{% block header %}
+<link rel="stylesheet" href="{% static 'core/css/dashboard.css' %}" />
+{% endblock %}
+{% block conteudo %}
+<div class="container my-3" style="padding-bottom: 25vh">
+    <h1 class="font-weight-bold" style="color: red;padding-top: 10vh;padding-bottom: 4vh">Pagamento não realizado!</h1>
+    <p >
+        Alguma coisa aconteceu e o pagamento não foi feito. Por favor, Tente novamente.
+    </p>
+    <p style="padding-bottom: 5vh">Se o erro persistir entre em contato conosco.</p>
+    <a class="btn btn-primary" style="background-color: #2b6ca3;" href="{% url 'payments:process' %}">
+        Tentar novamente
+    </a>
+</div>
+{% include 'parciais/_footer.html' %}
+
+{% endblock %}

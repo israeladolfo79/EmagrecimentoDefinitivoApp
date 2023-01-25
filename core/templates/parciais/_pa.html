@@ -1,0 +1,18 @@
+<div class="container text-center my-3" style="font-weight: 600;">
+    <div class="row ">
+        <div class="col-md-2 cinza-escuro d-flex justify-content-center align-items-center">
+            <p><b>PA</b> </p>
+        </div>
+        {% if treino == 's' %}
+        <div class="col-md-8 cinza-medio">
+            <p>COM <span style="color: white">TREINO</span></p>
+            <input type="hidden" id="nome_arquivo" value="PLANO-ALIMENTAR-COM-TREINO.PNG" />
+        </div>
+        {% else %}
+        <div class="col-md-8 cinza-medio">
+            <p>SEM <span style="color: white">TREINO</span></p>
+            <input type="hidden" id="nome_arquivo" value="PLANO-ALIMENTAR-SEM-TREINO.PNG" />
+        </div>
+        {% endif %}
+    </div>
+</div>

@@ -1,0 +1,100 @@
+{% extends 'questionario.html' %}
+{% load static %}
+{% block questionario %}
+<div class="corpo">
+  <div class="container-fluid my-4">
+    <div class="row">
+      <div class="col-sm-4 px-0">
+        <!-- Remover o MY-2 e o margin-top -40px eo px-0 para voltar a antes-->
+        <ul class="nav nav-pills flex-column mt-40" >
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'dados_pessoais' %}">Dados Pessoais</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'doencas' %}">Doenças</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'medicamentos' %}">Medicamentos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'exame_sangue' %}">Exame de Sangue</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'intestino' %}">Intestino</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'sono' %}">Sono</a>
+          </li>
+          <li class="nav-item ativo">
+            <a class="nav-link" href="{% url 'cirurgia' %}">Cirurgias</a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link " href="{% url 'alcool' %}">Álcool</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'suplementos' %}">Suplementos</a>
+          </li>
+          {% if sexo != 'masculino' %}
+          <li class="nav-item">
+            <a class="nav-link" href="ciclos_menstruais">Ciclo Menstrual</a>
+          </li>
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'dados_atropometricos' %}">Dados Antropométricos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'horarios' %}">Horários</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'exercicios' %}">Exercícios</a>
+          </li>
+        </ul>
+        <hr class="d-sm-none">
+      </div>
+      <div class="col-sm-8" >
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert {{message.tags}} " role="alert">
+          {{message}}
+        </div>
+        {% endfor %}
+        {% endif %}
+        <h2>{{ local }}</h2>
+        <form action="" method="POST" class=" text-jutify">
+          {% csrf_token %}
+          <input type="hidden" value="{{ user.username }}" id="user" name="user">
+          {{ form.non_field_errors }}
+          <div class="row">
+            <div class="col-md-6">
+              <div class="fieldWrapper">
+                {{ form.cirurgias.errors }}
+                <p class="text-light"><label for="{{ form.cirurgias.id_for_label }}">Você já fez alguma
+                    cirurgia?</label></p>
+                {{ form.cirurgias }}
+              </div>
+            </div>
+            <div class="col-md-6"style='opacity: 0'>
+              <div class="fieldWrapper">
+                <p class="text-light"><label for="{{ form.quantidade_vezes.id_for_label }}">Quantas vezes na semana você
+                    consome Bebida Alcoólica?</label></p>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="fieldWrapper">
+                {{ form.infos_adicionais.errors }}
+                <p class="text-light"><label for="{{ form.infos_adicionais.id_for_label }}">Se julgar necesário informar
+                    algo, utilize este campo:</label></p>
+                {{ form.infos_adicionais }}
+              </div>
+            </div>
+            
+          </div>
+          <button type="submit" class="btn btn-quest border-rounded mt-4">Avançar</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

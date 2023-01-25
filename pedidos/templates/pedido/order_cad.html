@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Cadastro Promocional!{% endblock %}
+{% block header %}
+<link rel="stylesheet" href="{% static 'core/css/dashboard.css' %}" />
+<style>
+    .link-pagamento{
+        -webkit-filter: drop-shadow(12px 12px 7px rgba(0,0,0,0.7));
+        filter: drop-shadow(12px 12px 12px 7px rgba(0,0,0,0.7));
+        display: block;
+        transform: scale(0.9);
+        transition-duration: 0.3s;
+    }
+    a.link-pagamento:hover{
+        transform: scale(1);
+    }
+    label{
+       color: #2b6ca3; 
+       font-weight: bold;
+    }
+    ul.errorlist{
+        background-color: rgb(248, 60, 60);
+        color: white;
+        border-radius: 5px;
+        list-style: none;
+        margin-top: 1rem!important;
+        margin-bottom: 0px!important;
+    }
+    @media screen and (max-width: 550px) {
+        .logo{
+            font-size: 20px!important;
+            margin-left: 20px!important;
+        }
+        .mobile-menus{
+            display: none!important;
+        }
+    }
+    
+</style>
+{% endblock %}
+{% block conteudo %}
+
+<div class="container-fluid " style="padding-bottom: 0vh!important; margin-bottom: -10vh!important">
+    <div class="row">
+        <div class="col-lg-6">
+            {% include 'pedido/parciais/pedido_detail.html' %}
+        </div>
+        <div class="col-lg-5" id="div_form_cadastro" >
+            {% include 'pedido/parciais/formulario.html' %}
+        </div>
+    </div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js" integrity="sha512-0XDfGxFliYJPFrideYOoxdgNIvrwGTLnmK20xZbCAvPfLGQMzHUsaqZK8ZoH+luXGRxTrS46+Aq400nCnAT0/w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> 
+
+    <script src="{% static 'pedidos/javascript/pedidos.js' %}"></script>
+</div>
+{% include 'parciais/_footer.html' %}
+
+{% endblock %}

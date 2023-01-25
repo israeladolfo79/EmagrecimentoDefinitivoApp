@@ -1,0 +1,136 @@
+{% extends 'questionario.html' %}
+{% load static %}
+{% block questionario %}
+<div class="corpo">
+  <div class="container-fluid my-4">
+    <div class="row">
+      <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+      <div class="modal" id="meumodal" style="margin-top: 130px; z-index:9999">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title text-danger">AVISO!</h4>
+              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                  class="sr-only">Fechar</span></button>
+
+            </div>
+            <div class="modal-body">
+              <p class="text-danger">Ao clicar em "Continuar" você confirma estar ciente de que não poderá alterar
+                seus dados pessoais futuramente.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Continuar</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+      <script>
+        $("#meumodal").modal("show");
+      </script>
+      <div class="col-sm-4 px-0">
+        <ul class="nav nav-pills flex-column mt-40">
+          <li class="nav-item ativo">
+            <a class="nav-link " href="{% url 'dados_pessoais' %}">Dados Pessoais</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'doencas' %}">Doenças</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'medicamentos' %}">Medicamentos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'exame_sangue' %}">Exame de Sangue</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'intestino' %}">Intestino</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'sono' %}">Sono</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'cirurgia' %}">Cirurgias</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'alcool' %}">Álcool</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'suplementos' %}">Suplementos</a>
+          </li>
+          {% if sexo != 'masculino' %}
+          <li class="nav-item">
+            <a class="nav-link" href="ciclos_menstruais">Ciclo Menstrual</a>
+          </li>
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'dados_atropometricos' %}">Dados Antropométricos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'horarios' %}">Horários</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'exercicios' %}">Exercícios</a>
+          </li>
+        </ul>
+        <hr class="d-sm-none">
+      </div>
+      <div class="col-sm-8">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert {{message.tags}} " role="alert">
+          {{message}}
+        </div>
+        {% endfor %}
+        {% endif %}
+        <h2>{{ local }}</h2>
+        <form action="" method="POST" class="{{ pagina.cor_texto }} text-jutify">
+          {% csrf_token %}
+          <input type="hidden" value="{{ user.username }}" id="user" name="user">
+          {{ form.non_field_errors }}
+          <div class="row">
+            <div class="col-md-4">
+              <div class="fieldWrapper">
+                {{ form.sexo.errors }}
+                <p class="text-light"><label for="{{ form.sexo.id_for_label }}">Sexo:</label></p>
+                {{ form.sexo }}
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="fieldWrapper">
+                {{ form.nascimento.errors }}
+                <p class="text-light"><label for="{{ form.nascimento.id_for_label }}">Data de nascimento:</label></p>
+                <input id="date" type="date" name="nascimento">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="fieldWrapper">
+                <p class="text-light"><label for="{{ form.cpf.id_for_label }}">CPF: (Apenas números)</label></p>
+                {{ form.cpf }}
+                {{ form.cpf.errors }}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="fieldWrapper">
+                {{ form.altura.errors }}
+                <p class="text-light"><label for="{{ form.altura.id_for_label }}">Qual a sua altura? (cm)</label></p>
+                {{ form.altura }}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="fieldWrapper">
+                {{ form.nome_completo.errors }}
+                <p class="text-light"><label for="{{ form.nome_completo.id_for_label }}">Nome Completo:</label></p>
+                {{ form.nome_completo }}
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-quest border-rounded mt-4">Avançar</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,61 @@
+@import url("https://fonts.googleapis.com/css2?family=Play&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap");
+
+* {
+    font-family: "Montserrat", Arial, Helvetica, sans-serif;
+}
+
+h1 {
+
+    color: black
+}
+
+.total {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+}
+
+.container {
+    background-color: transparent;
+    max-width: 350px
+}
+
+form {
+    background-color: transparent;
+}
+
+.btn {
+    width: 100%;
+    border-radius: 10px;
+    background-color: #333333;
+    border: none
+}
+
+.btn:hover {
+    background-color: #424242
+}
+
+input[type="text"] {
+    border-radius: 15px;
+    color: rgb(23, 102, 247);
+    padding: 20px 0px 20px 35px;
+}
+
+i {
+    position: relative;
+    z-index: 10;
+    top: 32px;
+    left: 10px
+}
+
+input[type="password"] {
+    border-radius: 15px;
+    color: rgb(23, 102, 247);
+    padding: 20px 0px 20px 35px;
+    margin: 0px
+}
+
+.prim {
+    margin-bottom: 0px;
+}

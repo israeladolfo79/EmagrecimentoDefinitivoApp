@@ -1,0 +1,13 @@
+<h1 class="font-weight-bold" style="font-size: 1.3rem;color: #2b6ca3;">Confira os dados do seu pedido e clique em Pagar</h1>
+
+<div class="card border-0 bg-light px-4 py-1">
+    <p>{{pacote.descricao|safe}}</p>
+    <p style="font-size: 12px">Serão adicionadas <span style="color: #2b6ca3">{{pacote.quantidade}}</span> avaliações em sua conta após a confirmação do pagamento.</p>
+    <p style="font-size: 12px"><b>Ao clicar em "Pagar" você estará concordando com nossos <a href="{% url 'termos_e_condicoes' %}" target="_blank" style="color: blue; font-size: 12px;">Temos e Condições</a>.</b></p>
+
+</div>
+<div class="container mt-3">
+    <div class="d-block mx-auto">
+        <div class="pastel" style="display:none"></div>
+    </div>
+</div>

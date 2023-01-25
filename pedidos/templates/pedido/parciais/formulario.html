@@ -1,0 +1,102 @@
+<form action="{% url  'pedidos:ord' %}" method="POST" id="form_cadastro">
+    {% csrf_token %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {{message.tags}} " role="alert">
+            {{message}}
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div class="d-flex">
+        <div class="flex-grow-1">
+            <div class="fieldWrapper" >
+                {{ form.nome.errors }}
+                <label for="{{ form.nome.id_for_label }}">Nome Completo*</label><br>
+                {{ form.nome }}
+            </div>
+        </div>
+    </div>
+    <div class="d-flex">
+        <div class="flex-fill">
+            <div class="fieldWrapper" >
+                {{ form.usuario.errors }}
+                <label for="{{ form.usuario.id_for_label }}">Nome de Usuário*</label><br>
+                {{ form.usuario }}
+            </div>
+        </div>
+        <div class=" mx-4"></div>
+        <div class="flex-fill">
+            <div class="fieldWrapper" >
+                {{ form.cpf.errors }}
+                <label for="{{ form.cpf.id_for_label }}">CPF* (Apenas Números)</label><br>
+                {{ form.cpf }}
+            </div>
+        </div>
+    </div>
+    <div class="d-flex mt-3">
+        <div class="flex-grow-1">
+            <div class="fieldWrapper" >
+                {{ form.email.errors }}
+                <label for="{{ form.email.id_for_label }}">Email*</label><br>
+                {{ form.email }}
+            </div>
+        </div>
+    </div>
+    <div class="d-flex mt-3">
+        <div class="flex-fill">
+            <div class="fieldWrapper" >
+                {{ form.nascimento.errors }}
+                <label for="{{ form.nascimento.id_for_label }}">Nascimento*</label><br>
+                {{ form.nascimento }}
+            </div>
+        </div>
+        <div class="mx-1"></div>
+        <div class="flex-fill">
+            <div class="fieldWrapper" >
+                {{ form.altura.errors }}
+                <label for="{{ form.altura.id_for_label }}">Altura* (CM)</label><br>
+                {{ form.altura }}
+            </div>
+        </div>
+        <div class="mx-1"></div>
+        <div class="">
+            {{ form.sexo.errors }}
+            <label for="name">Sexo: </label>
+            <div class="form-check">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" value="masculino" name="sexo" >Masculino
+                </label>
+              </div>
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input type="radio" class="form-check-input" value="feminino" name="sexo">Feminino
+                </label>
+              </div>
+        </div>
+        
+    </div>
+    <div class="row">
+        
+        <div class="col-md-7">
+            <div id="div_id_senha" class="form-group "> 
+                <div class="fieldWrapper" >
+                    {{ form.senha.errors }}
+                    <label for="{{ form.senha.id_for_label }}">Senha*</label><br>
+                    {{ form.senha }}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div id="repetir_senha" class="form-group "> 
+                <div class="fieldWrapper" >
+                    {{ form.repetir_senha.errors }}
+                    <label for="{{ form.repetir_senha.id_for_label }}">Repita a Senha*</label><br>
+                    {{ form.repetir_senha }}
+                </div>
+            </div>
+        </div>
+    
+    </div>
+    
+    <button type="submit" class="btn btn-primary border-rounded">COMPRAR AGORA</button>
+  </form>

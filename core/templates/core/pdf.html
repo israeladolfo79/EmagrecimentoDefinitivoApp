@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Baixar Dieta{% endblock %}
+{% block header %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.js"></script>
+<link rel="stylesheet" href="{% static 'core/css/dashboard.css' %}" />
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+  .helvetica {
+    font-family: Helvetica, sans-serif;
+    padding: 0;
+    margin: 0;
+    color: green
+  }
+  #download {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 15px
+  }
+  p {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 13px;
+    margin: 0;
+    padding-top: 5px;
+    padding-bottom: 5px
+  }
+
+  b {
+    font-weight: 900;
+  }
+
+  .cinza-escuro {
+    background-color: #A6A6a6;
+  }
+
+  .cinza-medio {
+    background-color: #C0C0C0;
+  }
+
+  .cinza-claro {
+    background-color: #f1f1f1;
+  }
+
+  .azul-escuro {
+    background-color: #2F75B5;
+  }
+
+  .azul-claro {
+    background-color: #D9E1F2;
+  }
+
+  .amarelo {
+    background-color: #FFC000
+  }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+{% endblock %}
+{% block conteudo %}
+<!--Inserindo video de Background-->
+{% if criar_pa_sem_treino %}
+  {% if treino == 's'%}
+  <div class="container my-4">
+    <a href="{% url 'baixar_avaliacao_sem_treino' %}" class="btn btn-primary">Visualize seu Plano Sem o treino</a>
+  {% elif treino == 'n'%}
+  <div class="container my-4">
+    <a href="{% url 'baixar_avaliacao' %}" class="btn btn-primary">Visualize seu Plano Com o treino</a>
+  {% endif %}
+</div>
+{% endif %}
+  <div class="container" id="download">
+    {% include 'parciais/_nome_pessoa.html' %}
+
+    {% include 'parciais/_pa.html' %}
+
+    {% if treino_cedo %}
+    {% include 'parciais/_pre_treino.html' %}
+    {% endif %}
+
+    {% include 'parciais/_hmanha.html' %}
+
+    {% include 'parciais/_lanche_1.html' %}
+
+    {% include 'parciais/_almoco.html' %}
+
+    {% include 'parciais/_lanches.html' %}
+
+
+    {% include 'parciais/_jantar.html' %}
+    <p></p>
+    <p></p>
+    <p></p>
+  </div>
+  <div class="container">
+    <button id="demo" class="downloadtable btn btn-primary" onclick="downloadtable()"> Baixar Plano Alimentar</button>
+
+  </div>
+
+
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+  <script>
+    var input = document.querySelector("#nome_arquivo");
+    var texto = input.value;
+    console.log(texto);
+    function downloadtable() {
+
+      var node = document.getElementById('download');
+      var options = {
+          bgcolor: '#fff'
+      }
+      domtoimage.toPng(node, options)
+        .then(function (dataUrl) {
+          var img = new Image();
+          img.src = dataUrl;
+          downloadURI(dataUrl, texto)
+        })
+        .catch(function (error) {
+          console.error('oops, something went wrong', error);
+        });
+
+    }
+
+
+
+    function downloadURI(uri, name) {
+      var link = document.createElement("a");
+      link.download = name;
+      link.href = uri;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      delete link;
+    }
+
+
+
+  </script>
+  <!-- Salvar e Baixar a Imagem -->
+  <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+<input type="hidden" id="data_realizacao" value="{{ data_realizacao|safe }}">
+<input type="hidden" id="username" value="{{ username }}">
+<input type="hidden" id="tipo_plano" value="{{ tipo_plano }}">
+<script>
+  $(document).ready(function(){
+    html2canvas(document.querySelector("#download")).then(canvas => {
+    //enviando a imagem para o servidor
+    var dataURL = canvas.toDataURL("image/png");
+    
+    //pegando elemento com id data_realizacao
+    var data_realizacao = document.getElementById('data_realizacao').value;
+    var username = document.getElementById('username').value;
+    var tipo_plano = document.getElementById('tipo_plano').value;
+    $.ajax({
+      type: "POST",
+      url: "{% url 'salvar_imagem' %}",
+      data: {
+        username: username,
+        tipo_plano: tipo_plano,
+        imagem: dataURL,
+        data_realizacao: data_realizacao,
+        csrfmiddlewaretoken: '{{ csrf_token }}'
+      }
+    }).done(function(o) {
+      console.log('saved');
+    });
+  });
+});
+</script>
+  {% include "parciais/_footer.html" %}
+  {% endblock %}

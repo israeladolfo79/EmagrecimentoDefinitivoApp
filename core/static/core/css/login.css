@@ -1,0 +1,114 @@
+@import url("https://fonts.googleapis.com/css2?family=Play&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap");
+
+body {
+  overflow-x: hidden;
+  color: #000000;
+  background-color: white;
+  font-family: "Montserrat", Arial, Helvetica, sans-serif;
+}
+
+#fundo {
+  position: fixed;
+  width: 100vw;
+  height: 80vh;
+  top: 10vh;
+  left: 0;
+  z-index: -777777;
+}
+
+#footer {
+  position: fixed;
+  width: 320px;
+  height: 70px;
+  top: 90vh;
+  margin-left: 40%;
+  z-index: -777777;
+}
+
+@media screen and (max-width:720px) {
+  img {
+    position: fixed;
+    width: 100vw;
+    height: 80vh;
+    top: 8vh;
+    left: 0;
+    z-index: -777777;
+  }
+
+  #footer {
+    position: fixed;
+    width: 320px;
+    height: 70px;
+    top: 88vh;
+    margin-left: 0%;
+    z-index: -777777;
+  }
+
+}
+
+.direita {
+  margin-top: 15vh;
+}
+
+.titulo {
+  font-size: 3rem;
+}
+
+.subtitulo {
+
+  font-size: 1.5rem;
+}
+
+
+div.input-type {
+  background-color: #E8F0FE;
+  padding: 5px 25px;
+  border-radius: 15px;
+  width: 70%;
+  position: relative
+}
+
+input[type="text"] {
+  background-color: #E8F0FE;
+  border: none;
+  color: rgb(23, 102, 247);
+  margin-left: 10px
+}
+
+input[type="text"]:focus {
+  border-bottom: blue;
+  background-color: #E8F0FE;
+}
+
+input[type="password"] {
+  background-color: #E8F0FE;
+  border: none;
+  color: rgb(23, 102, 247);
+  margin-left: 10px
+}
+
+i {
+  position: absolute;
+  top: 25%;
+  left: 0;
+  color: rgb(92, 120, 247);
+  padding: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+form button {
+  padding: 10px;
+  border-radius: 50px;
+}
+
+@media screen and (max-width: 720px) {
+  img {
+    width: 145vw
+  }
+}
+
+.text-infos {
+  margin-top: 10%;
+}

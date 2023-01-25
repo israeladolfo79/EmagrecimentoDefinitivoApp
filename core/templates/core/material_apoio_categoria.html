@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Material de Apoio - {{cat}}{% endblock %}
+{% block header %}
+<link rel="stylesheet" href="{% static 'core/css/dashboard.css' %}" />{% endblock %}
+<style>
+    h1 {
+        color: #2b6ca3;
+    }
+    
+
+    h4 {
+        font-weight: bold;
+    }
+    a{
+        color: black
+    }
+</style>
+{% block conteudo %}
+
+<!-- The Modal -->
+<div class="modal fade" id="meumodal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-danger font-weight-bold">AVISO!</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Fechar</span></button>
+
+            </div>
+            {% if liberar == "NA" %}
+            <div class="modal-body">
+                <p class="text-danger">Você precisa adquirir um pacote de 120 ou 180 dias para ter acesso a este Material.</p>
+            </div>
+            {% elif liberar == "NP" %}
+            <div class="modal-body">
+                <p class="text-danger">Seu pacote não dá direito a esse material, por favor realize o Upgrade para o plano de 120 ou de 180 dias.</p>
+            </div>
+            {% else %}
+            <div class="modal-body">
+                <p class="text-danger">Você precisar esperar 7 dias após a realizar seu primeiro plano antes de ter acesso a este material.</p>
+            </div>
+            {% endif %}
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="container-fluid my-4 pt-4">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h1 class="font-weight-bold" style="color: #2b6ca3">Baixe seu material de Apoio</h1>
+        </div>
+        <div class="col-md-12 text-center">
+            <h3 class="font-weight-bold" style="color: #2b6ca3">Categoria - {{cat}}</h3>
+        </div>
+        <div class="col-md-2 text-center text-dark">
+            <h2 style="color: #2b6ca3">Categorias</h2>
+            <br>
+            {% for categoria in categorias %}
+                <p><a href="{% url 'categoria_material_apoio' categoria.nome %}" style="color: #2b6ca3">{{categoria.nome}}</a></p>
+            {% endfor %}
+            
+        </div>
+        <div class="col-md-10 p-4">
+            <div class="container-fluid p-4">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12  mx-3 py-2" style="background-color: #2b6ca3">
+                            <form  class="form-inline" action="{% url 'busca_material_apoio' %}">
+                                <label for="email" style="color: white; font-size: 1.2rem">Pesquise Aqui por Palavras-Chave </label>
+                                <input type="text" class="form-control mx-2" placeholder="Palavra-Chave" name="busca" id="email">
+                                <input type="hidden" value="{{cat}}" name="categoria">
+                                <button type="submit" class="btn btn-outline-light mx-2">Pesquisar</button>
+                                <a href="{% url 'material_apoio' %}" class="btn btn-outline-light mx-2">limpar pesquisa</a>
+                              </form>
+                        </div>
+                        {% for material in materiais %}
+                        <div class="col-md-6 d-flex justify-content-center my-4">
+                            <div class="card" st2yle="width:350px;">
+                                <img class="card-img-top img-thumbnail" src="{{ material.imagem_material.url }}"
+                                    alt="{{ material.titulo }}">
+                                <div class="card-body">
+                                    <h4 class="card-title font-weight-bold" style="color: #2b6ca3">{{ material.titulo }}
+                                    </h4>
+                                    <p class="card-text" style="font-size: 14px; font-weight:normal;line-height: 16px;">{{ material.texto|safe }}</p>
+                                    {% if material.categoria == "Geral"  %}
+                                    <a href="{{ material.material.url }}" class="btn btn-primary" download>Baixar
+                                        Conteúdo</a>
+                                    {% else %}
+                                        {% if liberar  %}
+                                            {% if liberar != "NA" %}
+                                                {% if liberar != "NP"%}
+                                                    <a href="{{ material.material.url }}" class="btn btn-primary" download>Baixar
+                                                        Conteúdo</a>
+                                                {% else %}
+                                                    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#meumodal">Baixar Conteúdo</button>
+                                                {% endif %}
+                                            {% else %}
+                                            <button type="button" class="btn btn-secondary" data-toggle="modal"
+                                            data-target="#meumodal">
+                                            Baixar Conteúdo
+                                        </button>
+                                            {% endif %}
+                                        {% else %}
+                                        <button type="button" class="btn btn-secondary" data-toggle="modal"
+                                            data-target="#meumodal">
+                                            Baixar Conteúdo
+                                        </button>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include "parciais/_footer.html" %}
+
+
+{% endblock %}

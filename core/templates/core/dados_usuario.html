@@ -1,0 +1,392 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Dashboard{% endblock %}
+{% block header %}
+<link rel="stylesheet" href="{% static 'core/css/dashboard.css' %}" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+{% endblock %}
+{% block conteudo %}
+
+<!--Inserindo video de Background-->
+<div class="container py-4">
+  <div class="row">
+    <div class="col-md-12 py-4">
+      <h1 class="subtitulo">Dados Pessoais</h1>
+    </div>
+    <div class="col-md-3">
+      <p>Nome de usuário</p>
+      <p class="text-primary">{{ dados_pessoais.user }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Nome Completo</p>
+      <p class="text-primary">{{ dados_pessoais.nome_completo }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>CPF</p>
+      <p class="text-primary">{{ dados_pessoais.cpf }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Data de Nascimento</p>
+      <p class="text-primary">{{ dados_pessoais.nascimento }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Sexo</p>
+      <p class="text-primary">{{ dados_pessoais.sexo }}</p>
+
+    </div>
+    <div class="col-md-3">
+      <p>Altura</p>
+      <p class="text-primary">{{ dados_pessoais.altura }} cm</p>
+    </div>
+  </div>
+</div>
+<div class="border border-danger container"></div>
+
+<div class="container py-4">
+  <div class="row">
+    <div class="col-md-12 py-4">
+      <h2 class="subtitulo">Doenças</h2>
+    </div>
+    <div class="col-md-3">
+      <p>Possui Refluxo?</p>
+      <p class="text-primary">{{ doencas.refluxo }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Possui Gastrite?</p>
+      <p class="text-primary">{{ doencas.gastrite }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Apresenta problemas no Figado?</p>
+      <p class="text-primary">{{ doencas.figado }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Possui problemas Renais?</p>
+      <p class="text-primary">{{ doencas.renal }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Possui problemas de Tireóide?</p>
+      <p class="text-primary">{{ doencas.tireoide }}</p>
+
+    </div>
+    <div class="col-md-3">
+      <p>Possui Pressão Alta?</p>
+      <p class="text-primary">{{ doencas.pressao_alta }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Possui Diabetes?</p>
+      <p class="text-primary">{{ doencas.diabetes }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Possui Colesterol Alto?</p>
+      <p class="text-primary">{{ doencas.colesterol }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Informações adicionais</p>
+      <p class="text-primary">{{ doencas.infos_adicionais }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="border border-danger container"></div>
+<div class="container py-4">
+  <div class="row">
+    <div class="col-md-12 py-4">
+      <h3 class="subtitulo">Medicamentos</h3>
+    </div>
+    <div class="col-md-3">
+      <p>Você utiliza medicamentos?</p>
+      <p class="text-primary">{{ medicamentos.medicamentos }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Medicamentos Utilizados: </p>
+      <p class="text-primary">{{ medicamentos.medicamentos_utilizados }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Informações adicionais</p>
+      <p class="text-primary">{{ medicamentos.infos_adicionais }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="border border-danger container"></div>
+<div class="container py-4">
+  <div class="row">
+    <div class="col-md-12 py-4">
+      <h3 class="subtitulo">Exame de Sangue</h3>
+    </div>
+    <div class="col-md-3">
+      <p>Você apresentou alteração no resultado do exame de sangue?</p>
+      <p class="text-primary">{{ exame_sangue.exame }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Alterações informadas: </p>
+      <p class="text-primary">{{ exame_sangue.alteracoes }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Informações adicionais </p>
+      <p class="text-primary">{{ exame_sangue.infos_adicionais }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="border border-danger container"></div>
+<div class="container py-4">
+  <div class="row">
+    <div class="col-md-12 py-4">
+      <h3 class="subtitulo">Intestino</h3>
+    </div>
+    <div class="col-md-3">
+      <p>Cor da sua urina</p>
+      <p class="text-primary">{{ intestino.cor_urina }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Consistência das fezes </p>
+      <p class="text-primary">{{ intestino.fezes }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Quantas vezes por semana você vai ao banheiro?</p>
+      <p class="text-primary">{{ intestino.banheiro }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Informações adicionais </p>
+      <p class="text-primary">{{ intestino.infos_adicionais }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="border border-danger container"></div>
+<div class="container py-4">
+  <div class="row">
+    <div class="col-md-12 py-4">
+      <h3 class="subtitulo">Sono</h3>
+    </div>
+    <div class="col-md-3">
+      <p>Você acorda durante a noite?</p>
+      <p class="text-primary">{{ sono.acorda_noite }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Quantas vezes você acorda durante a noite?</p>
+      <p class="text-primary">{{ sono.vezes_acorda_noite }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Você acorda durante a noite para ir ao banheiro?</p>
+      <p class="text-primary">{{ sono.acorda_noite_banheiro }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Quantas horas você dorme à noite?</p>
+      <p class="text-primary">{{ sono.horas_sono }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Pela manhã você acorda?</p>
+      <p class="text-primary">{{ sono.despertar }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Informações adicionais </p>
+      <p class="text-primary">{{ sono.infos_adicionais }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="border border-danger container"></div>
+<div class="container py-4">
+  <div class="row">
+    <div class="col-md-12 py-4">
+      <h3 class="subtitulo">Cirurgias</h3>
+    </div>
+    <div class="col-md-3">
+      <p>Você já passou por alguma Cirurgia?</p>
+      <p class="text-primary">{{ cirurgias.cirurgias }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Informações adicionais</p>
+      <p class="text-primary">{{ cirurgias.infos_adicionais }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="border border-danger container"></div>
+<div class="container py-4">
+  <div class="row">
+    <div class="col-md-12 py-4">
+      <h3 class="subtitulo">Álcool</h3>
+    </div>
+    <div class="col-md-3">
+      <p>Você consome bebida alcoólica?</p>
+      <p class="text-primary">{{ alcool.consome_alcool }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Você consome bebida alcoólica socialmente?</p>
+      <p class="text-primary">{{ alcool.consome_alcool_socialmente }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Quantas vezes na semana você consome Bebida Alcoólica?</p>
+      <p class="text-primary">{{ alcool.quantidade_vezes }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Informações adicionais </p>
+      <p class="text-primary">{{ alcool.infos_adicionais }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="border border-danger container"></div>
+<div class="container py-4">
+  <div class="row">
+    <div class="col-md-12 py-4">
+      <h3 class="subtitulo">Suplementos</h3>
+    </div>
+    <div class="col-md-3">
+      <p>Você usa Creatina?</p>
+      <p class="text-primary">{{ suplementos.creatina }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Você usa Termogênico?</p>
+      <p class="text-primary">{{ suplementos.termogenico }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Você usa Ômega 3?</p>
+      <p class="text-primary">{{ suplementos.omega_3 }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Você usa Vitamina D?</p>
+      <p class="text-primary">{{ suplementos.vitamina_d }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Você usa Multivitamínico?</p>
+      <p class="text-primary">{{ suplementos.multivitaminico }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Você usa Proteína?</p>
+      <p class="text-primary">{{ suplementos.proteina }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Você usa Maltodextrina?</p>
+      <p class="text-primary">{{ suplementos.maltodextrina }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Outros: </p>
+      <p class="text-primary">{{ suplementos.outros }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Informações adicionais </p>
+      <p class="text-primary">{{ suplementos.infos_adicionais }}</p>
+    </div>
+  </div>
+</div>
+
+{% if ciclo_menstrual != "" %}
+<div class="border border-danger container"></div>
+<div class="container py-4">
+  <div class="row">
+    <div class="col-md-12 py-4">
+      <h3 class="subtitulo">Ciclo Menstrual</h3>
+    </div>
+    <div class="col-md-3">
+      <p>Por quantos dias você menstrua?</p>
+      <p class="text-primary">{{ ciclo_menstrual.quantos_dias_menstrua }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Quantos dias tem seu ciclo menstrual?</p>
+      <p class="text-primary">{{ ciclo_menstrual.quantos_dias_ciclo }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Seu ciclo é: </p>
+      <p class="text-primary">{{ ciclo_menstrual.ciclo }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Informações adicionais </p>
+      <p class="text-primary">{{ alcool.infos_adicionais }}</p>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<div class="border border-danger container"></div>
+<div class="container py-4">
+  <div class="row">
+    <div class="col-md-12 py-4">
+      <h3 class="subtitulo">Dados Antropométricos</h3>
+    </div>
+    <div class="col-md-3">
+      <p>Qual a medida do seu pescoço? (cm)</p>
+      <p class="text-primary">{{ antropometricos.pescoco }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Qual a medida da sua cintura? (cm)</p>
+      <p class="text-primary">{{ antropometricos.cintura }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Qual a medida do seu quadril? (cm)</p>
+      <p class="text-primary">{{ antropometricos.quadril }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Qual a medida do seu punho? (cm)</p>
+      <p class="text-primary">{{ antropometricos.pulso }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Qual a medida do seu abdômen? (cm)</p>
+      <p class="text-primary">{{ antropometricos.abdomen }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Qual seu peso altual? (kg)</p>
+      <p class="text-primary">{{ antropometricos.peso }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Informações adicionais </p>
+      <p class="text-primary">{{ antropometricos.infos_adicionais }}</p>
+    </div>
+  </div>
+</div>
+
+<div class="border border-danger container"></div>
+<div class="container py-4">
+  <div class="row">
+    <div class="col-md-12 py-4">
+      <h3 class="subtitulo">Horários</h3>
+    </div>
+    <div class="col-md-3">
+      <p>Qual seu horário de treino?</p>
+      <p class="text-primary">{{ horarios.treino }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Qual seu horário de acordar?</p>
+      <p class="text-primary">{{ horarios.acordar }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Qual seu horário de café da manhã?</p>
+      <p class="text-primary">{{ horarios.cafe_da_manha }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Qual seu horário de lanche da manhã?</p>
+      <p class="text-primary">{{ horarios.lanche_manha }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Qual seu horário de almoço?</p>
+      <p class="text-primary">{{ horarios.almoco }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Qual o horário de seu primeiro lanche da tarde?</p>
+      <p class="text-primary">{{ horarios.lanche_tarde_1 }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Qual o horário de seu segundo lanche da tarde?</p>
+      <p class="text-primary">{{ horarios.lanche_tarde_2 }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Qual seu horário de jantar?</p>
+      <p class="text-primary">{{ horarios.jantar }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Qual seu horário de dormir?</p>
+      <p class="text-primary">{{ horarios.dormir }}</p>
+    </div>
+    <div class="col-md-3">
+      <p>Informações adicionais </p>
+      <p class="text-primary">{{ horarios.infos_adicionais }}</p>
+    </div>
+  </div>
+</div>
+
+{% include "parciais/_footer.html" %}
+
+{% endblock %}

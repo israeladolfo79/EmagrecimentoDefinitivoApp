@@ -1,0 +1,24 @@
+<div class="container text-center my-3"style="font-weight: 600;">
+    <div class="row text-light">
+        <div class=" cinza-medio col-md-2 d-flex justify-content-center align-items-center">
+            <p><b> Lanche 1<br>
+                {% if lanche_1 %}
+                {{ lanche_1 }}h
+                {% endif %}
+            </b></p>
+        </div>
+        <div class="col-md-8 d-flex justify-content-center align-items-center cinza-claro">
+            <p><b>100 kcal</b> sementes</p>
+        </div>
+    </div>
+    {% if treino == 's' %}
+    {% if treino_cedo %}
+    <div class="row ">
+        <div class="col-md-10 azul-claro">
+            <p style="font-size: 12px">Se o tempo entre Café Manhã e Almoço for de 3 horas ou menos, transferir este
+                Lanche para Tarde</p>
+        </div>
+    </div>
+    {% endif %}
+    {% endif %}
+</div>

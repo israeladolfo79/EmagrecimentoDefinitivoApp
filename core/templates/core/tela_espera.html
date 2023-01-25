@@ -1,0 +1,230 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Criando Plano{% endblock %}
+{% block header %}
+<meta http-equiv="refresh" content="184; URL={% url 'avaliacao' %}" />
+<link rel="stylesheet" href="{% static 'core/css/dashboard.css' %}" />
+<style>
+    .btn-quest {
+        background-color: #ED7D31;
+        font-weight: 900;
+        color: white;
+        transition: 0.2s ease-in-out;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 80px;
+        opacity: 0;
+        animation: hideout 3s linear 185s;
+    }
+
+    .btn-quest:hover {
+        background-color: #ED7D31;
+        color: white;
+        border: 1px solid white;
+        box-shadow: 0px 0px 5px white;
+    }
+
+    @keyframes hideout {
+        0% {
+            opacity: 0;
+        }
+
+        100% {
+            display: 1
+        }
+    }
+
+    .progress {
+        height: 5vh;
+        background-color: #777;
+        position: relative;
+    }
+
+    .progress .progress-bar {
+        position: absolute;
+        height: 100%;
+        background-color: #2b6ca3;
+        animation: progress-animation 190s;
+    }
+
+
+    @keyframes progress-animation {
+        0% {
+            width: 0%;
+        }
+
+        100% {
+            width: 100%
+        }
+
+    }
+
+    .row p {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        margin-top: 25px;
+        font-size: 21px;
+        text-align: center;
+        opacity: 0;
+
+    }
+
+    #primeira {
+        animation: fadein 6s linear;
+    }
+
+    #segunda {
+        animation: fadein 8s linear 7s;
+    }
+
+    #terceira {
+        animation: fadein 8s linear 16s;
+    }
+
+    #quarta {
+        animation: fadein 8s linear 25s;
+    }
+
+    #quinta {
+        animation: fadein 8s linear 34s;
+    }
+
+    #sexta {
+        animation: fadein 8s linear 43s;
+    }
+
+    #setima {
+        animation: fadein 8s linear 52s;
+    }
+
+    #oitava {
+        animation: fadein 8s linear 61s;
+    }
+
+    #nona {
+        animation: fadein 8s linear 70s;
+    }
+
+    #decima {
+        animation: fadein 8s linear 79s;
+    }
+
+    #dprimeira {
+        animation: fadein 8s linear 88s;
+    }
+
+    #dsegunda {
+        animation: fadein 8s linear 97s;
+    }
+
+    #dterceira {
+        animation: fadein 8s linear 106s;
+    }
+
+    #dquarta {
+        animation: fadein 8s linear 115s;
+    }
+
+    #dquinta {
+        animation: fadein 8s linear 124s;
+    }
+
+    #dsexta {
+        animation: fadein 8s linear 133s;
+    }
+
+    #dsetima {
+        animation: fadein 8s linear 142s;
+    }
+
+    #doitava {
+        animation: fadein 8s linear 151s;
+    }
+
+    #dnona {
+        animation: fadein 8s linear 160s;
+    }
+
+    #dnona {
+        animation: fadein 8s linear 169s;
+    }
+
+    #vigessima {
+        animation: fadein 8s linear 178s;
+    }
+
+
+    @keyframes fadein {
+
+        0%,
+        100% {
+            opacity: 0;
+        }
+
+        50% {
+            opacity: 1;
+        }
+
+    }
+</style>
+{% endblock %}
+{% block conteudo %}
+
+<div class="container" style="height: 40vh">
+    <div class="progress" style="margin-top: 20%">
+        {% if exercicios.treino != '0' %}
+        <div class="progress-bar text-center" style="width: 100%">Criando seus Planos Alimentares Personalizados</div>
+        {% else %}
+        <div class="progress-bar text-center" style="width: 100%">Criando seu Plano Alimentar Personalizado</div>
+        {% endif %}
+    </div>
+    <div class="row" style="position: relative">
+        <p id="primeira">Muito bem, {{ dados_pessoais.user }}</p>
+        <p id="segunda">Vamos começar a montar seus Planos Alimentares!</p>
+        <p id="terceira">Você me disse que seu peso é de {{ antropometricos.peso }} Kg.</p>
+        <p id="quarta">Sua altura é de {{ dados_pessoais.altura }} cm.</p>
+        <p id="quinta">Opa, cheguei ao seu % de gordura com as medidas que você me passou.</p>
+        {% if exercicios.treino != '0' %}
+        <p id="sexta">Você me disse que faz exercicio... {{ exercicios.tempo_exercicio }} minutos de exercício. Ótimo!
+        </p>
+        {% else %}
+        <p id="sexta">Você me disse que não pratica exercícios. Entendido!</p>
+        {% endif %}
+        <p id="setima">Agora cheguei as calorias que você precisa comer para emagrecer ou definir, sem passar fome e sem
+            restrições desnecessárias!</p>
+        <p id="oitava">Agora vou construir seus planos levando em conta sua “Real Composição Corporal”. </p>
+        <p id="nona">Você tem ideia da importância disto? <br>Isto permite uma super personalização das calorias que
+            você precisa comer. </p>
+        <p id="decima">Você vai Acordar às {{horarios.acordar}}h ...</p>
+        <p id="dprimeira">Vai tomar o Café da Manhã {{horarios.cafe_da_manha}}h ...</p>
+        <p id="dsegunda">Vai treinar às {{horarios.treino}}h ...</p>
+        <p id="dterceira">Pronto! </p>
+        {% if exercicios.treino == '0' %}
+        <p id="dquarta">Montei 1 Plano Alimentar para você, {{ dados_pessoais.user }}.</p>
+        <p id="dquinta">Um Plano alimentar SEM TREINO.</p>
+        <p id="dsexta">É isso aí! Um plano alimentar que vai te ajudar em todos os dias da sua semana.</p>
+        {% else %}
+        <p id="dquarta">Montei 2 Planos Alimentares para você, {{ dados_pessoais.user }}.</p>
+        <p id="dquinta">Um Plano para dia COM TREINO e outro para dia SEM TREINO.</p>
+        <p id="dsexta">É isso ai! São 2 planos que vão te ajudar em todos os dias da sua semana.</p>
+        {% endif %}
+        <p id="dsetima">Ah, para informações complementares e super importantes, como por exemplo: como fazer pra comer
+            pizza?</p>
+        <p id="doitava">Consulte o Material de Apoio.</p>
+        <p id="dnona">Se tiver alguma dúvida, me escreva pelo Whatsapp ou Email</p>
+        {% if exercicios.treino != '0' %}
+        <p id="vigessima">Vamos ver os seus planos????</p>
+        {% else %}
+        <p id="vigessima">Vamos ver os seu plano????</p>
+        {% endif %}
+        <a class="btn btn-quest" href="{% url 'avaliacao' %}">Visualizar Plano Alimentar</a>
+    </div>
+</div>
+
+
+{% include "parciais/_footer.html" %}
+{% endblock %}

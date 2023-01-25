@@ -1,0 +1,57 @@
+{% extends 'base_alt.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}Login Alternativo{% endblock %}
+{%block header %}
+<link rel="stylesheet" href="{% static 'core/css/login_alternativo.css' %}" />
+<style>
+    .img-total {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1
+    }
+</style>
+{% endblock %}
+
+{% block conteudo %}
+
+<img src="{% static 'core/img/imagem_teste_2.jpeg' %}" class="img-total">
+<div class="total">
+    <div class="container" style="margin-top: 10vh">
+        <form action="{% url 'login_alternativo' %}" method="POST">
+
+            {% csrf_token %}
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert {{message.tags}} " role="alert">
+                {{message}}
+            </div>
+            {% endfor %}
+            {% endif %}
+            <div class="form-group prim">
+                <h1 class="text-center my-4" style="font-family: Arial;font-weight: 700; font-size: 40px;">Faça seu
+                    login</h1>
+                <p class="text-center text-dark" style="font-family: Arial;font-weight: bold; font-size: 18px;">Ainda
+                    não se cadastrou? <a href="{% url 'cadastro_alternativo' %}" class="text-primary"
+                        style="font-family: Arial;font-weight: bold; font-size: 18px;">Clique Aqui</a>
+                </p>
+                <p class="text-center text-dark" style="font-family: Arial;font-weight: bold; font-size: 18px;">Esqueceu sua senha? <a href="{% url 'recuperar_senha' %}" class="text-danger"
+                        style="font-family: Arial;font-weight: bold; font-size: 18px; color: red">Clique Aqui</a>
+                </p>
+
+                <i class="fa fa-solid fa-user"></i><input type="text" class="form-control" id="usuario"
+                    placeholder="Username" name="usuario">
+            </div>
+            <div class="form-group">
+                <i class="fa fa-solid fa-lock"></i><input type="password" class="form-control" id="senha"
+                    placeholder="Password" name="senha">
+
+            </div>
+            <button type="submit" class="btn btn-primary" style="background-color: #2b6ca3">Logar</button>
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

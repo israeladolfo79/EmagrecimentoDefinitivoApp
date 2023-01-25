@@ -1,0 +1,297 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
+
+* {
+  font-family: 'Montserrat', sans-serif;
+    color: black;
+  letter-spacing: 2px;
+}
+
+.contato {
+  position: fixed;
+  z-index: 20;
+  top: 60px;
+  right: 0;
+}
+
+#myVideo {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  z-index: -2;
+  opacity: 0.4;
+}
+
+.btn-primary {
+  background-color: #2b6ca3;
+  border: none
+}
+
+.subtitulo {
+  font-size: 2rem;
+  color: black;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.destaque {
+  font-size: 1.4rem;
+  color: #2b6ca3;
+  font-weight: 600;
+}
+
+p {
+  color: black;
+  font-weight: bold;
+  font-size: 1.2rem;
+
+}
+
+/* Ini: Style Scrollbar*/
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #2b6ca3;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(85, 85, 85);
+}
+
+/* End: Style Scrollbar*/
+a {
+  font-size: 1rem;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  color: white
+}
+
+a:hover {
+  border-bottom: solid;
+  text-decoration: none;
+  color: white
+}
+
+nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 8vh;
+  background: #2b6ca3;
+}
+
+.nav-item {
+  background-color: #4472c4;
+  border-top: 1px solid white;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+}
+
+nav h2 {
+  padding-top: 5px;
+  color: white;
+  font-weight: 900;
+}
+
+
+.nav-list {
+  display: flex;
+  list-style: none;
+}
+
+.nav-list li {
+  letter-spacing: 3px;
+  margin-left: 32px;
+  margin-top: 12px
+}
+
+.mobile-menus {
+  display: none;
+  cursor: pointer;
+}
+
+.mobile-menus div {
+  width: 32px;
+  height: 2px;
+  background-color: #fff;
+  margin: 8px;
+}
+
+#contato {
+  color: white;
+  background-color: transparent
+}
+
+
+@media screen and (max-width: 999px) {
+  .nav-list {
+    position: absolute;
+    top: 8vh;
+    right: 0;
+    width: 60vw;
+    height: 92vh;
+    z-index: 10;
+    justify-content: space-between;
+    flex-direction: column;
+    background: #ffffff;
+    align-items: center;
+
+    display: none;
+  }
+
+  h2 {
+    font-size: 20px
+  }
+
+  .nav-list li {
+    margin-left: 0;
+    margin-top: 10vh;
+  }
+
+  .mobile-menus {
+    display: block;
+  }
+
+  .nav-list li a {
+    border-bottom: #2b6ca3 solid;
+    text-decoration: none;
+    color: #2b6ca3;
+    font-size: 0.75rem;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+}
+
+.btn-1 {
+  padding: 5px 10px;
+  border-radius: 10%;
+  background-color: 2%;
+  border: #2b6ca3 1px solid;
+  font-size: 1rem;
+  color: #2b6ca3;
+}
+
+.btn-1:hover {
+  box-shadow: 0px 0px 5px #2b6ca3;
+}
+
+.footer {
+  background-color: #2b6ca3;
+  color: white
+}
+
+.bg-blue {
+  background-color: #2b6ca3
+}
+
+
+/*Calculadora */
+.calc-linha{
+  margin-bottom: 0px;
+  font-weight: bold;
+  max-width: 240px;
+}
+.calc-label{
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  height: 100%;
+  width: 140px;
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+.calc-input{
+  margin-top: 0px;
+  margin-bottom: 0px;
+  background-color: rgb(236, 236, 236);
+  padding: 5px 10px 7px 20px;
+  border-bottom: 1px solid rgb(161, 161, 161);
+}
+.calc-input-le{
+  padding: 5px 10px 7px 0px;
+}
+input[type=number]{
+  background-color: transparent;
+  border: none;
+  max-width: 50px;
+
+}
+.calc-amarela{
+  background-color: rgb(236, 201, 0);
+}
+.calc-laranja-claro{
+  background-color: #FFE699
+}
+.calc-cinza-forte{
+  background-color:rgb(158, 158, 158);
+  font-weight: bold;
+}
+.calc-cinza-claro{
+  background-color:rgb(236, 236, 236);
+}
+.calc-azul{
+  background-color:rgb(37, 187, 233);
+}
+.calc-azul-1{
+  background-color: #2e75b6
+}
+.calc-azul-2{
+  background-color: #9dc3e6;
+}
+.calc-rosa{
+  background-color:pink;
+}
+.calc-verde-claro{
+  background-color:#c5e0b4;
+  
+}
+.calc-verde-escuro{
+  background-color:#00b050;
+  
+}
+.calc-laranja-1{
+  background-color:rgb(235, 152, 0);
+}
+.titulo-calc-resultado{
+  font-size: 15px 
+}
+.col-md{
+  padding-top:10px;
+  padding-left: 0px;
+  padding-right: 0px;
+
+}
+.texto-resultado{
+  margin: 0px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  font-size: 14px;
+}
+.calc-resultado-bordas{
+  border-left: 2px solid white;
+  border-right: 2px solid white;
+}
+.invisivel{
+  opacity: 0;
+}
+.col-md-primeira{
+  font-size: 12px;
+  font-weight: normal
+}
+.no-padding{
+  padding-left:0px;
+  padding-right:0px;
+}
