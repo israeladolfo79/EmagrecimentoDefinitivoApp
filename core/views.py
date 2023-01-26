@@ -78,7 +78,6 @@ class Index_2(TemplateView):
                 messages.add_message(
                     self.request, messages.ERROR, "Usuário não encontrado")
                 return redirect('login')
-            verifica_plano_alimentar(usuario)
             dias_r = 0
             usuario = models.Usuario.objects.get(usuario=self.request.user)
 
