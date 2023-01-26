@@ -93,10 +93,13 @@ WSGI_APPLICATION = 'projeto.wsgi.application'
 
 if DEVELOPMENT_MODE is True:
     DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-        }
+        'default': {
+                'ENGINE': 'django.db.backends.mysql',
+                'HOST': 'mysql21-farm10.kinghost.net',
+                'NAME': 'emagrecimentod',
+                'USER': 'emagrecimentod',
+                'PASSWORD': 'senhad1',
+            }
     }
 elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
     if os.getenv("DATABASE_URL", None) is None:

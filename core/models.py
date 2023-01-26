@@ -12,7 +12,6 @@ class PaginaInicial(models.Model):
     mensagem_3 = models.TextField(verbose_name="Mensagem 3", blank=True, null= True)
     mensagem_4 = models.TextField(verbose_name="Mensagem 4", blank=True, null= True)
     
-
 class DashBoard(models.Model):
     titulo_1 = models.CharField(max_length=255, verbose_name="Título 1")
     subtitulo_1 = models.CharField(max_length=255, verbose_name="Subtítulo 1")
@@ -196,7 +195,6 @@ class CategoriaMaterialDeApoio(models.Model):
     def __str__(self) -> str:
         return self.nome
 
-
 class MaterialDeApoio(models.Model):
     class Meta:
         verbose_name_plural = "Materiais de Apoio"
@@ -210,7 +208,6 @@ class MaterialDeApoio(models.Model):
     ))
     categoria_do_material = models.ForeignKey(to=CategoriaMaterialDeApoio, on_delete=models.PROTECT, verbose_name="Categoria do material",null=True, blank=True)
     palavras_chave_material = models.TextField(verbose_name="Palavras Chave (Separadas por Espaço)")
-
 
 class Termos(models.Model):
     class Meta:

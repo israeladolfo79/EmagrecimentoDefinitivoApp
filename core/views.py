@@ -78,7 +78,7 @@ class Index_2(TemplateView):
                 messages.add_message(
                     self.request, messages.ERROR, "Usuário não encontrado")
                 return redirect('login')
-            verifica_plano_alimentar("AdaoNormal%Normal")
+            verifica_plano_alimentar(usuario)
             dias_r = 0
             usuario = models.Usuario.objects.get(usuario=self.request.user)
 
@@ -123,6 +123,7 @@ class VideoExplicativo(TemplateView):
                 return redirect('login')
 
             video = models.Video.objects.first().link
+            print(video)
             usuario = models.Usuario.objects.get(usuario=usuario)
 
             context = {
