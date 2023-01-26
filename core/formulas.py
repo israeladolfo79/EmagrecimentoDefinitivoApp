@@ -366,9 +366,6 @@ def verifica_usuario(username):
 
 #essa função verifica se faz mais que 7 dias que o usuário realizou o primeiro plano alimentar
 def verifica_plano_alimentar(username):
-    tem_plano = models.PlanoAlimentar.objects.filter(user=username).order_by("data_realizacao").exists()
-    if not tem_plano:
-        return "sem plano"
     data_plano = list(models.PlanoAlimentar.objects.filter(user=username).order_by("data_realizacao").values())[0]["data_realizacao"]
     print(data_plano)
     hoje = date.today()
