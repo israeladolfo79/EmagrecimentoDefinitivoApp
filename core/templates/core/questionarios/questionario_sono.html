@@ -1,0 +1,125 @@
+{% extends 'questionario.html' %}
+{% load static %}
+{% block questionario %}
+<div class="corpo">
+  <div class="container-fluid my-4">
+    <div class="row">
+      <div class="col-sm-4 px-0">
+        <ul class="nav nav-pills flex-column mt-40">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'dados_pessoais' %}">Dados Pessoais</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'doencas' %}">Doenças</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'medicamentos' %}">Medicamentos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'exame_sangue' %}">Exame de Sangue</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'intestino' %}">Intestino</a>
+          </li>
+          <li class="nav-item ativo">
+            <a class="nav-link " href="{% url 'sono' %}">Sono</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'cirurgia' %}">Cirurgias</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'alcool' %}">Álcool</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'suplementos' %}">Suplementos</a>
+          </li>
+          {% if sexo != 'masculino' %}
+          <li class="nav-item">
+            <a class="nav-link" href="ciclos_menstruais">Ciclo Menstrual</a>
+          </li>
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'dados_atropometricos' %}">Dados Antropométricos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'horarios' %}">Horários</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'exercicios' %}">Exercícios</a>
+          </li>
+        </ul>
+        <hr class="d-sm-none">
+      </div>
+      <div class="col-sm-8">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert {{message.tags}} " role="alert">
+          {{message}}
+        </div>
+        {% endfor %}
+        {% endif %}
+        <h2>{{ local }}</h2>
+        <form action="" method="POST" class="{{ pagina.cor_texto }} text-jutify">
+          {% csrf_token %}
+          <input type="hidden" value="{{ user.username }}" id="user" name="user">
+          {{ form.non_field_errors }}
+          <div class="row">
+            <div class="col-md-6">
+              <div class="fieldWrapper">
+                {{ form.acorda_noite.errors }}
+                <p class="text-light"><label for="{{ form.acorda_noite.id_for_label }}">Você acorda durante a
+                    noite?</label></p>
+                {{ form.acorda_noite }}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="fieldWrapper">
+                {{ form.vezes_acorda_noite.errors }}
+                <p class="text-light"><label for="{{ form.vezes_acorda_noite.id_for_label }}">Quantas vezes você acorda
+                    durante a noite?</label></p>
+                {{ form.vezes_acorda_noite }}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="fieldWrapper">
+                {{ form.acorda_noite_banheiro.errors }}
+                <p class="text-light"><label for="{{ form.acorda_noite_banheiro.id_for_label }}">Você acorda durante a
+                    noite para ir ao banheiro?</label></p>
+                {{ form.acorda_noite_banheiro }}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="fieldWrapper">
+                {{ form.horas_sono.errors }}
+                <p class="text-light"><label for="{{ form.horas_sono.id_for_label }}">Quantas horas você dorme por
+                    noite?</label></p>
+                {{ form.horas_sono }}
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="fieldWrapper">
+                {{ form.despertar.errors }}
+                <p class="text-light"><label for="{{ form.despertar.id_for_label }}">Pela manhã, você acorda:
+                    (Descreva)</label></p>
+                {{ form.despertar }}
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="fieldWrapper">
+                {{ form.infos_adicionais.errors }}
+                <p class="text-light"><label for="{{ form.infos_adicionais.id_for_label }}">Se julgar necessário
+                    informar algo, utilize este campo:</label></p>
+                {{ form.infos_adicionais }}
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-quest border-rounded mt-4">Avançar</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

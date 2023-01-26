@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Questionário{% endblock %}
+{% block header %}
+<link rel="stylesheet" href="{% static 'core/css/questionario.css' %}" />
+   <style>
+    .mt-40{
+        margin-top: -40px
+    }
+    .nav-link{
+        margin-top: 0.4rem!important;
+        margin-bottom: 0.3rem!important;
+
+    }
+    .alert{
+        font-size: 15px
+    }
+   </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+{% endblock %}
+{% block conteudo %}
+<div >
+    <div style='margin-bottom: -9rem'>
+    {% block questionario %}
+    {% endblock %}
+    </div>
+    {% include 'parciais/_footer.html' %}
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% load static %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<header style="position: fixed; width: 100vw; z-index: 9999999999999">
+  <nav>
+    <h2 class="logo py-1" href="/">Nutrição Esportiva de Resultado</h2>
+    <div class="mobile-menus">
+      <div class="line 1"></div>
+      <div class="line 2"></div>
+      <div class="line 3"></div>
+    </div>
+    <ul class="nav-list ul-special" >
+      <li><a href="/">Início</a></li>
+      <li><a href="{% url 'baixar_avaliacao' %}">Plano Alimentar</a></li>
+      <li><a href="{% url 'material_apoio' %}">Material de Apoio</a></li>
+      
+      <li>
+        <button onclick="myFunction()" id="contato">Contato</button>
+      </li>
+      <li><a href="{% url 'logout' %}">Sair</a>
+      </li>
+    </ul>
+  </nav>
+  <script src="{% static 'core/javascript/mobile.js' %}">
+
+  </script>
+  <script>
+    function myFunction() {
+      var element = document.getElementById("flut");
+      if (element.style.right == '-600px') {
+        element.style.right = '80px';
+      } else {
+        element.style.right = '-600px';
+      }
+    }
+  </script>
+</header>
+<p id="faixa-v" style="height: 103px; background-color: rgb(255, 93, 93);"></p>
+<div id="flut"
+  style="padding: 20px;position: fixed; z-index: 9999; top: 90px; right: -600px; background-color: #2b6ca3">
+  <a style="padding: 12px" href="mailto:contato@nutricaoeesporte.com.br"><i
+      class="fa fa-solid fa-at fa-2x text-light"></i>Email</a>
+
+  <br><br>
+  <a style="padding: 12px" class="my-2" href="https://web.whatsapp.com/send?phone=5511987707556" target="_blank"><i
+      class="fa fa-brands fa-whatsapp fa-2x text-light"></i>Whatsapp</a>
+
+
+</div>

@@ -1,0 +1,108 @@
+{% extends 'questionario.html' %}
+{% load static %}
+{% block questionario %}
+<div class="corpo">
+  <div class="container-fluid my-4">
+    <div class="row">
+      <div class="col-sm-4 px-0">
+        <ul class="nav nav-pills flex-column mt-40">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'dados_pessoais' %}">Dados Pessoais</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'doencas' %}">Doenças</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'medicamentos' %}">Medicamentos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'exame_sangue' %}">Exame de Sangue</a>
+          </li>
+          <li class="nav-item ativo">
+            <a class="nav-link" href="{% url 'intestino' %}">Intestino</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'sono' %}">Sono</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'cirurgia' %}">Cirurgias</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'alcool' %}">Álcool</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'suplementos' %}">Suplementos</a>
+          </li>
+          {% if sexo != 'masculino' %}
+          <li class="nav-item">
+            <a class="nav-link" href="ciclos_menstruais">Ciclo Menstrual</a>
+          </li>
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'dados_atropometricos' %}">Dados Antropométricos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'horarios' %}">Horários</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'exercicios' %}">Exercícios</a>
+          </li>
+        </ul>
+        <hr class="d-sm-none">
+      </div>
+      <div class="col-sm-8">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert {{message.tags}} " role="alert">
+          {{message}}
+        </div>
+        {% endfor %}
+        {% endif %}
+        <h2>{{ local }}</h2>
+        <form action="" method="POST" class="{{ pagina.cor_texto }} text-jutify">
+          {% csrf_token %}
+          <input type="hidden" value="{{ user.username }}" id="user" name="user">
+          {{ form.non_field_errors }}
+          <div class="row">
+            <div class="col-md-6">
+              <div class="fieldWrapper">
+                {{ form.cor_urina.errors }}
+                <p class="text-light"><label for="{{ form.cor_urina.id_for_label }}">Qual a cor da sua urina?</label>
+                </p>
+                {{ form.cor_urina }}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="fieldWrapper">
+                {{ form.fezes.errors }}
+                <p class="text-light"><label for="{{ form.fezes.id_for_label }}">Qual a cônsistencia das suas
+                    fezes?</label></p>
+                {{ form.fezes }}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="fieldWrapper">
+                {{ form.banheiro.errors }}
+                <p class="text-light"><label for="{{ form.banheiro.id_for_label }}">Quantas vezes você vai ao banheiro
+                    por semana?</label></p>
+                {{ form.banheiro }}
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="fieldWrapper">
+                {{ form.infos_adicionais.errors }}
+                <p class="text-light"><label for="{{ form.infos_adicionais.id_for_label }}">Se julgar necessário
+                    informar algo, utilize este campo:</label></p>
+                {{ form.infos_adicionais }}
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-quest border-rounded mt-4">Avançar</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

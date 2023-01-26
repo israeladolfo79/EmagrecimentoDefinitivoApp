@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Confirmacao{% endblock %}
+{% block header %}
+<link rel="stylesheet" href="{% static 'core/css/dashboard.css' %}" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<style>
+    h1 {
+        font-weight: bold;
+        color: red
+    }
+
+    * {
+        font-family: 'Open Sans', sans-serif;
+    }
+
+    h2 {
+        font-size: 23px;
+        font-weight: bold;
+        line-height: 150%;
+    }
+
+    .btn-quest {
+        background-color: #ED7D31;
+        color: white;
+        transition: 0.2s ease-in-out;
+    }
+
+    .btn-quest:hover {
+        background-color: #ED7D31;
+        color: white;
+        border: 1px solid white;
+        box-shadow: 0px 0px 5px white;
+    }
+</style>
+{% endblock %}
+
+{% block conteudo %}
+
+<div class="container">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert {{message.tags}} pt-1" role="alert">
+    {{message}}
+    </div>
+    {% endfor %}
+    {% endif %}
+    <h1 class="my-4">ATENÇÃO</h1>
+    <h2>Estes planos alimentares serão customizados, feitos sob medida para você!</h2><br>
+    <h2>Eles serão desenvolvidos a partir dos dados disponibilizados por você (Idade, Sexo,
+        Peso, Altura e Medidas
+        Corporais, etc).</h2><br>
+    <h2>Portanto, ao aceitar gerar os Planos Alimentares, não haverá como voltar atrás e desistir da aquisição dos
+        mesmos.
+    </h2><br>
+    <h2>Para dar continuidade e dizer que <span class="text-success font-weight-bolder">SIM</span>, e que está de acordo com estas condições, selecione <span class="text-success font-weight-bolder">EU CONCORDO</span>, na caixa logo
+        abaixo e clique em: Montar Meus Planos Alimentares Personalizados</h2>
+    <br>
+    <form action="{% url 'criando_plano' %}" class="was-validated mb-4" method="get">
+        <div class="form-group">
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="remember" required><b>Eu
+                        Concordo.</b>
+                    <div class="valid-feedback font-weight-bold">OK. Agora Podemos Prosseguir</div>
+                    <div class="invalid-feedback font-weight-bold">Confirme que aceita os termos para poder continuar.
+                    </div>
+                </label>
+            </div>
+            <div class="row font-weight-bold" style="margin-top: 50px">
+                <div class="col-md-12  d-flex align-items-center justify-content-center font-weight-bold">
+                    <button type="submit" class="btn btn-quest py-3 px-4 font-weight-bold"
+                        style="font-weight: 900;">Gerar
+                        Meus
+                        Planos
+                        Alimentares</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+{% include "parciais/_footer.html" %}
+
+{% endblock %}

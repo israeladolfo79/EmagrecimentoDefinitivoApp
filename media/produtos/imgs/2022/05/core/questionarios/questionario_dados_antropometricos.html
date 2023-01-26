@@ -1,0 +1,148 @@
+{% extends 'questionario.html' %}
+{% load static %}
+{% block questionario %}
+<div class="corpo">
+  <div class="container-fluid my-4">
+    <div class="row">
+      <div class="col-sm-4 px-0">
+        <ul class="nav nav-pills flex-column mt-40">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'dados_pessoais' %}">Dados Pessoais</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'doencas' %}">Doenças</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'medicamentos' %}">Medicamentos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'exame_sangue' %}">Exame de Sangue</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'intestino' %}">Intestino</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'sono' %}">Sono</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'cirurgia' %}">Cirurgias</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'alcool' %}">Álcool</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'suplementos' %}">Suplementos</a>
+          </li>
+          {% if sexo != 'masculino' %}
+          <li class="nav-item">
+            <a class="nav-link" href="ciclos_menstruais">Ciclo Menstrual</a>
+          </li>
+          {% endif %}
+          <li class="nav-item ativo">
+            <a class="nav-link " href="{% url 'dados_atropometricos' %}">Dados Antropométricos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'horarios' %}">Horários</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'exercicios' %}">Exercícios</a>
+          </li>
+        </ul>
+        <hr class="d-sm-none">
+      </div>
+      <div class="col-sm-8">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert {{message.tags}} " role="alert">
+          {{message}}
+        </div>
+        {% endfor %}
+        {% endif %}
+        <h2>{{ local }}</h2>
+        <form action="" method="POST" class="{{ pagina.cor_texto }} text-jutify">
+          {% csrf_token %}
+          <input type="hidden" value="{{ user.username }}" id="user" name="user">
+          {{ form.non_field_errors }}
+          <div class="row">
+            <div class="col-md-6">
+              <div class="fieldWrapper">
+                {{ form.pescoco.errors }}
+                <p class="text-light"><label for="{{ form.pescoco.id_for_label }}">Qual a medida do seu Pescoço? (cm) <i
+                      class="fas fa-solid fa-info myDIV"></i><img src="{% static 'core/img/pescoco_masculino.jpeg' %}"
+                      class="hide img img-thumbnail">
+                  </label></i></p>
+                {{ form.pescoco }}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="fieldWrapper">
+                {{ form.cintura.errors }}
+                <p class="text-light">
+                  <label for="{{ form.cintura.id_for_label }}">
+                    Qual a medida da sua Cintura? (cm)
+                    <i class="fas fa-solid fa-info myDIV"></i>
+                    {% if sexo == "masculino" %}
+                    <img src="{% static 'core/img/cintura_homem.jpeg' %}" class="hide img img-thumbnail">
+                    {% else %}
+                    <img src="{% static 'core/img/cintura_mulher.jpeg' %}" class="hide img img-thumbnail">
+                    {% endif %}
+                  </label>
+                </p>
+                {{ form.cintura }}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="fieldWrapper">
+                {{ form.quadril.errors }}
+                <p class="text-light"><label for="{{ form.quadril.id_for_label }}">Qual a medida do seu Quadril? (cm) <i
+                      class="fas fa-solid fa-info myDIV"></i><img src="{% static 'core/img/quadril.jpeg' %}"
+                      class="hide img img-thumbnail"></label></p>
+                {{ form.quadril }}
+              </div>
+            </div>
+            {% if sexo == 'masculino' %}
+            <div class="col-md-6">
+              <div class="fieldWrapper">
+                {{ form.pulso.errors }}
+                <p class="text-light"><label for="{{ form.pulso.id_for_label }}">Qual a medida do seu Punho? (cm) <i
+                      class="fas fa-solid fa-info myDIV"></i><img src="{% static 'core/img/pulso.jpeg' %}"
+                      class="hide img img-thumbnail"></label></p>
+                {{ form.pulso }}
+              </div>
+            </div>
+            {% endif %}
+            <div class="col-md-6">
+              <div class="fieldWrapper">
+                {{ form.abdomen.errors }}
+                <p class="text-light"><label for="{{ form.abdomen.id_for_label }}">Qual a medida do seu Abdômen? (cm) <i
+                      class="fas fa-solid fa-info myDIV"></i><img src="{% static 'core/img/abdomen.jpeg' %}"
+                      class="hide img img-thumbnail"></label></p>
+                {{ form.abdomen }}
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="fieldWrapper">
+                {{ form.peso.errors }}
+                <p class="text-light"><label for="{{ form.peso.id_for_label }}">Qual seu Peso atual? (kg)</label></p>
+                {{ form.peso }}
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="fieldWrapper">
+                {{ form.infos_adicionais.errors }}
+                <p class="text-light"><label for="{{ form.infos_adicionais.id_for_label }}">Se julgar necesário informar
+                    algo, utilize este campo:</label></p>
+                {{ form.infos_adicionais }}
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-quest border-rounded mt-4">Avançar</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

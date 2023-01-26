@@ -1,0 +1,151 @@
+{% extends 'base_alt.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}Login{% endblock %}
+{%block header %}
+<link rel="stylesheet" href="{% static 'core/css/login.css' %}" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Bree+Serif&family=Spinnaker&family=Stardos+Stencil:wght@700&display=swap"
+  rel="stylesheet">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,800&display=swap');
+  #emagrecimento {
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+    font-style: italic;
+    line-height: 47px;
+    font-size: 45px;
+    margin-top:1.6vh;
+    margin-right: 3vw
+  }
+
+  #texto {
+    font-family: 'Spinnaker', sans-serif;
+    font-size: 20px;
+    line-height: 21px;
+  }
+
+  #f-branco {
+    position: fixed;
+    height: 80vh;
+    width: 45vw;
+    top: 10vh;
+    right: 0px;
+  }
+
+  #special-text {
+    font-family: 'Bree Serif', serif;
+    font-size: 22px;
+    margin-top: 10vh
+  }
+
+  @media screen and (max-width:720px) {
+    #emagrecimento {
+      font-family: Arial, Helvetica, sans-serif;
+      text-transform: uppercase;
+      line-height: 32px;
+      font-size: 27px;
+    }
+
+    #f-branco {
+      position: fixed;
+      height: 80vh;
+      width: 100vw;
+      top: 8vh;
+      right: 0px;
+    }
+
+    #texto {
+      font-family: 'Spinnaker', sans-serif;
+      font-size: 18px;
+    }
+
+    #special-text {
+      font-family: 'Bree Serif', serif;
+      font-size: 22px;
+      margin-top: 0px
+    }
+  }
+</style>
+{% endblock %}
+
+
+{% block conteudo %}
+<img id="fundo" src="{% static 'core/img/img-fundo.jpg' %}">
+<img id="footer" src="{% static 'core/img/estrelas.jpg' %}">
+<div id="f-branco" style="background-color: rgba(255,255,255,.5)">
+
+</div>
+<div class="container-fluid">
+  <div class="row mt-4">
+    <div class="col-md-12">
+
+      <div class="row">
+        <div class="col-md-6"></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-5 ">
+          <div class="container pl-4">
+            <h1 class="text-right mb-4" id="emagrecimento" >Emagrecimento <br>
+              <span style="color:red">&</span>Definição
+            </h1>
+
+
+            <p class="text-justify mt-4" id="texto">
+              Comendo o que gosta: Pão, Arroz, Pizza, Cerveja ...
+            </p>
+            <p class="text-justify mt-4" id="texto">
+              Este site foi criado a partir dos meus conhecimentos
+              <br> de 15 anos atuando como Nutricionista Esportivo.
+            </p>
+            <p class="text-justify mt-4" id="texto">
+              Comece JÁ sua mudança!
+            </p>
+            <p class="text-justify mt-4" id="texto">
+              Faça o login e Assista o vídeo explicativo
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-4">
+        <div class="col-md-6 text-right" style="max-width: 790px">
+          <p id="special-text">"Com VOCÊ, transformando <br> seus SONHOS em <br>REALIDADE."</p>
+        </div>
+        <div class="col-md-6">
+          <div class="container d-flex align-items-center justify-content-center">
+            <form action="{% url 'login' %}" method="POST" style="max-width: 310px;margin-bottom: 13vh">
+              {% if messages %}
+                {% for message in messages %}
+                <div class="alert {{message.tags}} " role="alert">
+                  {{message}}
+                </div>
+                {% endfor %}
+              {% endif %}
+              <p style="margin-bottom: 0px">Ainda não se cadastrou? <a href="{% url 'cadastro' %}">Clique Aqui</a></p>
+              <p style="margin-bottom: 5vh">Esqueceu sua senha? <a href="{% url 'recuperar_senha' %}" class="text-danger">Clique Aqui</a></p>
+              {% csrf_token %}
+              <div class="form-group">
+                <div class="input-type border-rounded">
+                  <i class="fa fa-solid fa-user"></i><input type="text" class="form-control" placeholder="Usuário"
+                    id="usuario" name="usuario">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="input-type border-rounded">
+                  <i class="fa fa-solid fa-lock"></i><input type="password" class="form-control" placeholder="Senha"
+                    id="senha" name="senha">
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary border-rounded">Entrar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

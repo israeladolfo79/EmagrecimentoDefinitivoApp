@@ -1,0 +1,116 @@
+{% extends 'questionario.html' %}
+{% load static %}
+{% block questionario %}
+<div class="corpo">
+  <div class="container-fluid my-4">
+    <div class="row">
+      <div class="col-sm-4 px-0">
+        <ul class="nav nav-pills flex-column mt-40">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'dados_pessoais' %}">Dados Pessoais</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'doencas' %}">Doenças</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'medicamentos' %}">Medicamentos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'exame_sangue' %}">Exame de Sangue</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'intestino' %}">Intestino</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'sono' %}">Sono</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'cirurgia' %}">Cirurgias</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'alcool' %}">Álcool</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'suplementos' %}">Suplementos</a>
+          </li>
+          {% if sexo != 'masculino' %}
+          <li class="nav-item">
+            <a class="nav-link" href="ciclos_menstruais">Ciclo Menstrual</a>
+          </li>
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'dados_atropometricos' %}">Dados Antropométricos</a>
+          </li>
+          <li class="nav-item ativo">
+            <a class="nav-link" href="{% url 'horarios' %}">Horários</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'exercicios' %}">Exercícios</a>
+          </li>
+        </ul>
+        <hr class="d-sm-none">
+      </div>
+      <div class="col-sm-8">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert {{message.tags}} " role="alert">
+          {{message}}
+        </div>
+        {% endfor %}
+        {% endif %}
+        <h2>{{ local }}</h2>
+        <form action="" method="POST" class="{{ pagina.cor_texto }} was-validated text-jutify">
+          {% csrf_token %}
+          <input type="hidden" value="{{ user.username }}" id="user" name="user">
+          <div class="row">
+            <div class="form-group col-md-4">
+              <label for="treino">Treino:</label>
+              <input type="time" class="form-control" value="{{initial.treino}}" id="treino" name="treino" >
+            </div>
+            <div class="form-group col-md-4">
+              <label for="acordar">Acordar:</label>
+              <input type="time" class="form-control" value="{{initial.acordar}}"id="acordar" name="acordar" required>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="cafe_da_manha">Café da Manhã:</label>
+              <input type="time" class="form-control" id="cafe_da_manha"value="{{initial.cafe_da_manha}}" name="cafe_da_manha" required>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="lanche_manha">Lanche da Manhã:</label>
+              <input type="time" class="form-control" value="{{initial.lanche_manha}}"id="lanche_manha" name="lanche_manha">
+            </div>
+            <div class="form-group col-md-4">
+              <label for="almoco">Almoço:</label>
+              <input type="time" class="form-control"value="{{initial.almoco}}" id="almoco" name="almoco">
+            </div>
+            <div class="form-group col-md-4">
+              <label for="lanche_tarde_1">Lanche da tarde 1:</label>
+              <input type="time" class="form-control" id="lanche_tarde_1"value="{{initial.lanche_tarde_1}}" name="lanche_tarde_1">
+            </div>
+            <div class="form-group col-md-4">
+              <label for="lanche_tarde_2">Lanche da tarde 2:</label>
+              <input type="time" class="form-control" id="lanche_tarde_2"value="{{initial.lanche_tarde_2}}" name="lanche_tarde_2">
+            </div>
+            <div class="form-group col-md-4">
+              <label for="jantar">Jantar:</label>
+              <input type="time" class="form-control" id="jantar"value="{{initial.jantar}}" name="jantar">
+            </div>
+            <div class="form-group col-md-4">
+              <label for="dormir">Dormir:</label>
+              <input type="time" class="form-control" id="dormir" name="dormir" value="{{initial.dormir}}">
+            </div>
+            <div class="form-group col-md-12">
+              <label for="infos_adicionais">Se julgar necessário informar algo, utilize este campo:</label>
+              <textarea type="text" class="form-control" id="infos_adicionais"value="{{initial.infos_adicionais}}" name="infos_adicionais"></textarea>
+            </div>
+            <button type="submit" class="btn btn-quest border-rounded mt-4">Avançar</button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

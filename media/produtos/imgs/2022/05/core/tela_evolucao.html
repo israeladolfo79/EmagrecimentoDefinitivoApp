@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Evolução{% endblock %}
+{% block header %}
+<link rel="stylesheet" href="{% static 'core/css/dashboard.css' %}" />
+<style>
+    .container * {
+        font-weight: bold;
+    }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.js"
+    integrity="sha512-FoyrIocrD2VGbh1HeDL8s/e+kNw0bl1WQHYlomgPuGe0N8y70F92YFUXW4Bompp9TrScjOiIPDSCM+ID0YXeqg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{% endblock %}
+{% block conteudo %}
+<div class="container">
+    <div class="row py-4">
+        <div class="col-md-4 ">
+            <h4 class="font-weight-bold " style="color: #2b6ca3">Confira agora seu Histórico de Acompanhamento e acompanhe sua Evolução
+            </h4>
+            <p style="margin-top: 8vh; font-weight: normal;" >Aqui, você pode verificar o histórico de % Gordura, Peso Corporal, Peso de Gordura Corporal, Circunferência da Cintura, Circunferência do Abdômen e Circunferência do Quadril </p>
+        </div>
+        <!-- Criando variáveis do data-->
+        {% for data in datas %}
+        <input type="hidden" value="{{data}}" class="data">
+        {% endfor %}
+        <div class="col-md-8">
+            <!-- Criando variáveis do peso-->
+            {% for peso in pesos %}
+            <input type="hidden" value="{{peso}}" class="peso">
+            {% endfor %}
+            <!-- Criando variáveis do % Gordura Corporal-->
+            {% for g in percentual_gordura %}
+            <input type="hidden" value="{{g}}" class="pergor">
+            {% endfor %}
+            <!-- Criando variáveis do Cintura-->
+            {% for cintura in cinturas %}
+            <input type="hidden" value="{{cintura}}" class="cinturas">
+            {% endfor %}
+            <!-- Criando variáveis do peso da gordura-->
+            {% for gordura_corporal in gordura_corporal %}
+            <input type="hidden" value="{{gordura_corporal}}" class="pesgor">
+            {% endfor %}
+            <!-- Criando variáveis do abdomen-->
+            {% for abdomen in abdomen %}
+            <input type="hidden" value="{{abdomen}}" class="abdomen">
+            {% endfor %}
+            <!-- Criando variáveis do quadril-->
+            {% for quadril in quadril %}
+            <input type="hidden" value="{{quadril}}" class="quadril">
+            {% endfor %}
+            <div class="col-md-12">
+                <canvas class="line-chart"></canvas><br>
+                <canvas class="line-chart-2"></canvas><br>
+                <canvas class="line-chart-4"></canvas><br>
+                <canvas class="line-chart-3"></canvas><br>
+                <canvas class="line-chart-5"></canvas><br>
+                <canvas class="line-chart-6"></canvas><br>
+                <script>
+                    Chart.defaults.global.defaultFontStyle = 'Bolder'
+                    var datas = []
+                    var datas_data = document.getElementsByClassName('data');
+                    // Percorre todos os valores
+                    for (let i = 0; i < datas_data.length; i++) {
+                        datas.push(datas_data[i].value);
+                    }
+
+
+                    var ctx = document.getElementsByClassName('line-chart');
+                    var data_pergor = []
+                    var pergor = document.getElementsByClassName('pergor');
+                    // Percorre todos os valores
+                    for (let i = 0; i < pergor.length; i++) {
+                        data_pergor.push(parseFloat((pergor[i].value).replace(",", ".")));
+                    }
+                    console.log(data_pergor)
+                    var chartGraph = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: datas,
+                            datasets: [{
+                                label: "% de Gordura corporal",
+                                data: data_pergor,
+                                borderWidth: 6,
+                                borderColor: 'rgba(77, 176, 253, 0.85)',
+                                backgroundcolor: 'transparent',
+                            }]
+                        }
+                    });
+
+
+
+                    var ctx2 = document.getElementsByClassName('line-chart-2');
+                    var data_peso = []
+                    var pesos = document.getElementsByClassName('peso');
+                    // Percorre todos os valores
+                    for (let i = 0; i < pesos.length; i++) {
+                        data_peso.push(parseFloat((pesos[i].value).replace(",", ".")));
+                    }
+
+                    var chartGraph = new Chart(ctx2, {
+                        type: 'line',
+                        data: {
+                            labels: datas,
+                            datasets: [{
+                                label: "Peso (em Kg)",
+                                data: data_peso,
+                                borderWidth: 6,
+                                borderColor: 'rgba(6, 204, 6, 0.85)',
+                                backgroundcolor: 'transparent',
+                            }]
+                        }
+                    });
+
+                    var ctx3 = document.getElementsByClassName('line-chart-3');
+                    var data_cinturas = []
+                    var cinturas = document.getElementsByClassName('cinturas');
+                    // Percorre todos os valores
+                    for (let i = 0; i < cinturas.length; i++) {
+                        data_cinturas.push(parseFloat((cinturas[i].value).replace(",", ".")));
+                    }
+                    var chartGraph = new Chart(ctx3, {
+                        type: 'line',
+                        data: {
+                            labels: datas,
+                            datasets: [{
+                                label: "Circunferência da cintura (cm)",
+                                data: data_cinturas,
+                                borderWidth: 6,
+                                borderColor: 'rgba(255, 0, 6, 0.85)',
+                                backgroundcolor: 'transparent',
+                            }]
+                        }
+                    });
+                    var ctx4 = document.getElementsByClassName('line-chart-4');
+                    var data_pesgor = []
+                    var pesgor = document.getElementsByClassName('pesgor');
+                    // Percorre todos os valores
+                    for (let i = 0; i < pesgor.length; i++) {
+                        data_pesgor.push(parseFloat((pesgor[i].value).replace(",", ".")));
+                    }
+                    var chartGraph = new Chart(ctx4, {
+                        type: 'line',
+                        data: {
+                            labels: datas,
+                            datasets: [{
+                                label: "Peso da Gordura Corporal (em Kg)",
+                                data: data_pesgor,
+                                borderWidth: 6,
+                                borderColor: 'rgba(6, 6, 6, 0.85)',
+                                backgroundcolor: 'transparent',
+                            }]
+                        }
+                    });
+                    var ctx5 = document.getElementsByClassName('line-chart-5');
+                    var data_abdomen = []
+                    var abdomen = document.getElementsByClassName('abdomen');
+                    // Percorre todos os valores
+                    for (let i = 0; i < abdomen.length; i++) {
+                        data_abdomen.push(parseFloat((abdomen[i].value).replace(",", ".")));
+                    }
+                    var chartGraph = new Chart(ctx5, {
+                        type: 'line',
+                        data: {
+                            labels: datas,
+                            datasets: [{
+                                label: "Circunferência do Abdômen (cm)",
+                                data: data_abdomen,
+                                borderWidth: 6,
+                                borderColor: 'rgba(0, 255, 255, 0.85)',
+                                backgroundcolor: 'transparent',
+                            }]
+                        }
+                    });
+                    var ctx6 = document.getElementsByClassName('line-chart-6');
+                    var data_quadril = []
+                    var quadril = document.getElementsByClassName('quadril');
+                    // Percorre todos os valores
+                    for (let i = 0; i < quadril.length; i++) {
+                        data_quadril.push(parseFloat((quadril[i].value).replace(",", ".")));
+                    }
+                    var chartGraph = new Chart(ctx6, {
+                        type: 'line',
+                        data: {
+                            labels: datas,
+                            datasets: [{
+                                label: "Circunferência do Quadril (cm)",
+                                data: data_quadril,
+                                borderWidth: 6,
+                                borderColor: 'rgba(255,255, 0, 0.85)',
+                                backgroundcolor: 'transparent',
+                            }]
+                        }
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+{% include "parciais/_footer.html" %}
+{% endblock %}

@@ -38,7 +38,7 @@ ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split("
 # Application definition
 
 DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
- 
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -93,13 +93,7 @@ WSGI_APPLICATION = 'projeto.wsgi.application'
 
 if DEVELOPMENT_MODE is True:
     DATABASES = {
-        'default': {
-                'ENGINE': 'django.db.backends.mysql',
-                'HOST': 'mysql21-farm10.kinghost.net',
-                'NAME': 'emagrecimentod',
-                'USER': 'emagrecimentod',
-                'PASSWORD': 'senhad1',
-            }
+        "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
     }
 elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
     if os.getenv("DATABASE_URL", None) is None:

@@ -1,0 +1,143 @@
+{% extends 'questionario.html' %}
+{% load static %}
+{% block questionario %}
+<div class="corpo">
+  <div class="container-fluid my-4">
+    <div class="row">
+      <div class="col-sm-4 px-0">
+        <ul class="nav nav-pills flex-column mt-40">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'dados_pessoais' %}">Dados Pessoais</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'doencas' %}">Doenças</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'medicamentos' %}">Medicamentos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'exame_sangue' %}">Exame de Sangue</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'intestino' %}">Intestino</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'sono' %}">Sono</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'cirurgia' %}">Cirurgias</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'alcool' %}">Álcool</a>
+          </li>
+          <li class="nav-item ativo">
+            <a class="nav-link " href="{% url 'suplementos' %}">Suplementos</a>
+          </li>
+          {% if sexo != 'masculino' %}
+          <li class="nav-item">
+            <a class="nav-link" href="ciclos_menstruais">Ciclo Menstrual</a>
+          </li>
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'dados_atropometricos' %}">Dados Antropométricos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'horarios' %}">Horários</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'exercicios' %}">Exercícios</a>
+          </li>
+        </ul>
+        <hr class="d-sm-none">
+      </div>
+      <div class="col-sm-8">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert {{message.tags}} " role="alert">
+          {{message}}
+        </div>
+        {% endfor %}
+        {% endif %}
+        <h2>{{ local }}</h2>
+        <form action="" method="POST" class="{{ pagina.cor_texto }} text-jutify">
+          {% csrf_token %}
+          <input type="hidden" value="{{ user.username }}" id="user" name="user">
+          {{ form.non_field_errors }}
+          <div class="row">
+            <div class="col-md-4">
+              <div class="fieldWrapper">
+                {{ form.creatina.errors }}
+                <p class="text-light"><label for="{{ form.creatina.id_for_label }}">Você usa Creatina?</label></p>
+                {{ form.creatina }}
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="fieldWrapper">
+                {{ form.termogenico.errors }}
+                <p class="text-light"><label for="{{ form.termogenico.id_for_label }}">Você usa Termogênico?</label></p>
+                {{ form.termogenico }}
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="fieldWrapper">
+                {{ form.omega_3.errors }}
+                <p class="text-light"><label for="{{ form.omega_3.id_for_label }}">Você usa Ômega 3?</label></p>
+                {{ form.omega_3 }}
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="fieldWrapper">
+                {{ form.vitamina_d.errors }}
+                <p class="text-light"><label for="{{ form.vitamina_d.id_for_label }}">Você usa Vitamina D?</label></p>
+                {{ form.vitamina_d }}
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="fieldWrapper">
+                {{ form.multivitaminico.errors }}
+                <p class="text-light"><label for="{{ form.multivitaminico.id_for_label }}">Você usa
+                    Multivitamínico?</label></p>
+                {{ form.multivitaminico }}
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="fieldWrapper">
+                {{ form.proteina.errors }}
+                <p class="text-light"><label for="{{ form.proteina.id_for_label }}">Você usa Proteína?</label></p>
+                {{ form.proteina }}
+              </div>
+            </div>
+            <div class="col-md-7">
+              <div class="fieldWrapper">
+                {{ form.maltodextrina.errors }}
+                <p class="text-light"><label for="{{ form.maltodextrina.id_for_label }}">Você usa Maltodextrina?</label>
+                </p>
+                {{ form.maltodextrina }}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="fieldWrapper">
+                {{ form.outros.errors }}
+                <p class="text-light"><label for="{{ form.outros.id_for_label }}">Se utiliza algum outro suplemento,
+                    informe aqui</label></p>
+                {{ form.outros }}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="fieldWrapper">
+                {{ form.infos_adicionais.errors }}
+                <p class="text-light"><label for="{{ form.infos_adicionais.id_for_label }}">Outras informações importantes:</label></p>
+                {{ form.infos_adicionais }}
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-quest border-rounded mt-4">Avançar</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

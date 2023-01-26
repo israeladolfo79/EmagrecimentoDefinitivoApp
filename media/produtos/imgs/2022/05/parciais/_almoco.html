@@ -1,0 +1,91 @@
+<div class="container text-center my-3" style="font-weight: 600;">
+    <div class="row ">
+        <div class="col-md-2 cinza-medio d-flex justify-content-center align-items-center">
+            <div class="row">
+                <div class="col-md-12 text-center"><p><b>Almoço</b></p> </div>
+                {% if almoco %}
+                
+                <div class="col-md-12"><p class="text-center"><b>{{almoco}}h</b></p></div>
+                {% endif %}
+            </div>
+            
+        </div>
+        <div class="col-md-8 cinza-claro">
+            <div class="row">
+                <div class="col-md-12 p-1">
+                    <p style="color:#339966">Salada de folhas livre (mínimo 3 folhas) + </p>
+                    <p style="color:#ff0000">Tomate, Cenoura, Beterraba, Pepino, Palmito <span
+                            style="color: #800080">(Opcional)</span></p>
+                </div>
+                <div class="col-md-12 amarelo" style="color:#ff0000">
+                    +
+                </div>
+                <div class="col-md-12">
+                    <p>Tempero: <span style="color:#339966">limão, acetato ou vinagre +</span> <span>1 colher </span
+                            style="color:#ff0000"> SOBREMESA <span style="color:#ff0000">Azeite</span></p>
+                </div>
+                <div class="col-md-12 text-light cinza-medio">
+                    +
+                </div>
+                <div class="col-md-12 azul-claro">
+                    <p>Legumes <span style="color:#ff0000">- 100g</span> (peso cozido) / <span
+                            style="color:#ff0000">2</span> Colheres de Servir</p>
+                </div>
+                <div class="col-md-12 text-light cinza-medio">
+                    +
+                </div>
+                <div class="col-md-12 p-1 azul-claro">
+                    <p><span style="color:#ff0000">
+                        {% if not kcal > 1300 %}
+                            1</span> Colher
+                        {% elif not kcal > 1600 %}
+                            2</span> Colheres
+                        {% elif kcal > 1600 %}
+                            3</span> Colheres
+                        {% endif %}
+                        de <b>SERVIR</b> de <b>Arroz</b> (qualquer tipo) <b>[165g]</b> <span
+                            style="color:#ff0000">ou</span> </p>
+                    <p><span style="color:#ff0000">3</span> Colheres de <b>SERVIR</b> de <b>Batata Inglesa [360g]</b>
+                        <span style="color:#ff0000">ou</span>
+                    </p>
+                    <p><span style="color:#ff0000">3</span> Colheres de <b>SERVIR</b> de <b>Farinha/Farofa [75g]</b>
+                        <span style="color:#ff0000">ou</span>
+                    </p>
+                    <p><span style="color:#ff0000">3</span> Pegadores <b>Macarrão [75g peso cru]</b> <span
+                            style="color:#ff0000">ou</span></p>
+                    <p><span style="color:#ff0000"><b style="color:#ff0000">MIX</b></span> <b>entre as opções</b> </p>
+                </div>
+                <div class="col-md-12 text-light cinza-medio">
+                    +
+                </div>
+                <div class="col-md-12 azul-claro cinza-medio">
+                    <p>Feijão ou Ervilha ou Lentilha ou Grão de Bico: <b>1 concha (100g)</b></p>
+                </div>
+                <div class="col-md-12 text-light cinza-medio">
+                    +
+                </div>
+                <div class="col-md-12" style="background-color: #8EA9DB">
+                    <p><b>Proteína: 100g</b> (peso cru) / <b>80g</b> (peso preparada) <b>ou</b> Tamanho da <b>Palma da
+                            Mão</b></p>
+                </div>
+                {% if kcal > 2100 %}
+                
+                <div class="col-md-12 cinza-medio">
+                    +
+                </div>
+                <div class="col-md-12">
+                    <p><b>1</b> fruta</p>
+                </div>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10 amarelo" style="font-size: 12px">
+            <p style="font-size: 12px"><b>Suco Livre:</b> Maracujá, Limão e Acerola / <b>Laranja e Uva:</b> para 200ml
+                diminuir uma
+                colher Arroz</p>
+        </div>
+    </div>
+</div>
