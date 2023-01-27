@@ -1326,7 +1326,6 @@ class Checkout(TemplateView):
 
 class RelatorioEvolucao(TemplateView):
     def get(self, *args, **kwargs):
-
         # verificando se o usuario preencheu os dados pessoais
         user = self.request.user.username
         if dict(models.Usuario.objects.filter(usuario=user).values()[0])['dados_pessoais_id'] == None:
@@ -1419,7 +1418,9 @@ class RelatorioEvolucao(TemplateView):
 
 
         per_gordura, estado_per_gordura = gera_estado_e_per_gordura(percentual_gordura_atual, idade, sexo)
-        
+        if per_gordura == "Valor inválido":
+            messages.add_message(self.request, messages.ERROR, "Seu valor de Gordura é inválido, por favor, verifique se você preencheu corretamente o formulário de Antropometria.")
+            return redirect("/")
 
         # pegando ultimos planos alimentares
         planos = list(models.PlanoAlimentar.objects.filter(user=user).values().order_by("data_realizacao"))[0:1]

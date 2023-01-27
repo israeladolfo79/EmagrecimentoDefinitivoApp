@@ -88,6 +88,11 @@ def gordura_perfeita(sexo, idade) -> int:
 #esta função deve pegar o percentual de gordura atual e o range do gordura ideal e definir qual o estado
 def gera_estado_e_per_gordura(percentual_gordura_atual, idade, sexo):
     pga = int(percentual_gordura_atual) #pegando o inteiro do percentual de gordura atual
+    print(pga)
+    if pga < 0 or pga > 100:
+        estado = "Valor inválido"
+        per_gordura = "Valor inválido"
+        return estado, per_gordura
     tabela = {
         'excelente': ["ABAIXO DA MÉDIA", 'EXCELENTE'],
         'muito_bom': ["ABAIXO DA MÉDIA", 'MUITO BOM'],

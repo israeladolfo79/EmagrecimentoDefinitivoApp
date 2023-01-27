@@ -10,6 +10,8 @@ from categorias import models as categorias_models
 from pedidos import models as models_pedidos
 from payments import models as models_payments
 
+from django.shortcuts import render
+
 
 from datetime import datetime
 
@@ -281,6 +283,10 @@ class RelatorioEvolucao(views.APIView):
         if not categorias_models.DadosPessoais.objects.filter(usuario=user).exists():
             return Response({'erro': 'Usuário com esse nome de usuário não existe.'}, status=status.HTTP_400_BAD_REQUEST)
 
+        # verificando se o usuario preencheu os dados pessoais
+        if dict(models.Usuario.objects.filter(usuario=user).values()[0])['dados_pessoais_id'] == None:
+            return Response({'erro': 'Usuário ainda não preencheu todo o questionário.'}, status=status.HTTP_400_BAD_REQUEST)
+
         #verificando se o usuário concluiu seu cadastro
         sexo = dict(categorias_models.DadosPessoais.objects.filter(user=user).values()[0])["sexo"]
         altura = dict(categorias_models.DadosPessoais.objects.filter(user=user).values()[0])["altura"]
@@ -289,14 +295,221 @@ class RelatorioEvolucao(views.APIView):
         for k, v in usuario.items():
             if sexo == 'masculino':
                 if v == None and k != 'ciclo_menstrual_id':
-                    categoria_faltante = str(k).split('_')[0]
                     return Response({'erro': 'Usuário ainda não preencheu todo o questionário.'}, status=status.HTTP_400_BAD_REQUEST)
 
             else:
                 if v == None:
-                    categoria_faltante = str(k).split('_')[0]
                     return Response({'erro': 'Usuário ainda não preencheu todo o questionário.'}, status=status.HTTP_400_BAD_REQUEST)
 
+        # pegar usuário logado
+
+        ver = formulas.verifica_usuario(user)
+        if not ver:
+            return Response({'erro': 'Usuário Não Possui Mais Dias de Acesso.'}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            pass
+        # pegar altura do usuario
+        dados_pessoais = dict(
+            categorias_models.DadosPessoais.objects.filter(user=user).values()[0])
+        altura = dados_pessoais["altura"]
+
+        # pegar idade do usuario
+        idade = int((datetime.now().date() -
+                    dados_pessoais['nascimento']).days // 365.25)
+
+        # pegar sexo do usuario
+        sexo = dados_pessoais['sexo']
+
+        # pegar peso do usuario
+        dados_antropometricos = dict(categorias_models.Antropometricos.objects.filter(usuario=user).values()[0])
+        peso = dados_antropometricos["peso"]
+
+        # pegar percentual de gordura inicial do individuo
+        plano = dict(models.PlanoAlimentar.objects.filter(user=user).values().order_by("data_realizacao")[0])
+
+        percentual_gordura_atual = plano["percentual_gordura"]
+
+        # pegar percentual ideal de gordura para idade e sexo
+        percentual_gordura_ideal = formulas.gordura_ideal(sexo, idade)
+        # criar valores das constantes para multiplicar pela altura
+        i_altura = 1.45
+        i_const = 19.5
+        rel_alt_const = dict()
+        for i in range(100):
+            rel_alt_const[f"{i_altura:.2f}"] = round(i_const, 1)
+            i_altura = i_altura + 0.01
+            i_const += 0.1
+            i += 1
+
+        # pegar o valor da constante que corresponde à altura do usuário
+        altura_str = str(round(altura/100, 2))
+        constante = rel_alt_const[altura_str]
+
+        # calcular peso_ideal (constante * altura**2)
+        peso_ideal = round(float(constante) * float((altura/100)**2), 2)
+        if peso < peso_ideal -1:
+            estado_peso = "abaixo"
+        elif peso > peso_ideal + 1:
+            estado_peso = "acima"
+        else:
+            estado_peso = 'na_media'
+        # calcular massa_magra_ideal (peso_ideal - (peso_ideal * percentual_gordura_ideal))
+        MM_ideal = round(peso_ideal - ((peso_ideal / 100) *percentual_gordura_ideal), 2)
+        
+        # calcular massa_magra_real (peso - (peso * percentual_gordura_atual))
+        MM_real = round(peso - ((peso / 100)*percentual_gordura_atual), 2)
+        if MM_real > MM_ideal:
+            massa_magra = "acima"
+        elif MM_real < MM_ideal:
+            massa_magra = "baixa"
+        else:
+            massa_magra = "normal"
+
+
+        per_gordura, estado_per_gordura = formulas.gera_estado_e_per_gordura(percentual_gordura_atual, idade, sexo)
+        if per_gordura == "Valor inválido":
+            return Response({'erro': 'Seu valor de gordura é inválido, por favor, verifique se você preencheu corretamente seus dados Antropométricos.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # pegando ultimos planos alimentares
+        planos = list(models.PlanoAlimentar.objects.filter(user=user).values().order_by("data_realizacao"))[0:1]
+        quadris = []
+        cinturas = []
+        abdomens = []
+        for plano in planos:
+            cinturas.append(plano["cintura"])
+            quadris.append(plano["quadril"])
+            abdomens.append(plano["abdomen"])
+
+        # criando valores dos riscos cintura
+        riscos_cintura = []
+        for i, cintura in enumerate(cinturas):
+            riscos_cintura.append(formulas.calcula_cintura(altura, cintura))
+
+        # criando valores risco quadril
+        riscos_quadril = []
+        for i, quadril in enumerate(quadris):
+            riscos_quadril.append(formulas.calcula_quadril(
+                sexo, float(quadril), float(altura)))
+
+        # criando valores de risco abdomen
+        riscos_abdomen = []
+        for i, abdomen in enumerate(abdomens):
+            riscos_abdomen.append(formulas.calcula_abdomen(sexo, abdomen))
+
+        # criando valores de risco quadril cintura
+        riscos_quad_cint = []
+        for i, cintura in enumerate(cinturas):
+            riscos_quad_cint.append(formulas.cintura_quadril(
+                sexo, idade, quadris[i], cinturas[i]))
+
+        # pegando o PESO AJUSTADO
+        dados_pessoais = dict(
+            categorias_models.DadosPessoais.objects.filter(user=user).values()[0])
+        # atribuindo a um dicionário "infos" os dados do usuário pertinentes à fórmula
+        dados_antropometricos = dict(categorias_models.Antropometricos.objects.filter(usuario=user).values()[0])
+        infos = {
+            'idade': int((datetime.now().date() - dados_pessoais['nascimento']).days // 365.25),
+            'sexo': dados_pessoais['sexo'],
+            'altura': float(dados_pessoais['altura']),
+            'abdomen': float(dados_antropometricos['abdomen']),
+            'pulso': float(dados_antropometricos['pulso']),
+            'peso': float(dados_antropometricos['peso']),
+            'quadril': float(dados_antropometricos['quadril'])
+        }
+
+        parte = formulas.parte_a(infos['peso'], infos['abdomen'], infos['pulso'],
+                        infos['sexo'], infos['quadril'], infos['altura'])
+        gi = formulas.gordura_ideal(infos["sexo"], infos['idade'])
+        parte = formulas.parte_a(infos['peso'], infos['abdomen'], infos['pulso'],
+                        infos['sexo'], infos['quadril'], infos['altura'])
+
+        ga = formulas.gordura_atual(infos['peso'], parte, infos['sexo'])
+        gi = formulas.gordura_ideal(infos["sexo"], infos['idade'])
+        gm = formulas.gordura_meta(gi, ga, infos["sexo"])
+        pa = formulas.peso_ajustado(float(infos['peso']), float(ga), float(gm))
+
+        # pegando primeiro plano alimentar
+        plano_1 = list(models.PlanoAlimentar.objects.filter(user=user).values().order_by("data_realizacao"))[0]
+        per_gor_inicial = float(plano_1["percentual_gordura"]) - float(0.3)
+        # criando valores de meta da gordura
+        lista_metas = dict()
+        lista_metas[0] = 0
+        lista_oks = dict()
+        lista_oks[0] = 0
+        if percentual_gordura_atual <= per_gor_inicial + 0.3:
+            for i in range(80):
+                lista_oks[i] = "--"
+
+        i = 1
+        while i < 80:
+            lista_metas[i] = "-----"
+            i += 1
+        i = 1
+
+        gm = formulas.gordura_meta(percentual_gordura_ideal, percentual_gordura_atual, sexo)
+        pa = formulas.peso_ajustado(float(infos['peso']), float(percentual_gordura_atual), float(gm))
+
+        while per_gor_inicial > gm:
+            per_gor_inicial -= 0.3
+            if percentual_gordura_atual <= per_gor_inicial:
+                lista_oks[i] = "OK"
+            else:
+                lista_oks[i] = "--"
+            lista_metas[i] = round(per_gor_inicial, 1)
+            i += 1
+        
+        P7 = peso
+        P8 = percentual_gordura_atual
+        P9 = P7/100*P8
+        R9 = percentual_gordura_ideal
+        R10 = 100-R9
+        P10 = P7-P9
+        S10 = P10
+        S9 = R9*S10/R10
+        peso_desejado = S9 + S10
+        context = {
+            "nome_pessoa": usuario["nome"],
+            "sobrenome_pessoa": usuario["sobrenome"],
+            "peso": peso,
+            "estado_peso": estado_peso,
+            "massa_media": massa_magra,
+            "per_gordura": per_gordura,
+            "altura": round(altura/100, 2),
+            "sexo": sexo,
+            "peso_ideal": round(peso_desejado, 1),
+            "peso_ideal_min": int(peso_ideal) - 1,
+            "peso_ideal_max": int(peso_ideal) + 1,
+            "percentual_gordura_ideal": round(percentual_gordura_ideal, 1),
+            'percentual_gordura_real': round(percentual_gordura_atual, 1),
+            "estado_per_gordura": estado_per_gordura,
+            "peso_real_gordura": round(float(peso) - float(MM_real), 1),
+            "peso_ideal_gordura": round(float(percentual_gordura_ideal) * float(MM_real)/float(100 - float(percentual_gordura_ideal)), 1),
+            "peso_real_MM": round(MM_real, 1),
+            "riscos_cintura": riscos_cintura,
+            "riscos_quad_cint": riscos_quad_cint,
+            "riscos_abdomen": riscos_abdomen,
+            "riscos_quadril": riscos_quadril,
+            "kcal_1": int(round((pa*30)/100)*100),
+            "kcal_2": int(plano["kcal"]),
+            "kcal_3": int(plano["kcal_simples"]),
+            "lista": lista_metas,
+            "lista_oks": lista_oks
+        }
+        if sexo == "masculino":
+            self.template_name = "core/relatorio_m.html"
+            user = self.request.user.username
+            passaram_7_dias = formulas.verifica_plano_alimentar(user)
+            if not passaram_7_dias:
+                self.template_name = "core/relatorio_m_incompleto.html"
+        else:
+            self.template_name = "core/relatorio_evolucao.html"
+            user = self.request.user.username
+            passaram_7_dias = formulas.verifica_plano_alimentar(user)
+            if not passaram_7_dias:
+                self.template_name = "core/relatorio_f_incompleto.html"
+        return render(self.request, self.template_name, context)
+       
+        
 
     
         
