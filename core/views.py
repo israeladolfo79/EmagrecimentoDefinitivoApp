@@ -28,11 +28,11 @@ def error_404(request, exception):
     return render(request, 'core/notfound.html')
 
 
-class Redirecionador(TemplateView):
-    template_name = ""
+# class Redirecionador(TemplateView):
+#     template_name = ""
 
-    def get(self, *args, **kwargs):
-        return redirect('index')
+#     def get(self, *args, **kwargs):
+#         return redirect('index')
 
 class Index(TemplateView):
     template_name = 'core/dashboard.html'
@@ -66,6 +66,8 @@ class Index(TemplateView):
                 'sem_avaliacao': self.request.GET.get('sem_avaliacao'),
                 'sem_tempo': self.request.GET.get('sem_tempo'),
             }
+        else:
+            context = {'pagina': list(models.DashBoard.objects.all().values())[0]}
         return render(self.request, self.template_name, context)
 
 class Index_2(TemplateView):
@@ -179,6 +181,15 @@ def cadastro(request):
             form = CadastroForm(request.POST)
             if form.is_valid():
                 form.save()
+            else:
+                messages.add_message(request, messages.ERROR,
+                                     "Erro ao cadastrar usuário")
+                #retornando erros do formulário
+                for field in form:
+                    for error in field.errors:
+                        messages.add_message(request, messages.ERROR, error)
+                        
+                return redirect('cadastro')
             usuario = User.objects.create_user(
                 username=request.POST.get('usuario'),
                 email=request.POST.get('email'),
@@ -188,11 +199,22 @@ def cadastro(request):
             )
             usuario.save()
             messages.add_message(request, messages.SUCCESS,
-                                 "Bem vindo! Agora é só fazer seu login")
-            return redirect('index')
-        context['form'] = CadastroForm(request.POST)
-        return render(request, template_name, context)
+                                 "Bem vindo! Agora vamos escolher seu plano Alimentar")
 
+            usuario = request.POST.get('usuario')
+            senha = request.POST.get('senha')
+            user = auth.authenticate(request, username=usuario, password=senha)
+            auth.login(request, user)
+
+           
+
+            return redirect('pedidos:pedido')
+        
+        context['form'] = CadastroForm(request.POST)
+        
+        return render(request, template_name, context)
+    messages.add_message(request, messages.SUCCESS,
+                                 "Vamos Começar Com Seu Cadatro")
     return render(request, template_name, context)
 
 def Cadastro_alternativo(request):
@@ -287,8 +309,7 @@ class DadosPessoais(TemplateView):
     form = categorias_forms.DadosPessoaisForm
 
     def get(self, *args, **kwargs):
-        usuario = models.Usuario.objects.get(
-            usuario=self.request.user.username)
+        usuario = models.Usuario.objects.get(usuario=self.request.user.username)
         if usuario.dados_pessoais:
             messages.add_message(self.request, messages.ERROR,
                                  "Você não pode editar seus dados pessoais")

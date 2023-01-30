@@ -19,7 +19,8 @@
     font-family: 'Open Sans', sans-serif;
   }
   #faixa-v{
-    height: 80px!important
+    height: 80px!important;
+    opacity: 0!important;
   }
   .img-bg-dashboard{
     width: 100%!important; 
@@ -48,6 +49,9 @@
     padding: 10px 25px;
     align-items: center;
     text-align: center;
+  }
+  header{
+    display: none!important;
   }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
@@ -136,7 +140,7 @@
 
           <p class="d-flex justify-content-center ">
             
-          <a href="{% url 'pedidos:pedido' %}"class=''>
+          <a href="{% url 'cadastro' %}"class=''>
             <img src="{% static 'core/img/botao_iniciar.png' %}" alt="botão" width="200px" class="d-block mx-auto">
           </a>
           </p>

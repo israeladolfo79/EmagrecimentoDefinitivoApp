@@ -70,6 +70,13 @@
 
 
 {% block conteudo %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert {{message.tags}} " role="alert" style="position:absolute;right: 20%; top: 20px">
+  {{message}}
+</div>
+{% endfor %}
+{% endif %}
 <img id="fundo" src="{% static 'core/img/img-fundo.jpg' %}">
 <img id="footer" src="{% static 'core/img/estrelas.jpg' %}">
 <div id="f-branco" style="background-color: rgba(255,255,255,.5)">
@@ -95,13 +102,7 @@
           <div class="container d-flex align-items-center justify-content-center">
             
           <form action="{% url 'cadastro' %}" method="POST"  style="max-width: 310px;margin-top: 3vh; margin-bottom: 13vh">
-            {% if messages %}
-            {% for message in messages %}
-            <div class="alert {{message.tags}} " role="alert">
-              {{message}}
-            </div>
-            {% endfor %}
-            {% endif %}
+            
             <p>Já possui um cadastro? <a href="{% url 'login' %}">Clique Aqui</a></p>
             {% csrf_token %}
             {{ form|crispy }}

@@ -27,12 +27,11 @@ class OrderCreateView(TemplateView):
         return render(self.request, self.template_name, context)
     def post(self, *args, **kwargs):
         usuario = self.request.user.username
-        pessoa = dict(core_models.Usuario.objects.filter(usuario=usuario).values()[0])
-        print('cheguei aqui')
-        if list(categorias_models.DadosPessoais.objects.filter(user=usuario).values()) == []:
+        if not categorias_models.DadosPessoais.objects.filter(user=usuario).exists():
             messages.add_message(self.request, messages.SUCCESS, "Você precisa completar seus dados pessoais para contratar um pacote!")
             self.request.session['contratando'] = True
             return redirect('dados_pessoais')
+        pessoa = dict(core_models.Usuario.objects.filter(usuario=usuario).values()[0])
         dados_pessoais = dict(categorias_models.DadosPessoais.objects.filter(user=usuario).values()[0])
         dados = {
                 "cpf": dados_pessoais["cpf"],

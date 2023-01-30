@@ -4,8 +4,8 @@ from django.contrib.auth.decorators import login_required
 from . import views
 
 urlpatterns = [
-    path('', login_required(views.Redirecionador.as_view(), login_url='/login'), name="redirecionador"),
-    path('dashboard', login_required(views.Index.as_view(), login_url='/login'), name="index"),
+    # path('', login_required(views.Redirecionador.as_view(), login_url='/login'), name="redirecionador"),
+    path('', views.Index.as_view(), name="index"),
     path('seja-bem-vindo', login_required(views.Index_2.as_view(), login_url='/login'), name="index_2"),
     path('video_explicativo', login_required(views.VideoExplicativo.as_view(), login_url='/login'), name="video_explicativo"),
     path('video_explicativo_confirm', login_required(views.VideoExplicativoConfirm.as_view(), login_url='/login'), name="video_explicativo_confirm"),

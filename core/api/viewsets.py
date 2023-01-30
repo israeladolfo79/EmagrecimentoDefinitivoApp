@@ -278,8 +278,8 @@ class CriaPaymentViewSet(views.APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class RelatorioEvolucao(views.APIView):
-    def put(self, request):
-        user = request.data["user"]
+    def get(self, request):
+        user = request.GET.get('username')
         if not categorias_models.DadosPessoais.objects.filter(usuario=user).exists():
             return Response({'erro': 'Usuário com esse nome de usuário não existe.'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -368,7 +368,7 @@ class RelatorioEvolucao(views.APIView):
 
         per_gordura, estado_per_gordura = formulas.gera_estado_e_per_gordura(percentual_gordura_atual, idade, sexo)
         if per_gordura == "Valor inválido":
-            return Response({'erro': 'Seu valor de gordura é inválido, por favor, verifique se você preencheu corretamente seus dados Antropométricos.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'erro': 'Seu valor de gordura é acima de 100% ou abaixo de 0%, o que é inválido> Por favor, verifique se você preencheu corretamente seus dados Antropométricos.'}, status=status.HTTP_400_BAD_REQUEST)
 
         # pegando ultimos planos alimentares
         planos = list(models.PlanoAlimentar.objects.filter(user=user).values().order_by("data_realizacao"))[0:1]
