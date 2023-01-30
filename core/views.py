@@ -124,7 +124,6 @@ class VideoExplicativo(TemplateView):
                 return redirect('login')
 
             video = models.Video.objects.first().link
-            print(video)
             usuario = models.Usuario.objects.get(usuario=usuario)
 
             context = {
@@ -871,7 +870,6 @@ class Avaliacao(TemplateView):
             horario_janta=horarios["jantar"]
         )
         plano_alimentar.save()
-        print(datetime.now())
         return redirect('/meus_planos_alimentares')
 
 class ExibeAvaliacaoTreino(TemplateView):
@@ -1397,6 +1395,9 @@ class RelatorioEvolucao(TemplateView):
         peso = dados_antropometricos["peso"]
 
         # pegar percentual de gordura inicial do individuo
+        if not models.PlanoAlimentar.objects.filter(user=user).exists():
+            messages.add_message(self.request, messages.ERROR, "Realize uma avaliação para ter acesso ao seu relatório de evolução")
+            return redirect("/")
         plano = dict(models.PlanoAlimentar.objects.filter(user=user).values().order_by("data_realizacao")[0])
 
         percentual_gordura_atual = plano["percentual_gordura"]
@@ -1668,6 +1669,7 @@ class EvolucaoFinal(TemplateView):
 
         # Pegando Kcal
         ultimo_plano = planos[-1]
+        print(ultimo_plano)
 
         # Comparação 2 últimos planos
         ultimos = planos[-2:]
@@ -2008,5 +2010,4 @@ def salvar_imagem(request):
                 form = models.MaterialdeClientes(usuario=user, categoria=categoria, data_criacao=data_realizacao, material=imagem)
                 form.save()
 
-    print(categoria)
     return HttpResponse("ok")

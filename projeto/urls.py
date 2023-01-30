@@ -58,6 +58,8 @@ urlpatterns = [
     path('apis/cria_payment',coreViewsets.CriaPaymentViewSet.as_view(), name='point_cria_pagamento'),
     path('apis/usuario_details',coreViewsets.UsuarioViewSets.as_view(), name='point_usuario_details'),
     path('apis/relatorio_evolucao',coreViewsets.RelatorioEvolucao.as_view(), name='point_relatorio_evolucao'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = "core.views.error_404"

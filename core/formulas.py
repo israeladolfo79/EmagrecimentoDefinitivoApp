@@ -88,7 +88,6 @@ def gordura_perfeita(sexo, idade) -> int:
 #esta função deve pegar o percentual de gordura atual e o range do gordura ideal e definir qual o estado
 def gera_estado_e_per_gordura(percentual_gordura_atual, idade, sexo):
     pga = int(percentual_gordura_atual) #pegando o inteiro do percentual de gordura atual
-    print(pga)
     if pga < 0 or pga > 100:
         estado = "Valor inválido"
         per_gordura = "Valor inválido"
@@ -192,17 +191,10 @@ def gera_estado_e_per_gordura(percentual_gordura_atual, idade, sexo):
     return clas[0], clas[1]
 
 def peso_ajustado(peso, percentual_gordura_atual, percentual_gordura_ideal):
-    print(f'Peso: {peso}')
-    print(f'Percentual Atual: {percentual_gordura_atual}')
-    print(f'Percentual Ideal: {percentual_gordura_ideal}')
     peso_gordura_atual = (peso/100)*percentual_gordura_atual
-    print(f"Peso Gordura Atual: {peso_gordura_atual}")
     peso_massa_magra_atual = peso - peso_gordura_atual
-    print(f"Peso Massa Magra: {peso_massa_magra_atual}")
     peso_gordura_ideal = (percentual_gordura_ideal * peso_massa_magra_atual) / (100-percentual_gordura_ideal)
-    print(f"Peso Gordura Ideal: {peso_gordura_ideal}")
     pa = ((peso_gordura_atual - peso_gordura_ideal)/4) + peso_gordura_ideal + peso_massa_magra_atual
-    print(pa)
     return pa
     
 
@@ -211,12 +203,10 @@ def calorias_sem_treino(sexo, altura,peso, pa, idade, variavel_1=6.0033, variave
         cal_sem_treino = ((66.437+(variavel_1*altura))+(variavel_2*pa))-variavel_3*idade
     else:
         cal_sem_treino = ((655.0955+(variavel_4*altura))+(variavel_5*pa))-variavel_6*idade
-    print(f'KCAL SIMPLES: {cal_sem_treino}')
     return cal_sem_treino
 
 def calorias_com_treino(cal_sem_treino, n_atividade, pa, tempo_atividade):
     cal_com_treino = cal_sem_treino + (n_atividade*pa)/60*tempo_atividade
-    print(f'KCAL: {cal_com_treino}')
     return cal_com_treino
 
 def cal_com_treino_duplo(cal_com_treino, n_atividade_2,pa, tempo_atividade_2):
@@ -372,7 +362,6 @@ def verifica_usuario(username):
 #essa função verifica se faz mais que 7 dias que o usuário realizou o primeiro plano alimentar
 def verifica_plano_alimentar(username):
     data_plano = list(models.PlanoAlimentar.objects.filter(user=username).order_by("data_realizacao").values())[0]["data_realizacao"]
-    print(data_plano)
     hoje = date.today()
     calculo = (hoje - data_plano).days
     if calculo >= 7:
