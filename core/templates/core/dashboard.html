@@ -12,6 +12,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 <style>
+  
   .roboto{
     font-family: 'Roboto', sans-serif;
   }
@@ -23,12 +24,11 @@
     opacity: 0!important;
   }
   .img-bg-dashboard{
-    width: 100%!important; 
-    height: 110vh!important;
+    width: 100vw!important; 
+    height: 100vh!important;
     position:fixed; 
     top:0;
     left:0;
-    margin-top:-10px;
     z-index: -1;
   }
   .btn-model{
@@ -53,6 +53,74 @@
   header{
     display: none!important;
   }
+  #page-wrap{
+    width:100vw;
+    height:100vh;
+    position: absolute; 
+    top:0;
+    left:0;
+    padding-top: 10vh
+  }
+
+  #foto-israel{
+    position:absolute;
+    right:0;
+    bottom:0;
+    margin-right: 10vw;
+    height:534px; 
+    width: 408px
+  }
+  #botao-abrir-video{
+    width:550px
+  }
+  #texto-principal{
+    color: white; 
+    font-size: 22px; 
+    font-weight: bold!important;
+    font-family: 'gotham', sans-serif!important;
+    margin-bottom: 2rem!important
+  }
+  #div-flutuante{
+    position:absolute;
+    width: 300px!important;
+    margin-left: 20px;
+    top:0;
+    left:12px;
+    margin-top: -100px
+  }
+  #div-flutuante img{
+    width: 200px;
+  }
+  @media screen and (max-width: 520px){
+    
+    #botao-abrir-video{
+      width: 300px;
+    }
+    #textos-wrap{
+      transform: scale(0.8);
+      margin-left: -50px;
+      margin-top: -80px;
+      overflow-y: visible;
+
+    }
+    #foto-israel{
+      opacity: 0.7;
+      position:fixed;
+    }
+    #botao-video-wrap{
+      width:  300px
+    }
+    #btn-modal-wrap{
+      width:300px!important
+    }
+    #caixa-video{
+      width:300px!important
+    }
+    .modal-footer{
+      width: 300px!important
+    }
+  }
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
@@ -114,21 +182,28 @@
   $("#meumodal").modal("show");
 </script>
 {% endif %}
-<!--Inserindo video de Background-->
-<img src="{% static 'core/img/foto_israel.png' %}" style="position:absolute;right:0;bottom:0;margin-right: 10vw;height:534px; width: 408px" alt="foto_israel">
+<!-- Inserindo logo e botão para login -->
 
-  <div class="container-fluid" >
-    <div class="row my-5 pt-2">
+
+<!--Inserindo video de Background-->
+<img src="{% static 'core/img/foto_israel.png' %}" id="foto-israel" alt="foto_israel">
+
+  <div class="container-fluid" id="page-wrap">
+    <div class="row my-5" id="row-wrapper">
       <div class="col-md-1"></div>
       <div class="col-md-7">
         
-        <div class="container-fluid" style="position:relative; ">
-        <p class="" style="color: white; font-size: 22px; font-weight: bold!important;font-family: 'gotham', sans-serif!important;margin-bottom: 2rem!important">Este é o Primeiro passo da sua Jornada em Busca do Emagrecimento Definitivo!</p>
-        <p class="roboto" style="font-weight: normal!important;color: white!important;font-size: 20px;margin-bottom: 2rem!important"><b>{{usuario.nome|title}}</b>, {{pagina.subtitulo_1}}</p>
+        <div class="container-fluid" id="textos-wrap">
+          <div id="div-flutuante">
+            <img src="{% static 'core/img/new_logo.png' %}" id="logo-emagrecimento" alt="logo-emagrecimento">
+            <p style="font-size: 10px; color: white">Caso já possua Cadastro, <a style="color: white; font-size:10px" href="{% url 'login' %}">clique Aqui</a>.</p>
+          </div>
+        <p class="" id="texto-principal">Este é o Primeiro passo da sua Jornada em Busca do Emagrecimento Definitivo!</p>
+        <p class="roboto" style="font-weight: normal!important;color: white!important;font-size: 20px;margin-bottom: 2rem!important"><b>{{pagina.subtitulo_1}}</p>
         <p class="roboto" style="color: white!important; font-size: 19px;margin-bottom: 2rem!important">{{ pagina.texto_1 }}</p>
-        <button class="btn-model mb-5" data-toggle="modal" data-target="#myModal">
-          <div class="bg-white"style='border-radius:100px'>
-            <img src="{% static 'core/img/botao_assistir_video.png' %}" id="botao-abrir-video" alt="botão" style="width:550px">
+        <button class="btn-model mb-5" data-toggle="modal" data-target="#myModal" id="btn-modal-wrap">
+          <div class="bg-white"style='border-radius:100px' id="botao-video-wrap">
+            <img src="{% static 'core/img/botao_assistir_video.png' %}" id="botao-abrir-video" alt="botão" >
           </div>
         </button>
         

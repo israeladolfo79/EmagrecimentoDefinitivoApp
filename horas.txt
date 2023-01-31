@@ -1,3 +1,4 @@
 Conexão com o Amazon Storage      = 30 min
 Salvamento dos planos alimentares = 60 min
-Troca da página no / do site      = 
+Troca da página no / do site      = 30 min
+Responsividade da / do site 	  = 30 min
