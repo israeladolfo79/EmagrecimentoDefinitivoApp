@@ -12,6 +12,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 <style>
+  p{
+    font-family: 'Open Sans', sans-serif;
+  }
   .roboto{
     font-family: 'Roboto', sans-serif;
   }
@@ -43,11 +46,15 @@
     left:0;
     z-index: -1;
   }
-  #texto_inserido_1{
+  .texto-titulo{
     font-weight: normal!important;
     color: white!important;
     font-size: 20px;
-    margin-bottom: 2rem!important
+    margin-bottom: 2rem!important;
+  }
+  .no-margin{
+    margin-bottom: 0px!important;
+    margin-top:  0px!important;
   }
   
   #texto_comum{
@@ -86,11 +93,8 @@
     width: 408px
   }
   #foto-israel-alternativa{
-    position:absolute;
-    right:0;
-    bottom:0;
-    width: 70px;
-    display:none
+    width:150px;
+    display:none;
   }
   #botao-abrir-video{
     width:550px
@@ -115,29 +119,56 @@
   #botao_iniciar{
     width:200px;
   }
+  #hidden-part{
+    display: none;
+  }
   @media screen and (max-width: 520px){
+    .texto-titulo{
+      font-size:13px;
+      text-align: center;
+    }
+          
+    #texto_comum{
+      font-size: 12px;
+      text-align: center;
+    }
     #logo{
-      width: 200px
+      width: 120px
     }
     #logo-wrap{
-      margin-bottom: 4rem;
+      margin-bottom: 10px;
     }
     #texto-principal{
-      font-size: 7px;
+      font-size: 12px;
       font-family: 'Roboto', sans-serif;
-      margin-bottom: 10px!important
+      font-weight: normal;
+      text-align: center;
+      margin-right: 2rem;
+      margin-left: 2rem;
+      margin-bottom: 0px!important
     }
     #texto_inserido_1{
-      font-size: 7px;
+      font-size: 12px;
       font-family: 'Roboto', sans-serif;
+      font-weight: normal!important;
+      text-align: center;
+      margin-top: 0px!important
     }
     #texto_comum_wrap{
-    position:relative;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top:-20px!important;
+    margin-bottom: 0px!important
     }
     #texto_comum{
-      font-size: 5px;
+      font-size: 10px;
       font-family: 'Roboto', sans-serif;
-      width: 160px
+      text-align: left;
+      width:80%;
+      margin-top: 10px;
+      margin-bottom: 20px!important
     }
     #btn-modal-wrap{
       width: 100%;
@@ -164,17 +195,7 @@
     .modal-footer{
       width: 300px!important
     }
-    #texto_comum_1{
-      font-size: 7px!important;
-      color: white!important;
-      margin-bottom: 1rem!important
-    }
-    #texto_comum_2{
-      font-size: 5px!important;
-      color: white!important;
-      margin-bottom: 1rem!important;
-      width: 80%
-    }
+    
     #botao_iniciar{
     width:100px;
   }
@@ -185,6 +206,25 @@
   #redireciona_login a{
     font-size: 5px!important;
   }
+  #hidden-part{
+    justify-content: center;
+    align-items: center;
+    flex-direction:column
+  }
+    #texto_comum_1{
+      font-size: 10px!important;
+      color: white!important;
+      margin-bottom: 1rem!important;
+      width: 80%;
+      text-align: left;
+    }
+    #texto_comum_2{
+      font-size: 10px!important;
+      color: white!important;
+      margin-bottom: 1rem!important;
+      width: 80%;
+      text-align: left;
+    }
   }
 
 </style>
@@ -270,12 +310,12 @@
     <div class="col-md-7">
       <div class="container-fluid" id="textos-wrap">
         
-        <p class="" id="texto-principal">Este é o Primeiro passo da sua Jornada em Busca do Emagrecimento Definitivo!</p>
-        <p class="roboto" id="texto_inserido_1"><b>{{pagina.subtitulo_1}}</p>
-        <div id="texto_comum_wrap">
-          <p class="roboto" id="texto_comum">{{ pagina.texto_1 }}</p>
-          <!--Inserindo foto do israel-->
+        <p class="texto-titulo no-margin">Este é o Primeiro passo da sua Jornada em Busca do</p>
+        <p class="texto-titulo no-margin"><b>Emagrecimento Definitivo</b></p>
+        <p class="texto-titulo my-2">Eu posso te Ajudar!</p>
+        <div id="texto_comum_wrap" >
           <img src="{% static 'core/img/foto_israel.png' %}" id="foto-israel-alternativa" alt="foto_israel">
+          <p class="roboto" id="texto_comum">{{ pagina.texto_1 }}</p>
         </div>
 
         <div id="btn-modal-wrap">
@@ -288,7 +328,7 @@
         
       
       
-        <div id='hidden-part' style="display:none">
+        <div id='hidden-part' >
         <!-- HIDDEN CLASS -->
           <p class="roboto " id="texto_comum_1" >Vamos montar seu Plano Alimentar?</p>
           <p class="roboto " id="texto_comum_2" >Clique em <b>INICIAR</b>, escolha o plano e imediatamente começaremos a montar seu Planejamento Alimentar.</p>
@@ -330,6 +370,12 @@
         <script>
           $("#btn-hidden").click(function () {
             $("#hidden-part").show('slow');
+            //verificando se o width é menor que 768px
+            var width = $(window).width();
+            if (width < 768){
+              $("#hidden-part").css("display", "flex");
+            }
+            
           });
         </script>
       </div>
