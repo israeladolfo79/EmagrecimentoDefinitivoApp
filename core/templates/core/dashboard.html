@@ -12,7 +12,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 <style>
-  
   .roboto{
     font-family: 'Roboto', sans-serif;
   }
@@ -22,6 +21,19 @@
   #faixa-v{
     height: 80px!important;
     opacity: 0!important;
+    display: none!important
+  }
+  #page-wrap{
+    width:100vw;
+    height:100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+  #logo{
+    width: 200px
+  }
+  #logo-wrap{
+    margin-bottom: 5rem;
   }
   .img-bg-dashboard{
     width: 100vw!important; 
@@ -30,6 +42,18 @@
     top:0;
     left:0;
     z-index: -1;
+  }
+  #texto_inserido_1{
+    font-weight: normal!important;
+    color: white!important;
+    font-size: 20px;
+    margin-bottom: 2rem!important
+  }
+  
+  #texto_comum{
+    color: white!important; 
+    font-size: 19px;
+    margin-bottom: 2rem!important
   }
   .btn-model{
     width:550px;
@@ -53,15 +77,6 @@
   header{
     display: none!important;
   }
-  #page-wrap{
-    width:100vw;
-    height:100vh;
-    position: absolute; 
-    top:0;
-    left:0;
-    padding-top: 10vh
-  }
-
   #foto-israel{
     position:absolute;
     right:0;
@@ -69,6 +84,13 @@
     margin-right: 10vw;
     height:534px; 
     width: 408px
+  }
+  #foto-israel-alternativa{
+    position:absolute;
+    right:0;
+    bottom:0;
+    width: 70px;
+    display:none
   }
   #botao-abrir-video{
     width:550px
@@ -80,38 +102,61 @@
     font-family: 'gotham', sans-serif!important;
     margin-bottom: 2rem!important
   }
-  #div-flutuante{
-    position:absolute;
-    width: 300px!important;
-    margin-left: 20px;
-    top:0;
-    left:12px;
-    margin-top: -100px
+  #texto_comum_1{
+    font-size: 20px!important;
+    color: white!important;
+    margin-bottom: 2rem!important
   }
-  #div-flutuante img{
-    width: 200px;
+  #texto_comum_2{
+    font-size: 18px!important;
+    color: white!important;
+    margin-bottom: 2rem!important
+  }
+  #botao_iniciar{
+    width:200px;
   }
   @media screen and (max-width: 520px){
-    
-    #botao-abrir-video{
-      width: 300px;
+    #logo{
+      width: 200px
     }
-    #textos-wrap{
-      transform: scale(0.8);
-      margin-left: -50px;
-      margin-top: -80px;
-      overflow-y: visible;
-
+    #logo-wrap{
+      margin-bottom: 4rem;
     }
-    #foto-israel{
-      opacity: 0.7;
-      position:fixed;
+    #texto-principal{
+      font-size: 7px;
+      font-family: 'Roboto', sans-serif;
+      margin-bottom: 10px!important
     }
-    #botao-video-wrap{
-      width:  300px
+    #texto_inserido_1{
+      font-size: 7px;
+      font-family: 'Roboto', sans-serif;
+    }
+    #texto_comum_wrap{
+    position:relative;
+    }
+    #texto_comum{
+      font-size: 5px;
+      font-family: 'Roboto', sans-serif;
+      width: 160px
     }
     #btn-modal-wrap{
-      width:300px!important
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    #botao-video-wrap{
+      width: 200px
+    }
+    #botao-abrir-video{
+      width: 200px;
+    }
+    #foto-israel{
+      display:none
+    }
+    #foto-israel-alternativa{
+      display:block
     }
     #caixa-video{
       width:300px!important
@@ -119,6 +164,27 @@
     .modal-footer{
       width: 300px!important
     }
+    #texto_comum_1{
+      font-size: 7px!important;
+      color: white!important;
+      margin-bottom: 1rem!important
+    }
+    #texto_comum_2{
+      font-size: 5px!important;
+      color: white!important;
+      margin-bottom: 1rem!important;
+      width: 80%
+    }
+    #botao_iniciar{
+    width:100px;
+  }
+  #redireciona_login{
+    font-size: 5px;
+    margin-top: 0px
+  }
+  #redireciona_login a{
+    font-size: 5px!important;
+  }
   }
 
 </style>
@@ -182,54 +248,70 @@
   $("#meumodal").modal("show");
 </script>
 {% endif %}
-<!-- Inserindo logo e botão para login -->
+
+  
 
 
-<!--Inserindo video de Background-->
-<img src="{% static 'core/img/foto_israel.png' %}" id="foto-israel" alt="foto_israel">
+<div class="container-fluid " id="page-wrap">
+  <!--Inserindo foto do israel-->
+  <img src="{% static 'core/img/foto_israel.png' %}" id="foto-israel" alt="foto_israel">
 
-  <div class="container-fluid" id="page-wrap">
-    <div class="row my-5" id="row-wrapper">
-      <div class="col-md-1"></div>
-      <div class="col-md-7">
+  <!-- Imagem de background -->
+  <img class="img-bg-dashboard" src="{% static 'core/img/bg_new_dashboard.jpeg' %}" >
+   
+  <!-- Div com a logo -->
+  <div class="container-fluid d-flex justify-content-center pt-3" id="logo-wrap">
+    <img src="{% static 'core/img/new_logo.png' %}" id="logo" alt="logo">
+  </div>
+
+  <div class="row">
+    <div class="col-md-1"></div>
+
+    <div class="col-md-7">
+      <div class="container-fluid" id="textos-wrap">
         
-        <div class="container-fluid" id="textos-wrap">
-          <div id="div-flutuante">
-            <img src="{% static 'core/img/new_logo.png' %}" id="logo-emagrecimento" alt="logo-emagrecimento">
-            <p style="font-size: 10px; color: white">Caso já possua Cadastro, <a style="color: white; font-size:10px" href="{% url 'login' %}">clique Aqui</a>.</p>
-          </div>
         <p class="" id="texto-principal">Este é o Primeiro passo da sua Jornada em Busca do Emagrecimento Definitivo!</p>
-        <p class="roboto" style="font-weight: normal!important;color: white!important;font-size: 20px;margin-bottom: 2rem!important"><b>{{pagina.subtitulo_1}}</p>
-        <p class="roboto" style="color: white!important; font-size: 19px;margin-bottom: 2rem!important">{{ pagina.texto_1 }}</p>
-        <button class="btn-model mb-5" data-toggle="modal" data-target="#myModal" id="btn-modal-wrap">
-          <div class="bg-white"style='border-radius:100px' id="botao-video-wrap">
-            <img src="{% static 'core/img/botao_assistir_video.png' %}" id="botao-abrir-video" alt="botão" >
-          </div>
-        </button>
+        <p class="roboto" id="texto_inserido_1"><b>{{pagina.subtitulo_1}}</p>
+        <div id="texto_comum_wrap">
+          <p class="roboto" id="texto_comum">{{ pagina.texto_1 }}</p>
+          <!--Inserindo foto do israel-->
+          <img src="{% static 'core/img/foto_israel.png' %}" id="foto-israel-alternativa" alt="foto_israel">
+        </div>
+
+        <div id="btn-modal-wrap">
+          <button class="btn-model" data-toggle="modal" data-target="#myModal" id="btn-modal-wrap">
+            <div class="bg-white"style='border-radius:100px' id="botao-video-wrap">
+              <img src="{% static 'core/img/botao_assistir_video.png' %}" id="botao-abrir-video" alt="botão" >
+            </div>
+          </button>
+        </div>
         
-        
+      
+      
         <div id='hidden-part' style="display:none">
         <!-- HIDDEN CLASS -->
-          <p class="roboto " style="color: white!important; font-size: 20px;margin-bottom: 2rem!important">Vamos montar seu Plano Alimentar?</p>
-          <p class="roboto " style="color: white!important; font-size: 18px;margin-bottom: 2rem!important">Clique em <b>INICIAR</b>, escolha o plano e imediatamente começaremos a montar seu Planejamento Alimentar.</p>
-
+          <p class="roboto " id="texto_comum_1" >Vamos montar seu Plano Alimentar?</p>
+          <p class="roboto " id="texto_comum_2" >Clique em <b>INICIAR</b>, escolha o plano e imediatamente começaremos a montar seu Planejamento Alimentar.</p>
           <p class="d-flex justify-content-center ">
             
           <a href="{% url 'cadastro' %}"class=''>
-            <img src="{% static 'core/img/botao_iniciar.png' %}" alt="botão" width="200px" class="d-block mx-auto">
+            <img src="{% static 'core/img/botao_iniciar.png' %}" alt="botão" id="botao_iniciar" class="d-block mx-auto">
           </a>
           </p>
-        </div>
-        <!-- END HIDDEN CLASS-->
-      </div>
+          </div><!-- END HIDDEN CLASS-->
 
-      <div class="col-md-4" >
-      </div>
+      </div><!-- /#Textos-wrap -->
+    </div><!-- /.col-md-7 -->
+
+    <div class="col-md-4" >
     </div>
-</div>
-  <img class="img-bg-dashboard" src="{% static 'core/img/bg_new_dashboard.jpeg' %}" >
+
+  </div><!-- /.row -->
   
-</div>
+  <div class="my-4 d-flex justify-content-center ">
+    <p class="text-white" id="redireciona_login">Caso Já Possua Cadastro, <a href="{% url 'login' %}"><b>Clique Aqui</b></a></p>
+  </div>
+</div><!-- /.container-fluid -->
 
  <!-- The Modal -->
  <div class="modal fade" id="myModal" style="margin-top:80px;">
