@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-r)%(=%h%#yp&fyl^xkh51v6(k3scqlyn)w=_x)q-(!i_fucvzw
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1','www.emagrecimentodefinitivo.app.br', 'emagrecimentodefinitivo.app.br']
 # Application definition
 
 INSTALLED_APPS = [
@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'crispy_forms', 
     'payments',
     'pedidos',
-    'rest_framework'
+    'rest_framework',
+    'storages',
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 MIDDLEWARE = [
@@ -83,9 +84,12 @@ WSGI_APPLICATION = 'projeto.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+            'ENGINE': 'django.db.backends.mysql',
+            'HOST': 'mysql21-farm10.kinghost.net',
+            'NAME': 'emagrecimentod',
+            'USER': 'emagrecimentod',
+            'PASSWORD': 'senhad1',
+        }
 }
 
 
@@ -125,34 +129,35 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 #STATIC_URL = '/home/emagrecimentodefinitivo/apps_wsgi/projeto/static/'
-STATIC_URL = '/static/'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_ACCESS_KEY_ID = "AKIA3IGFR2TDI5MN3YFP"
+AWS_SECRET_ACCESS_KEY = "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"
+AWS_STORAGE_BUCKET_NAME = "emagrecimento-definitivo-access-bucket"
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_DEFAULT_ACL = "public-read"
+AWS_QUERYSTRING_AUTH = False
+AWS_S3_FILE_OVERWRITE = True
+AWS_HEADERS = {
+    'Access-Control-Allow-Origin': '*',
+}
+
+STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+
 STATIC_ROOT = BASE_DIR / 'static'
 STATICFILES_DIRS = [
     BASE_DIR / 'core/static',
     BASE_DIR / 'payments/static',
     BASE_DIR / 'pedidos/static',
-
 ]
 MEDIA_ROOT = BASE_DIR / 'media'
-MEDIA_URL = '/media/'
-#configurações para deploy
-if not DEBUG:
-    SECURE_SSL_REDIRECT = True
-    ALLOWED_HOSTS = ['www.emagrecimentodefinitivo.app.br', 'emagrecimentodefinitivo.app.br']
-    DATABASES = {
-        'default': {
-                'ENGINE': 'django.db.backends.mysql',
-                'HOST': 'mysql21-farm10.kinghost.net',
-                'NAME': 'emagrecimentod',
-                'USER': 'emagrecimentod',
-                'PASSWORD': 'senhad1',
-            }
-    }
-    STATIC_URL = '/static/'
-    STATIC_ROOT = '/home/emagrecimentodefinitivo/www/static'
 
-    MEDIA_URL = 'media/'
-    MEDIA_ROOT = '/home/emagrecimentodefinitivo/www/media'
+
+    
     
 
 # Default primary key field type
