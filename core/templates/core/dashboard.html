@@ -115,7 +115,10 @@
   }
   #botao_iniciar{
     width:177px;
-    height:54px
+    height:74px;
+  }
+  #botao_iniciar:hover{
+    cursor:pointer
   }
   #hidden-part{
     display: none;
@@ -361,11 +364,11 @@
           <!-- HIDDEN CLASS -->
             <p class=" " id="texto_comum_1" >Vamos montar seu Plano Alimentar?</p>
             <p class=" " id="texto_comum_2" >Clique em INICIAR, escolha o plano e imediatamente começaremos a montar <br> seu Planejamento Alimentar.</p>
-            <p class="d-flex justify-content-center ">
+            <p class="d-flex justify-content-start" style="margin-left:25%">
               
-            <a href="{% url 'cadastro' %}"class=''>
-              <img src="{% static 'core/img/botao_iniciar.png' %}" alt="botão" id="botao_iniciar" class="d-block mx-auto">
-            </a>
+              <a href="{% url 'cadastro' %}"class=''>
+                <img src="{% static 'core/img/botao_iniciar.png' %}" alt="botão" id="botao_iniciar" >
+              </a>
             </p>
             </div><!-- END HIDDEN CLASS-->
   
