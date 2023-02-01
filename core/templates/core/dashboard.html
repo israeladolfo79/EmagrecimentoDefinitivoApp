@@ -11,9 +11,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
   p{
     font-family: 'Open Sans', sans-serif;
+    font-weight: 300!important;
   }
   .roboto{
     font-family: 'Roboto', sans-serif;
@@ -47,7 +49,6 @@
     z-index: -1;
   }
   .texto-titulo{
-    font-weight: normal!important;
     color: white!important;
     font-size: 20px;
     margin-bottom: 2rem!important;
@@ -102,7 +103,6 @@
   #texto-principal{
     color: white; 
     font-size: 22px; 
-    font-weight: bold!important;
     font-family: 'gotham', sans-serif!important;
     margin-bottom: 2rem!important
   }
@@ -123,6 +123,16 @@
     display: none;
   }
   @media screen and (max-width: 520px){
+    .img-bg-dashboard{
+      display:none!important
+    }
+    #page-wrap{
+      background-color: #002E5D;
+    }
+    *{
+      font-family:  'Lato', sans-serif!important;
+      font-weight: 300;
+    }
     .texto-titulo{
       font-size:16px;
       text-align: center;
@@ -133,15 +143,15 @@
       text-align: center;
     }
     #logo{
-      width: 120px
+      width: 133px!important;
+      height:42px!important;
     }
     #logo-wrap{
-      margin-bottom: 10px;
+      margin-bottom: 20px;
+      margin-top: 20px
     }
     #texto-principal{
       font-size: 15px;
-      font-family: 'Roboto', sans-serif;
-      font-weight: normal;
       text-align: center;
       margin-right: 2rem;
       margin-left: 2rem;
@@ -149,8 +159,6 @@
     }
     #texto_inserido_1{
       font-size: 15px;
-      font-family: 'Roboto', sans-serif;
-      font-weight: normal!important;
       text-align: center;
       margin-top: 0px!important
     }
@@ -163,8 +171,7 @@
     margin-bottom: 0px!important
     }
     #texto_comum{
-      font-size: 13px;
-      font-family: 'Roboto', sans-serif;
+      font-size: 12px;
       text-align: left;
       width:80%;
       margin-top: 10px;
@@ -178,16 +185,20 @@
       margin-bottom: 15px;
     }
     #botao-video-wrap{
-      width: 250px
+      width: 280px!important;
+      height: 34px!important;
     }
     #botao-abrir-video{
-      width: 250px;
+      width: 280px!important;
+      height: 34px!important;
     }
     #foto-israel{
       display:none
     }
     #foto-israel-alternativa{
-      display:block
+      display:block;
+      width: 167px!important;
+      height: 226px!important
     }
     #caixa-video{
       width:300px!important
@@ -311,11 +322,11 @@
       <div class="container-fluid" id="textos-wrap">
         
         <p class="texto-titulo no-margin">Este é o Primeiro passo da sua Jornada em Busca do</p>
-        <p class="texto-titulo no-margin"><b>Emagrecimento Definitivo</b></p>
+        <p class="texto-titulo no-margin" style="font-weight:bold!important">Emagrecimento Definitivo</p>
         <p class="texto-titulo my-2">Eu posso te Ajudar!</p>
         <div id="texto_comum_wrap" >
           <img src="{% static 'core/img/foto_israel.png' %}" id="foto-israel-alternativa" alt="foto_israel">
-          <p class="roboto" id="texto_comum">{{ pagina.texto_1 }}</p>
+          <p id="texto_comum">{{ pagina.texto_1 }}</p>
         </div>
 
         <div id="btn-modal-wrap">
