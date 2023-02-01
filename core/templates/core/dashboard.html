@@ -10,15 +10,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
   p{
     font-family: 'Open Sans', sans-serif;
     font-weight: 300!important;
-  }
-  .roboto{
-    font-family: 'Roboto', sans-serif;
   }
   .comic-sans {
     font-family: 'Open Sans', sans-serif;
@@ -35,22 +31,21 @@
     overflow-x: hidden;
   }
   #logo{
-    width: 200px
+    width: 177px;
+    height: 56px;
+    margin-top: 1rem;
   }
   #logo-wrap{
     margin-bottom: 5rem;
   }
-  .img-bg-dashboard{
-    width: 100vw!important; 
-    height: 100vh!important;
-    position:fixed; 
-    top:0;
-    left:0;
-    z-index: -1;
-  }
   .texto-titulo{
     color: white!important;
-    font-size: 20px;
+    font-size: 25px;
+    margin-bottom: 2rem!important;
+  }
+  .texto-subtitulo{
+    color: white!important;
+    font-size: 22px;
     margin-bottom: 2rem!important;
   }
   .no-margin{
@@ -60,7 +55,7 @@
   
   #texto_comum{
     color: white!important; 
-    font-size: 19px;
+    font-size: 18px;
     margin-bottom: 2rem!important
   }
   .btn-model{
@@ -87,18 +82,19 @@
   }
   #foto-israel{
     position:absolute;
-    right:0;
+    right:10%;
     bottom:0;
     margin-right: 10vw;
-    height:534px; 
-    width: 408px
+    height:473px; 
+    width: 350px
   }
   #foto-israel-alternativa{
     width:150px;
     display:none;
   }
   #botao-abrir-video{
-    width:550px
+    width:548px;
+    height: 66px
   }
   #texto-principal{
     color: white; 
@@ -107,26 +103,24 @@
     margin-bottom: 2rem!important
   }
   #texto_comum_1{
-    font-size: 20px!important;
+    font-size: 22px!important;
     color: white!important;
-    margin-bottom: 2rem!important
+    margin-bottom: 2rem!important;
+    margin-top: 2rem!important
   }
   #texto_comum_2{
-    font-size: 18px!important;
+    font-size: 17px!important;
     color: white!important;
     margin-bottom: 2rem!important
   }
   #botao_iniciar{
-    width:200px;
+    width:177px;
+    height:54px
   }
   #hidden-part{
     display: none;
   }
-  @media screen and (max-width: 520px){
-    .img-bg-dashboard{
-      display:none!important
-    }
-    #page-wrap{
+  #page-wrap{
       background-color: #002E5D;
     }
     *{
@@ -134,7 +128,27 @@
       font-weight: 300;
       letter-spacing: 0px!important;
     }
+    #container-wrap{
+      margin-top: -40px;
+    }
+    #redireciona_login{
+    font-size: 15px;
+    margin-top: 0px
+  }
+  #redireciona_login a{
+    font-size: 15px!important;
+  }
+  @media screen and (max-width: 520px){
+    
+    #container-wrap{
+      margin-top: 0px;
+    }
+    
     .texto-titulo{
+      font-size:16px;
+      text-align: center;
+    }
+    .texto-subtitulo{
       font-size:16px;
       text-align: center;
     }
@@ -146,6 +160,7 @@
     #logo{
       width: 133px!important;
       height:42px!important;
+      margin-top: 1rem;
     }
     #logo-wrap{
       margin-bottom: 20px;
@@ -227,6 +242,7 @@
       font-size: 14px!important;
       color: white!important;
       margin-bottom: 1rem!important;
+      margin-top: 0px!important;
       width: 80%;
       text-align: left;
     }
@@ -308,60 +324,62 @@
   <!--Inserindo foto do israel-->
   <img src="{% static 'core/img/foto_israel.png' %}" id="foto-israel" alt="foto_israel">
 
-  <!-- Imagem de background -->
-  <img class="img-bg-dashboard" src="{% static 'core/img/bg_new_dashboard.jpeg' %}" >
+
    
   <!-- Div com a logo -->
   <div class="container-fluid d-flex justify-content-center pt-3" id="logo-wrap">
     <img src="{% static 'core/img/new_logo.png' %}" id="logo" alt="logo">
   </div>
 
-  <div class="row">
-    <div class="col-md-1"></div>
 
-    <div class="col-md-7">
-      <div class="container-fluid" id="textos-wrap">
+  <div class="container" id="container-wrap">
+    <div class="row ">
+      <div class="col-md-1"></div>
+  
+      <div class="col-md-8">
+        <div class="container-fluid" id="textos-wrap">
+          
+          <p class="texto-titulo no-margin">Este é o primeiro passo da sua jornada em busca do</p>
+          <p class="texto-titulo no-margin" style="font-weight:bold!important">Emagrecimento Definitivo</p>
+          <p class="texto-subtitulo my-2">Eu posso te Ajudar!</p>
+          <div id="texto_comum_wrap" >
+            <img src="{% static 'core/img/foto_israel.png' %}" id="foto-israel-alternativa" alt="foto_israel">
+            <p id="texto_comum">Sou Nutricionista Esportivo Especialista em Emagrecimento Definitivo <br> há mais de 15 anos e conto com milhares de casos de sucesso!</p>
+          </div>
+  
+          <div id="btn-modal-wrap">
+            <button class="btn-model" data-toggle="modal" data-target="#myModal" id="btn-modal-wrap">
+              <div class="bg-white"style='border-radius:100px' id="botao-video-wrap">
+                <img src="{% static 'core/img/botao_assistir_video.png' %}" id="botao-abrir-video" alt="botão" >
+              </div>
+            </button>
+          </div>
+          
         
-        <p class="texto-titulo no-margin">Este é o Primeiro passo da sua <br> Jornada em Busca do</p>
-        <p class="texto-titulo no-margin" style="font-weight:bold!important">Emagrecimento Definitivo</p>
-        <p class="texto-titulo my-2">Eu posso te Ajudar!</p>
-        <div id="texto_comum_wrap" >
-          <img src="{% static 'core/img/foto_israel.png' %}" id="foto-israel-alternativa" alt="foto_israel">
-          <p id="texto_comum">{{ pagina.texto_1 }}</p>
-        </div>
-
-        <div id="btn-modal-wrap">
-          <button class="btn-model" data-toggle="modal" data-target="#myModal" id="btn-modal-wrap">
-            <div class="bg-white"style='border-radius:100px' id="botao-video-wrap">
-              <img src="{% static 'core/img/botao_assistir_video.png' %}" id="botao-abrir-video" alt="botão" >
-            </div>
-          </button>
-        </div>
         
-      
-      
-        <div id='hidden-part' >
-        <!-- HIDDEN CLASS -->
-          <p class=" " id="texto_comum_1" >Vamos montar seu Plano Alimentar?</p>
-          <p class=" " id="texto_comum_2" >Clique em <span style="font-weight:bold!important">INICIAR</span>, escolha o plano e imediatamente começaremos a montar seu Planejamento Alimentar.</p>
-          <p class="d-flex justify-content-center ">
-            
-          <a href="{% url 'cadastro' %}"class=''>
-            <img src="{% static 'core/img/botao_iniciar.png' %}" alt="botão" id="botao_iniciar" class="d-block mx-auto">
-          </a>
-          </p>
-          </div><!-- END HIDDEN CLASS-->
-
-      </div><!-- /#Textos-wrap -->
-    </div><!-- /.col-md-7 -->
-
-    <div class="col-md-4" >
-    </div>
-
-  </div><!-- /.row -->
+          <div id='hidden-part' >
+          <!-- HIDDEN CLASS -->
+            <p class=" " id="texto_comum_1" >Vamos montar seu Plano Alimentar?</p>
+            <p class=" " id="texto_comum_2" >Clique em INICIAR, escolha o plano e imediatamente começaremos a montar <br> seu Planejamento Alimentar.</p>
+            <p class="d-flex justify-content-center ">
+              
+            <a href="{% url 'cadastro' %}"class=''>
+              <img src="{% static 'core/img/botao_iniciar.png' %}" alt="botão" id="botao_iniciar" class="d-block mx-auto">
+            </a>
+            </p>
+            </div><!-- END HIDDEN CLASS-->
+  
+        </div><!-- /#Textos-wrap -->
+      </div><!-- /.col-md-7 -->
+  
+     
+  
+    </div><!-- /.row -->
+  </div><!-- /.container -->
+  
   
   <div class="my-4 d-flex justify-content-center ">
-    <p class="text-white" id="redireciona_login">Caso Já Possua Cadastro, <a href="{% url 'login' %}"><b>Clique Aqui</b></a></p>
+    <p class="text-white" id="redireciona_login">Caso Já Possua Cadastro, <a href="{% url 'login' %}" style="font-weight:bold">Clique Aqui</a></p>
   </div>
 </div><!-- /.container-fluid -->
 
