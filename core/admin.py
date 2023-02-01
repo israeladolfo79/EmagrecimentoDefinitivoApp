@@ -26,7 +26,7 @@ class DashBoardAdmin(admin.ModelAdmin):
 class VariaveisAdmin(admin.ModelAdmin):
     list_display = ('var_1', 'var_2', 'var_3',)
 
-class MaterialDeApoioAdmin(SummernoteModelAdmin):
+class MaterialDeApoioAdmin(admin.ModelAdmin):
     list_display = ('titulo', 'texto',)
     summernote_fields = ('texto',)
 
@@ -44,7 +44,7 @@ class VideoAdmin(SummernoteModelAdmin):
     list_display = ("link",)
 
 @admin.register(MaterialdeClientes)
-class MaterialdeClientesAdmin(SummernoteModelAdmin):
+class MaterialdeClientesAdmin(admin.ModelAdmin):
     list_display = ("usuario", "categoria")
 
 
