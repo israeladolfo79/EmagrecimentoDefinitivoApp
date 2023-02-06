@@ -77,11 +77,34 @@ class PlanoAlimentarViewset(views.APIView):
         if not models.Usuario.objects.filter(usuario=user).exists():
             return Response(data={'plano_alimentar': False,'erro': 'Usuário não encontrado', 'categoria': ""}, status=status.HTTP_400_BAD_REQUEST)
 
-        if dict(models.Usuario.objects.filter(usuario=user).values()[0])['dados_pessoais_id'] == None:
+        if not models.Usuario.objects.filter(usuario=user).exists():
             return Response(data={'plano_alimentar': False,'erro': 'O usuário precisa responder todas as questões antes de ter acesso ao plano alimentar.', "categoria": ""}, status=status.HTTP_400_BAD_REQUEST)
         
         sexo = dict(categorias_models.DadosPessoais.objects.filter(user=user).values()[0])["sexo"]
+        #verificando se existe Exercicios com user = ao enviado
+        if not categorias_models.Exercicios.objects.filter(user=user).exists():
+            return Response(data={'plano_alimentar': False,'erro': 'O usuário precisa responder todas as questões antes de ter acesso ao plano alimentar.'}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            usuario = models.Usuario.objects.get(usuario=user)
+            usuario.dados_pessoais = categorias_models.DadosPessoais.objects.filter(user=user).first()
+            usuario.doencas = categorias_models.Doenca.objects.filter(user=user).first()
+            usuario.medicamentos = categorias_models.Medicamento.objects.filter(user=user).first()
+            usuario.cirurgias = categorias_models.Cirurgia.objects.filter(user=user).first()
+            usuario.exame_sangue = categorias_models.ExameSangue.objects.filter(user=user).first()
+            usuario.intestino = categorias_models.Intestino.objects.filter(user=user).first()
+            usuario.sono = categorias_models.Sono.objects.filter(user=user).first()
+            usuario.alcool = categorias_models.Alcool.objects.filter(user=user).first()
+            usuario.suplementos = categorias_models.Suplemento.objects.filter(user=user).first()
+            if sexo  != 'masculino':
+                usuario.ciclo_menstrual = categorias_models.CicloMenstrual.objects.filter(user=user).first()
+            usuario.dados_atropometricos = categorias_models.Antropometricos.objects.filter(user=user).first()
+            usuario.horarios = categorias_models.Horarios.objects.filter(user=user).first()
+            usuario.exercicios = categorias_models.Exercicios.objects.filter(user=user).first()
+            usuario.save()
+        
+        
         usuario = dict(models.Usuario.objects.filter(usuario=user).values()[0])
+        print(usuario)
         for k, v in usuario.items():
             if sexo == 'masculino':
                 if v == None and (k != 'ciclo_menstrual_id' and k!= "plano_alimentar_id"):
@@ -91,6 +114,7 @@ class PlanoAlimentarViewset(views.APIView):
                 if v == None and k!= "plano_alimentar_id":
                     categoria_faltante = str(k).split('_')[0]
                     return Response(data={'plano_alimentar': False,'erro': 'O usuário precisa responder todas as questões antes de ter acesso ao plano alimentar.', 'categoria': f"{categoria_faltante}"}, status=status.HTTP_400_BAD_REQUEST)
+        
         #verificando se o usuário tem avaliações disponíveis
         avaliacoes = dict(models.Usuario.objects.filter(usuario=user).values()[0])['avaliacoes']
         if avaliacoes < 1:
@@ -105,6 +129,7 @@ class PlanoAlimentarViewset(views.APIView):
         usuario.avaliacoes = avaliacoes - 1
         usuario.save()
         dados_pessoais = dict(categorias_models.DadosPessoais.objects.filter(user=user).values()[0])
+        
         #atribuindo a um dicionário "infos" os dados do usuário pertinentes à fórmula
         dados_antropometricos = dict(categorias_models.Antropometricos.objects.filter(usuario=user).values()[0])
         exercicios = dict(categorias_models.Exercicios.objects.filter(usuario=user).values()[0])
@@ -120,7 +145,6 @@ class PlanoAlimentarViewset(views.APIView):
         }
         
         parte = formulas.parte_a(infos['peso'], infos['abdomen'], infos['pulso'], infos['sexo'], infos['quadril'], infos['altura'])
-        
         ga = formulas.gordura_atual(infos['peso'], parte, infos['sexo'])
         gi = formulas.gordura_ideal(infos["sexo"], infos['idade'])
         pa = formulas.peso_ajustado(infos['peso'], parte, gi)
@@ -133,6 +157,7 @@ class PlanoAlimentarViewset(views.APIView):
             kcal = formulas.calorias_com_treino(kcal, float(exercicios['treino']), pa, exercicios['tempo_exercicio'])
             if float(exercicios["treino_secundario"]):
                 kcal = formulas.cal_com_treino_duplo(kcal, float(exercicios["treino_secundario"]), pa, exercicios['tempo_exercicio_secundario'])
+        
         #criando o plano alimentar
         plano = {
             'user': user,
