@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'pedidos',
     'rest_framework',
     'storages',
+    'academias'
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 MIDDLEWARE = [

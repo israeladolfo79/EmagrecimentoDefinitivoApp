@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,800&display=swap');
+
+body{
+    font-family: 'roboto'!important;
+    letter-spacing: normal!important;
+}
+iframe{
+    width: 70vw!important;
+    height: 50vh!important
+}
+.btn-t{
+    padding: 5px 50px;
+    font-size: 20px;
+    background-color: #2e75b6;
+    border-radius: 10px;
+    transition: 0.5s
+}
+.btn-t:hover{
+    padding: 4px 45px;
+    background-color: #0e487e;
+    border-radius: 10px;
+}
+.caixa{
+  background-color: #2e75b6;
+  border-radius: 15px;
+  display: flex;
+  font-size: 18px;
+  padding-left: 30px;
+  padding-right: 30px;
+  transition: 0.5s;
+  height: 90px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase!important;
+}
+.caixa:hover{
+  transform: scale(0.9)!important;    
+  background-color: #0e487e;
+}
+
+  #emagrecimento {
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+    font-style: italic;
+    line-height: 47px;
+    font-size: 45px;
+    margin-top:1.6vh;
+    margin-right: 3vw
+  }
+
+  #texto {
+    font-family: 'Spinnaker', sans-serif;
+    font-size: 20px;
+    line-height: 21px;
+  }
+
+  #f-branco {
+    position: fixed;
+    height: 80vh;
+    width: 45vw;
+    top: 10vh;
+    right: 0px;
+  }
+
+  #special-text {
+    font-family: 'Bree Serif', serif;
+    font-size: 22px;
+    margin-top: 10vh
+  }
+
+  @media screen and (max-width:720px) {
+    #emagrecimento {
+      font-family: Arial, Helvetica, sans-serif;
+      text-transform: uppercase;
+      line-height: 32px;
+      font-size: 27px;
+    }
+
+    #f-branco {
+      position: fixed;
+      height: 80vh;
+      width: 100vw;
+      top: 8vh;
+      right: 0px;
+    }
+
+    #texto {
+      font-family: 'Spinnaker', sans-serif;
+      font-size: 18px;
+    }
+
+    #special-text {
+      font-family: 'Bree Serif', serif;
+      font-size: 22px;
+      margin-top: 0px
+    }
+  }
+
+.li-plano-alimentar, .li-material-apoio{
+    display:none!important
+}

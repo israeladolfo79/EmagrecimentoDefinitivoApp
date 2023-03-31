@@ -28,6 +28,7 @@ route = routers.DefaultRouter()
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("core.urls")),
+    path('academias/', include("academias.urls")),
     path('pedido/', include("pedidos.urls")),
     path('pagamentos/', include("payments.urls")),
 

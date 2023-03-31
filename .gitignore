@@ -7,7 +7,7 @@ __pycache__/
 *.pyo
 *.pyd
 *.so
-
+.vscode/
 # C extensions
 *.so
     

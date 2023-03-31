@@ -1917,6 +1917,28 @@ class RecuperarSenha(TemplateView):
                 subject, text_content, from_email, [to])
             msg.attach_alternative(html_content, "text/html")
             msg.send()
+        academia = list(models.Academia.objects.filter(email=email).values())
+        if academia != []:
+            # Enviando Mensagem para o primeiro Colocado
+            login = academia[0]['cnpj']
+            senha = academia[0]['senha']
+            subject, from_email, to = 'Recuperação de Senha', 'nao-responda@emagrecimentodefinitivo.app.br', user[
+                0]['email']
+            text_content = 'Recuperação de Senha'
+            html_content = (f'''
+            <h1>Uma recuperação de senha foi solicitada!</h1>
+            <h2>Caso não tenha sido você que solicitou, por favor entre em contato comigo o mais rápido possível!</h2>
+            <h3>Suas informações: </h3>
+            <p></p>
+            <h2>Login: <strong>{login}</strong></h2>
+            <h2>Senha: <strong>{senha}</strong></h2>
+
+            Att: Israel Adolfo | Nutricionista Esportivo
+            ''')
+            msg = EmailMultiAlternatives(
+                subject, text_content, from_email, [to])
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()
         messages.add_message(self.request, messages.SUCCESS,
                              'Se o email informado estiver entre os cadastros no sistema será enviada uma mensagem contendo suas informações de login e senha!')
         return redirect('recuperar_senha')

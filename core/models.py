@@ -2,6 +2,7 @@ from email.policy import default
 from tabnanny import verbose
 from django.db import models
 from categorias import models as categorias_models
+from academias.models import Academia
 
 
 class PaginaInicial(models.Model):
@@ -94,6 +95,7 @@ class Usuario(models.Model):
     tipo_plano = models.IntegerField(verbose_name="Pacote contratado", default=0)
     dias_restantes = models.CharField(max_length=255, verbose_name="Dias de acesso", default="")
     assistiu_video = models.BooleanField(verbose_name="Assistiu o Vídeo",default=False)
+    academia = models.ForeignKey(Academia, on_delete=models.DO_NOTHING, verbose_name="Academia", null=True, blank=True)
     dados_pessoais = models.OneToOneField(
         categorias_models.DadosPessoais,
         on_delete=models.CASCADE,
