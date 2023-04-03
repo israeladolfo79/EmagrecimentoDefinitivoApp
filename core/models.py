@@ -95,6 +95,7 @@ class Usuario(models.Model):
     dias_restantes = models.CharField(max_length=255, verbose_name="Dias de acesso", default="")
     assistiu_video = models.BooleanField(verbose_name="Assistiu o Vídeo",default=False)
     academia = models.ForeignKey(Academia, on_delete=models.DO_NOTHING, verbose_name="Academia", default=9999999999999999)
+    
     dados_pessoais = models.OneToOneField(
         categorias_models.DadosPessoais,
         on_delete=models.CASCADE,
