@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_alt.html' %}
 {% load static %}
 {% block title %}Dashboard{% endblock %}
 {% block header %}
@@ -23,7 +23,7 @@
 </script>
 {% endblock %}
 {% block conteudo %}
-
+{% include 'academias/parcials/_navbar.html' %}
 <div class="container my-4 px-5">
     <div class="row px-5">
       {% if messages %}
@@ -36,10 +36,10 @@
        <div class="col-md-12">
         <div class="d-flex">
           <div class="flex-fill">
-            <p class="">Olá, <b style="font-family:'roboto-w'!important;text-decoration: underline;text-transform: capitalize;">{{usuario.nome}} {{usuario.sobrenome}}</b>, seja bem vindo! </p>
+            <p class="">Olá, <b style="font-family:'roboto-w'!important;text-decoration: underline;text-transform: capitalize;">{{academia.nome}} </b>, seja bem vindo! </p>
           </div>
           <div class="flex-fill ">
-            <p class="text-right"><i class="fas fa-solid fa-clock"></i> Faltam {{dias}} dias para o seu plano expirar </p>
+            <p class="text-right"><i class="fas fa-solid fa-clock"></i> Faltam {{dias}} dias para o seu plano expirar</p>
           </div>
         </div>
        </div>
@@ -49,39 +49,25 @@
     <div class="row my-5 px-5">
 
       <div class="col-md-4 p-1">
-        <a class="caixa" href="{% url 'baixar_avaliacao' %}">Plano Alimentar Atual</a>
+        <a class="caixa" href="{% url 'cadastrar_aluno' %}">CADASTRAR NOVO ALUNO</a>
       </div>
 
       <div class="col-md-4 p-1">
-        <a class="caixa" href="{% url 'calculadora' %}">Calculadora de Peso Ideal</a>
+        <a class="caixa" href="{% url 'calculadora_academia' %}">Calculadora de Peso Ideal</a>
       </div>
 
       <div class="col-md-4 p-1">
-        <a class="caixa" href="">Avaliações disponíveis: <strong> {{usuario.avaliacoes}}</strong> </a>
+        <a class="caixa" href="">Avaliações disponíveis: <strong> {{academia.avaliacoes_disponiveis}}</strong> </a>
       </div>
 
       <div class="col-md-4 p-1">
-        <a class="caixa" href="{% url 'relatorio_evolucao' %}" target="_blank">Avaliação Nutricional Personalizada</a>
+        <a class="caixa" href="{% url 'consulta_alunos' %}">Consultar aluno</a>
       </div>
 
-      <div class="col-md-4 p-1">
+      <!-- <div class="col-md-4 p-1">
         <a class="caixa" href="{% url 'tela_evolucao' %}">Gráficos de Evolução</a>
-      </div>
+      </div> -->
       
-      <div class="col-md-4 p-1">
-        <a class="caixa" href="{% url 'red_avaliacao' %}">Montar novo Plano Alimentar</a>
-      </div>
-
-      <div class="col-md-4 p-1">
-        <a class="caixa" href="{% url 'evolucao_final' %}"  target="_blank">evolução nutricional personalizada</a>
-      </div>
-
-      <div class="col-md-4 p-1">
-        <a class="caixa" href="{% url 'materiais_usuario' %}">Meus Arquivos</a>
-      </div>
-      <div class="col-md-4 p-1">
-        <a class="caixa" href="{% url 'user_infos' %}">Minhas Informações</a>
-      </div>
       
     </div>
     <div class="row mt-5">

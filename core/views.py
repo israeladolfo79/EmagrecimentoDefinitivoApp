@@ -38,7 +38,9 @@ class Index(TemplateView):
     template_name = 'core/dashboard.html'
 
     def get(self, *args, **kwargs):
+        print("peguei usuário")
         if self.request.user.is_authenticated:
+            print("usuario autenticado")
             usuario = self.request.user.username
             if not list(models.Usuario.objects.filter(usuario=usuario).values()):
                 messages.add_message(
@@ -48,6 +50,7 @@ class Index(TemplateView):
             usuario = models.Usuario.objects.get(usuario=self.request.user.username)
             #se o usuário possui dados pessoais, significa que já se cadastrou
             if usuario.dados_pessoais:
+                print("possui dados pessoais")
                 #se o usuário se cadastrou mas não contratou um pacote, redirecinar ele para compra do pacote
                 if usuario.tipo_plano == 0:
                     messages.error(self.request, "Você precisa contratar um pacote para ter acesso ao sistema.")
@@ -55,6 +58,7 @@ class Index(TemplateView):
 
                 #se o usuario contratou um pacote mas não viu o video, redirecionar ele para o video
                 if not usuario.assistiu_video:
+                    print("redirecionando para vídeo")
                     return redirect('video_explicativo')
 
                 #se o usuario possui pacote e viu o video, mandar ele pra dashboard cliente
@@ -256,12 +260,16 @@ def Cadastro_alternativo(request):
             messages.add_message(request, messages.SUCCESS,
                                  "Bem vindo! Agora é só fazer seu login")
             return redirect('/login_alternativo')
-        context['pagina'] = list(
-            models.PaginaInicial.objects.all().values())[0]
+        if models.PaginaInicial.objects.all().exists():
+            context['pagina'] = list(
+                models.PaginaInicial.objects.all().values())[0]
+        else:
+            context['pagina'] = None
         context['form'] = CadastroForm(request.POST)
         return render(request, template_name, context)
 
-    context['pagina'] = list(models.PaginaInicial.objects.all().values())[0]
+    if models.PaginaInicial.objects.all().exists():
+        context['pagina'] = list(models.PaginaInicial.objects.all().values())[0]
     return render(request, template_name, context)
 
 def Login(request):

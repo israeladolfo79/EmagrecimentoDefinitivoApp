@@ -7,7 +7,6 @@ class UsuarioAdmin(admin.ModelAdmin):
     list_display = ("usuario","nome","sobrenome", "email", "avaliacoes")
     list_display_links = ("usuario",'email',)
     list_editable = ("avaliacoes",)
-    list_filter = ("usuario", "avaliacoes","email")
     search_fields = ("usuario","nome", "sobrenome", "email")
 
 # class PaginaInicialAdmin(admin.ModelAdmin):
