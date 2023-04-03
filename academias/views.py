@@ -241,12 +241,13 @@ class ConsultaAluno(AcademiaView, TemplateView):
         return context
     
     def post(self, *args, **kwargs):
+        academia = Academia.objects.get(cnpj=self.request.user.username)
         nome = self.request.POST.get("nome")
         aluno = categorias_models.DadosPessoais.objects.filter(nome_completo__icontains=nome)
         if aluno.exists():
             aluno = aluno.first()
             username = aluno.user
-            usuario = core_models.Usuario.objects.get(usuario=username)
+            usuario = core_models.Usuario.objects.get(usuario=username, academia=academia)
             context = {
                 'aluno': aluno,
                 'usuario': usuario,
