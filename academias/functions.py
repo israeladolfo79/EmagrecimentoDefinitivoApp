@@ -1,20 +1,23 @@
-#pegando uma data passada e subtraindo a data atual para contarr os dias
+# pegando uma data passada e subtraindo a data atual para contarr os dias
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
+
 def verifica_data(data):
-    #verificando se a data já passou
+    # verificando se a data já passou
     if data < date.today():
         return 0
     else:
-        #pegando a diferença de dias entre a data atual e a data passada
-        diferenca = relativedelta(data, date.today())
+        # pegando a diferença de dias entre a data atual e a data passada
+        diferenca = data - date.today()
         return int(diferenca.days)
 
 
 def validar_cpf(cpf):
-    cpf = cpf.replace(".", "").replace("-", "") # Remove pontos e traços do CPF
-    if len(cpf) != 11 or not cpf.isdigit(): # Verifica se o CPF tem 11 dígitos e se são todos números
+    cpf = cpf.replace(".", "").replace("-", "")  # Remove pontos e traços do CPF
+    if (
+        len(cpf) != 11 or not cpf.isdigit()
+    ):  # Verifica se o CPF tem 11 dígitos e se são todos números
         return False
 
     # Calcula o primeiro dígito verificador
@@ -44,7 +47,5 @@ def validar_cpf(cpf):
 def calcula_data_expiracao():
     data = date.today() + relativedelta(days=360)
     print(data)
-    #retornando data no formato 00/00/0000
-    return data.strftime('%d/%m/%Y')
-
-
+    # retornando data no formato 00/00/0000
+    return data.strftime("%d/%m/%Y")
