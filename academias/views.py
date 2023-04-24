@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.views.generic import TemplateView, FormView
+from django.views.generic import TemplateView, FormView, ListView
 from django.dispatch import receiver
 from django.db.models.signals import post_save, post_delete
 from .models import Academia
@@ -154,6 +154,7 @@ class CadastrarAluno(AcademiaView, TemplateView):
             tipo_plano=3,
             dias_restantes=data_final,
             avaliacoes=avaliacoes,
+            academia=Academia.objects.get(cnpj=self.request.user.username),
         )
         usuario.save()
 
@@ -248,8 +249,13 @@ class Calculadora(AcademiaView, TemplateView):
         return render(self.request, "academias/calculadora.html", context)
 
 
-class ConsultaAluno(AcademiaView, TemplateView):
+class ConsultaAluno(AcademiaView, ListView):
     template_name = "academias/consulta_aluno_get.html"
+    model = core_models.Usuario
+    context_object_name = "alunos"
+    paginate_by = 10
+    ordering = ["nome"]
+
 
     def get_context_data(self, **kwargs):
         academia = Academia.objects.get(cnpj=self.request.user.username)
@@ -257,18 +263,28 @@ class ConsultaAluno(AcademiaView, TemplateView):
         context["academia"] = academia
         return context
 
+    def get_queryset(self):
+        academia = Academia.objects.get(cnpj=self.request.user.username)
+        return core_models.Usuario.objects.filter(academia=academia)
+    
     def post(self, *args, **kwargs):
         academia = Academia.objects.get(cnpj=self.request.user.username)
         nome = self.request.POST.get("nome")
+        print("nome: ", nome)
         aluno = categorias_models.DadosPessoais.objects.filter(
-            nome_completo__icontains=nome
+            nome_completo__icontains=nome,
+
         )
         if aluno.exists():
             aluno = aluno.first()
             username = aluno.user
-            usuario = core_models.Usuario.objects.get(
+            usuario = core_models.Usuario.objects.filter(
                 usuario=username, academia=academia
             )
+            if not usuario.exists():
+                messages.error(self.request, "Aluno ainda não finalizou o cadastro")
+                return redirect("consulta_alunos")
+            usuario = usuario.first()
             context = {
                 "aluno": aluno,
                 "usuario": usuario,

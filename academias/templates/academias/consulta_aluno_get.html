@@ -61,6 +61,32 @@
       </div>
     </div>
     <div class="col-md-2"></div>
+    <div class="col-md-12 ">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Detalhes</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for aluno in alunos %}
+            <tr>
+              <td>{{aluno.nome}} {{aluno.sobrenome}}</td>
+              <td>
+                <form action="" method="POST">
+                  {% csrf_token %}
+                  <input type="hidden" value="{{aluno.nome}} {{aluno.sobrenome}}" name="nome">
+                  <button type="submit" class="btn btn-primary">Detalhes</button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+          <tr>
+        </tbody>
+      </table>
+    {% include "parciais/_pagination.html" %}
+    </div>
   </div>
 </div>
 
