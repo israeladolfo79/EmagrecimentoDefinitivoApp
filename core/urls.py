@@ -49,3 +49,4 @@ urlpatterns = [
     path("materiais_usuario", views.MateriaisUsuario.as_view(), name="materiais_usuario"),
 ]
 handler404 = views.error_404
+handler500 = views.error_500

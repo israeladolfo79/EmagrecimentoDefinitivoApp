@@ -27,6 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 def error_404(request, exception):
     return render(request, 'core/notfound.html')
 
+def error_500(request, *args, **kwargs):
+    return render(request, 'core/error_500.html')
+
 
 # class Redirecionador(TemplateView):
 #     template_name = ""
