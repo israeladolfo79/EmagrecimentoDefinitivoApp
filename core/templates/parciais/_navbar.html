@@ -8,6 +8,7 @@
       <div class="line 2"></div>
       <div class="line 3"></div>
     </div>
+    {% if not is_termos %}
     <ul class="nav-list ul-special" >
       <li><a href="/">Início</a></li>
       <li class="li-plano-alimentar"><a href="{% url 'baixar_avaliacao' %}">Plano Alimentar</a></li>
@@ -19,6 +20,7 @@
       <li><a href="{% url 'logout' %}">Sair</a>
       </li>
     </ul>
+    {% endif %}
   </nav>
   <script src="{% static 'core/javascript/mobile.js' %}">
 

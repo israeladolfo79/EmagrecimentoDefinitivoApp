@@ -141,8 +141,31 @@
   #redireciona_login a{
     font-size: 17px!important;
   }
-  @media screen and (max-width: 520px){
+
+  #wrap-termos{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 20px;
     
+  }
+  #wrap-termos p{
+    font-size: 17px;
+  }
+  #wrap-termos p a{
+    font-size: 17px;
+  }
+  @media screen and (max-width: 520px){
+    #wrap-termos{
+      height:100px;
+      position: relative;
+    }
+    #wrap-termos p{
+      font-size: 10px!important;
+    }
+    #wrap-termos p a{
+    font-size: 10px!important
+  }
     #container-wrap{
       margin-top: 0px;
     }
@@ -383,6 +406,9 @@
   
   <div class="my-4 d-flex justify-content-center ">
     <p class="text-white" id="redireciona_login">Caso Já Possua Cadastro, <a href="{% url 'login' %}" style="font-weight:bold">Clique Aqui</a></p>
+  </div>
+  <div class="my-4" id="wrap-termos">
+    <p class="text-white text-center">Para acessar nossos termos e políticas <a href="{% url 'termos_e_condicoes' %}" style="font-weight:bold">Clique Aqui</a></p>
   </div>
 </div><!-- /.container-fluid -->
 

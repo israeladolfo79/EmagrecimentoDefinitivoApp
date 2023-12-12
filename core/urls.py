@@ -41,7 +41,7 @@ urlpatterns = [
     path('minha_avaliacao_nutricional', login_required(views.RelatorioEvolucao.as_view(), login_url='/login'), name="relatorio_evolucao"),
     path('checkout', login_required(views.Checkout.as_view(), login_url='/login'), name="checkout"),
     path('calculadora_de_peso_ideal', login_required(views.Calculadora.as_view(), login_url='/login'), name="calculadora"),
-    path('termos_e_condicoes', login_required(views.TermosCondicoes.as_view(), login_url='/login'), name="termos_e_condicoes"),
+    path('termos_e_condicoes', views.TermosCondicoes.as_view(), name="termos_e_condicoes"),
     path('recuperar_senha', views.RecuperarSenha.as_view(), name="recuperar_senha"),
     path('evolucao_final', views.EvolucaoFinal.as_view(), name="evolucao_final"),
     path('excluir/usuario', views.ExcluirUsuario.as_view(), name="excluir_usuario"),

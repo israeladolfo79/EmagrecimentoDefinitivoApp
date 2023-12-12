@@ -1897,7 +1897,8 @@ class TermosCondicoes(TemplateView):
         if len(modelo) != 0:
             modelo = modelo[0]
         context = {
-            "termo": modelo
+            "termo": modelo,
+            "is_termos": True
         }
         return render(self.request, self.template_name, context)
 
