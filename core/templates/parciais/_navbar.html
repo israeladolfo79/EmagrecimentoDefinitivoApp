@@ -10,14 +10,14 @@
     </div>
     {% if not is_termos %}
     <ul class="nav-list ul-special" >
-      <li><a href="/">Início</a></li>
-      <li class="li-plano-alimentar"><a href="{% url 'baixar_avaliacao' %}">Plano Alimentar</a></li>
-      <li class="li-material-apoio"><a href="{% url 'material_apoio' %}">Material de Apoio</a></li>
+      <li><a href="/"style="font-weight:400!important; letter-spacing: 3px;font-size:17px!important; font-family: 'roboto', sans-serif!important">Início</a></li>
+      <li class="li-plano-alimentar"><a href="{% url 'baixar_avaliacao' %}" style="font-weight:400!important; letter-spacing: 3px;font-size:17px!important; font-family: 'roboto', sans-serif!important">Plano Alimentar</a></li>
+      <li class="li-material-apoio"><a href="{% url 'material_apoio' %}" style="font-weight:400!important; letter-spacing: 3px;font-size:17px!important; font-family: 'roboto', sans-serif!important">Material de Apoio</a></li>
       
       <li>
-        <button onclick="myFunction()" id="contato">Contato</button>
+        <button onclick="myFunction()" id="contato" style="font-weight:400!important; letter-spacing: 3px;font-size:17px!important; font-family: 'roboto', sans-serif!important">Contato</button>
       </li>
-      <li><a href="{% url 'logout' %}">Sair</a>
+      <li><a href="{% url 'logout' %}" style="font-weight:400!important; letter-spacing: 3px;font-size:17px!important; font-family: 'roboto', sans-serif!important">Sair</a>
       </li>
     </ul>
     {% endif %}
