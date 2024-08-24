@@ -29,7 +29,6 @@ class UsuarioViewSets(views.APIView):
         return Response(data=dados, status=status.HTTP_200_OK)
 
     def get(self, request):
-        # Obtém o parâmetro 'user' da query string ou URL
         user = request.query_params.get('user')
         if not user:
             return Response(data={'erro': 'Você precisa enviar o parâmetro "user"'}, status=status.HTTP_400_BAD_REQUEST)
