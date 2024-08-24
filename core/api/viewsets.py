@@ -18,13 +18,26 @@ from datetime import datetime
 class UsuarioViewSets(views.APIView):
     def post(self, request):
         if not 'user' in request.data:
-            return Response(data={'plano_alimentar': False,'erro': 'Você precisa enviar o usuário'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={'plano_alimentar': False, 'erro': 'Você precisa enviar o usuário'}, status=status.HTTP_400_BAD_REQUEST)
 
         user = request.data['user']
         if not models.Usuario.objects.filter(usuario=user).exists():
-            return Response(data={'plano_alimentar': False,'erro': 'Usuário não encontrado'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={'plano_alimentar': False, 'erro': 'Usuário não encontrado'}, status=status.HTTP_400_BAD_REQUEST)
 
-        dados = dict(models.Usuario.objects.filter(usuario=user).values('nome', 'sobrenome','tipo_plano', 'avaliacoes', 'dias_restantes')[0])
+        dados = dict(models.Usuario.objects.filter(usuario=user).values('nome', 'sobrenome', 'tipo_plano', 'avaliacoes', 'dias_restantes')[0])
+
+        return Response(data=dados, status=status.HTTP_200_OK)
+
+    def get(self, request):
+        # Obtém o parâmetro 'user' da query string ou URL
+        user = request.query_params.get('user')
+        if not user:
+            return Response(data={'erro': 'Você precisa enviar o parâmetro "user"'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not models.Usuario.objects.filter(usuario=user).exists():
+            return Response(data={'erro': 'Usuário não encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
+        dados = dict(models.Usuario.objects.filter(usuario=user).values('nome', 'sobrenome', 'tipo_plano', 'avaliacoes', 'dias_restantes')[0])
 
         return Response(data=dados, status=status.HTTP_200_OK)
     
