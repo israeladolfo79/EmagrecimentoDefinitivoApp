@@ -1,5 +1,6 @@
 import localFont from "next/font/local";
 import "./globals.css";
+import Image from "next/image";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -23,7 +24,14 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <div>
+          <div className="flex items-center justify-center bg-defaultBlue h-[80px]">
+            <Image width={180} height={60} src="/logo.png"/>
+          </div>
+          <div className="max-w-screen-xl mx-auto h-full p-6">
+            {children}
+          </div>
+        </div>
       </body>
     </html>
   );
