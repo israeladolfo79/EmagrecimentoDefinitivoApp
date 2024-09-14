@@ -82,9 +82,12 @@ class CriaPaymentSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class UsuarioListSerializer(serializers.ModelSerializer):
+    academia_nome = serializers.CharField(source='academia.nome', read_only=True)
+
     class Meta:
-        model = Usuario
-        fields = ('usuario', 'nome', 'sobrenome', 'email', 'avaliacoes', 'tipo_plano',
-                  'dias_restantes', 'assistiu_video', 'academia', 'dados_pessoais', 'doencas',
-                  'medicamentos', 'cirurgias', 'exame_sangue', 'intestino', 'sono', 'alcool',
-                  'suplementos', 'ciclo_menstrual', 'dados_atropometricos', 'horarios', 'exercicios')
+        model = models.Usuario
+        fields = ('usuario', 'nome', 'sobrenome', 'email', 'avaliacoes', 'tipo_plano', 'dias_restantes', 
+                  'assistiu_video', 'academia_nome', 'dados_pessoais', 'doencas', 'medicamentos', 
+                  'cirurgias', 'exame_sangue', 'intestino', 'sono', 'alcool', 'suplementos', 
+                  'ciclo_menstrual', 'dados_atropometricos', 'horarios', 'exercicios')
+
