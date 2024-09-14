@@ -12,6 +12,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, ListView, DetailView
 from django.contrib import messages, auth
 from django.contrib.auth.models import User
+from core.models import Usuario
 from .forms import CadastroForm
 
 from django.http import HttpResponse
@@ -19,6 +20,12 @@ import base64
 import io
 import PIL.Image as Image
 from django.core.files.images import ImageFile
+
+from rest_framework import views
+from rest_framework.response import Response
+from core.api.serializers import UsuarioListSerializer
+
+from rest_framework import status
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -2045,3 +2052,9 @@ def salvar_imagem(request):
                 form.save()
 
     return HttpResponse("ok")
+
+class ListaUsuariosView(views.APIView):
+    def get(self, request):
+        usuarios = Usuario.objects.all()
+        serializer = UsuarioListSerializer(usuarios, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

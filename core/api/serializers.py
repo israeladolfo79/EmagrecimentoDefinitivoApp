@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from pedidos import models as models_pacotes
 from payments import models as models_payments
 
+from core.models import Usuario
+
 
 class UsuarioSerializer(serializers.ModelSerializer):
     def validate(self, data):
@@ -78,3 +80,11 @@ class CriaPaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = models_payments.Payments
         fields = "__all__"
+
+class UsuarioListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Usuario
+        fields = ('usuario', 'nome', 'sobrenome', 'email', 'avaliacoes', 'tipo_plano',
+                  'dias_restantes', 'assistiu_video', 'academia', 'dados_pessoais', 'doencas',
+                  'medicamentos', 'cirurgias', 'exame_sangue', 'intestino', 'sono', 'alcool',
+                  'suplementos', 'ciclo_menstrual', 'dados_atropometricos', 'horarios', 'exercicios')

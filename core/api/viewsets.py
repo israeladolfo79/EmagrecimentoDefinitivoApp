@@ -10,6 +10,9 @@ from categorias import models as categorias_models
 from pedidos import models as models_pedidos
 from payments import models as models_payments
 
+from django.contrib.auth.models import User
+from core.api.serializers import UsuarioListSerializer
+
 from django.shortcuts import render
 
 
@@ -29,17 +32,19 @@ class UsuarioViewSets(views.APIView):
         return Response(data=dados, status=status.HTTP_200_OK)
 
     def get(self, request):
-        # Obtém o parâmetro 'user' da query string ou URL
         user = request.query_params.get('user')
-        if not user:
-            return Response(data={'erro': 'Você precisa enviar o parâmetro "user"'}, status=status.HTTP_400_BAD_REQUEST)
-
-        if not models.Usuario.objects.filter(usuario=user).exists():
-            return Response(data={'erro': 'Usuário não encontrado'}, status=status.HTTP_404_NOT_FOUND)
-
-        dados = dict(models.Usuario.objects.filter(usuario=user).values('nome', 'sobrenome', 'tipo_plano', 'avaliacoes', 'dias_restantes')[0])
-
-        return Response(data=dados, status=status.HTTP_200_OK)
+        if user:
+            # Obter detalhes do usuário específico
+            if not models.Usuario.objects.filter(usuario=user).exists():
+                return Response(data={'erro': 'Usuário não encontrado'}, status=status.HTTP_404_NOT_FOUND)
+            
+            dados = dict(models.Usuario.objects.filter(usuario=user).values('nome', 'sobrenome', 'tipo_plano', 'avaliacoes', 'dias_restantes')[0])
+            return Response(data=dados, status=status.HTTP_200_OK)
+        else:
+            # Obter a lista de todos os usuários
+            usuarios = User.objects.all()  # Ou aplique filtros se necessário
+            serializer = UsuarioListSerializer(usuarios, many=True)  # Serializa a lista de usuários
+            return Response(serializer.data, status=status.HTTP_200_OK)
     
 class LoginViewSets(views.APIView):
 
