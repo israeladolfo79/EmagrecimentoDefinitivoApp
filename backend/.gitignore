@@ -1,6 +1,7 @@
 db.sqlite3
 *.pyc
 /venv
+/env
 venv/
 __pycache__/
 *.pyc
@@ -11,6 +12,3 @@ __pycache__/
 # C extensions
 *.so
 node_modules
-/frontend/build/
-/backend/venv/
-/backend/env/

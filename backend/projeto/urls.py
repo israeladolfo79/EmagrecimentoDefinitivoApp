@@ -23,6 +23,8 @@ from rest_framework import routers
 from core.api import viewsets as coreViewsets
 from categorias.api import viewsets as categoriasViewsets
 
+from core.views import ListaUsuariosView
+
 route = routers.DefaultRouter()
 
 urlpatterns = [
@@ -58,6 +60,7 @@ urlpatterns = [
     path('apis/cria_pedido',coreViewsets.CriaPedidoViewSet.as_view(), name='point_cria_pedido'),
     path('apis/cria_payment',coreViewsets.CriaPaymentViewSet.as_view(), name='point_cria_pagamento'),
     path('apis/usuario_details',coreViewsets.UsuarioViewSets.as_view(), name='point_usuario_details'),
+    path('apis/usuarios/', ListaUsuariosView.as_view(), name='lista_usuarios'),  # Certifique-se de que essa rota está correta
     path('apis/relatorio_evolucao',coreViewsets.RelatorioEvolucao.as_view(), name='point_relatorio_evolucao'),
 ]
 if settings.DEBUG:
