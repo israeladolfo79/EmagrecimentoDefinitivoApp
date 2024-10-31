@@ -5,76 +5,51 @@
 <link rel="stylesheet" href="{% static 'core/css/dashboard.css' %}" />
 <link rel="stylesheet" href="{% static 'pedidos/css/pedidos.css' %}" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
 {% endblock %}
 
 {% block conteudo %}
 
-<div class="container-fluid mb-4 pt-4" style="background-color: #f2f2f2;margin-top: -20px;">
+<div class="container-fluid mb-4 pt-4" style="background-color: #f2f2f2; margin-top: -20px;">
     {% if messages %}
     {% for message in messages %}
-    <div class="alert {{message.tags}} " role="alert" >
+    <div class="alert {{message.tags}}" role="alert">
         {{message}}
     </div>
     {% endfor %}
     {% endif %}
+    
     <div class="col-md-9 my-1 text-right" style="margin-left: 5vw">
-        
         <h4 style="color: #2b6ca3; font-weight: bold">Escolha seu plano de acompanhamento</h4>
-        
     </div>
+    
     <div class="container-fluid" id="escalavel">
         <div class="row">
             <div class="col-md-2"></div>
-            <div class="col-md-3">
-                
-                <div class=" pacote-desc-esp">
-                    <img src="{{pacote.imagem.url}}"  alt="{{pacote.titulo}}">
-
-                </div>
-                <div class="embaixo-pacote bg-verde-escuro text-center text-light">
-                    <p class="text-light pt-1">Investimento</p>
-                </div>
-            </div>
+            
             {% for pac in pacotes %}
-            <div class="col-md-2 text-center">
-                <form action="" method="POST">
+            <div class="col-md-3 text-center">
+                <form action="{% url 'contratar_plano' %}" method="POST">
                     {% csrf_token %}
                     
-                    <div class=" pacote-desc">
-                        <img src="{{pac.imagem.url}}" alt="{{pac.titulo}}">
-
+                    <div class="pacote-desc">
+                        <img src="{{ pac.imagem.url }}" alt="{{ pac.titulo }}">
                     </div>
-                    <input type="hidden" name="id" value="{{pac.id}}">
-                    <input type="hidden" name="preco_total" value="{{pac.preco}}">
+                    
+                    <input type="hidden" name="id" value="{{ pac.id }}">
+                    <input type="hidden" name="preco_total" value="{{ pac.preco }}">
+                    
                     <div class="embaixo-pacote bg-verde-escuro text-center text-light">
-                        <p class="text-light pt-1">{{pac.preco}} Reais</p>
+                        <p class="text-light pt-1">{{ pac.preco }} Reais</p>
                     </div>
-                    <a class="btn btn-primary border-rounded font-weight-bold" href="parciais/formulario.html">Contratar</a>
-
+                    
+                    <button type="submit" class="btn btn-primary border-rounded font-weight-bold">Contratar</button>
                 </form>
             </div>
             {% endfor %}
         </div>
-        
     </div>
-    <!--
-
-        <form action="" method="POST">
-                        
-                        {% csrf_token %}
-                        <div class="card" style="max-width:400px">
-                            <div class="card-body">
-                            <h4 class="card-title">{{pacote.titulo}}</h4>
-                            <h4 class="card-text">{{pacote.descricao|safe}}</h4>
-                            <input type="hidden" name="id" value="{{pacote.id}}">
-                            <input type="hidden" name="preco_total" value="{{pacote.preco}}">
-                            <button type="submit" class="btn btn-primary border-rounded">Selecionar</button>
-                            </div>
-                        </div>
-                    </form>
-    -->
+    
 </div>
 
-{% include  "parciais/_footer.html"%}
+{% include "parciais/_footer.html" %}
 {% endblock conteudo %}
