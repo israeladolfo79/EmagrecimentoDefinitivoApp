@@ -38,7 +38,7 @@
             </div>
             {% for pac in pacotes %}
             <div class="col-md-2 text-center">
-                <form action="parciais/formulario.html" method="POST">
+                <form action="..\..\..\payments\templates\payments\payments_form.html" method="POST">
                     {% csrf_token %}
                     
                     <div class=" pacote-desc">
