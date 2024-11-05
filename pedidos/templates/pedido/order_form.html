@@ -20,7 +20,7 @@
     {% endif %}
     <div class="col-md-9 my-1 text-right" style="margin-left: 5vw">
         
-        <h4 style="color: #2b6ca3; font-weight: bold">Escolha seu plano </h4>
+        <h4 style="color: #2b6ca3; font-weight: bold">Escolha seu plano de acompanhamento</h4>
         
     </div>
     <div class="container-fluid" id="escalavel">
@@ -38,7 +38,7 @@
             </div>
             {% for pac in pacotes %}
             <div class="col-md-2 text-center">
-                <form action="" method="POST">
+                <form action="parciais/formulario.html" method="POST">
                     {% csrf_token %}
                     
                     <div class=" pacote-desc">
@@ -50,7 +50,7 @@
                     <div class="embaixo-pacote bg-verde-escuro text-center text-light">
                         <p class="text-light pt-1">{{pac.preco}} Reais</p>
                     </div>
-                    <a class="btn btn-primary border-rounded font-weight-bold" href="parciais/formulario.html">Contratar</a>
+                    <button class="btn btn-primary border-rounded font-weight-bold" href="parciais/formulario.html">Contratar</button>
 
                 </form>
             </div>
