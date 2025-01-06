@@ -10,4 +10,6 @@ __pycache__/
 .vscode/
 # C extensions
 *.so
-    
+docker-compose.yml
+Dockerfile
+.venv
