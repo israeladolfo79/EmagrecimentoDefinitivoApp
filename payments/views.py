@@ -11,6 +11,7 @@ from django.views.generic import CreateView, TemplateView
 from pedidos.models import Pedidos as Order
 from core.models import Usuario
 from categorias.models import DadosPessoais
+import uuid
 
 from .forms import PaymentForm, UpdatePaymentForm
 from .models import Payments as Payment
@@ -22,7 +23,17 @@ from datetime import datetime, timedelta
 class PaymentMethod(TemplateView):
     template_name = 'payments/select_method.html'
     def get(self, *args, **kwargs):
+        print(settings.MERCADO_PAGO_ACCESS_TOKEN)
         sdk = mercadopago.SDK(settings.MERCADO_PAGO_ACCESS_TOKEN)
+
+        idempotency_key = str(uuid.uuid4())
+
+    # Configuração de requisição com chave de idempotência
+        request_options = mercadopago.config.RequestOptions()
+        request_options.custom_headers = {
+            'x-idempotency-key': idempotency_key  # Chave única gerada dinamicamente
+        }
+
         order_id = self.request.session.get("order_id")
         order = get_object_or_404(Order, id=order_id)
         preference_data = {
@@ -42,7 +53,7 @@ class PaymentMethod(TemplateView):
                     }
                 ]
             }
-        preference_response = sdk.preference().create(preference_data)
+        preference_response = sdk.preference().create(preference_data, request_options)
         preference = preference_response["response"]
         init = preference['init_point']
         context = {
@@ -51,6 +62,7 @@ class PaymentMethod(TemplateView):
             'PUBLIC_KEY': settings.MERCADO_PAGO_PUBLIC_KEY,
             'order': order
         }
+
         return render(self.request, self.template_name, context)
 
 class PaymentCreateView(CreateView):
@@ -202,6 +214,7 @@ class PaymentSuccessView(TemplateView):
 
         order.save()
         usuario.save()
+
 
         del self.request.session["order_id"]
         return render(self.request, self.template_name)

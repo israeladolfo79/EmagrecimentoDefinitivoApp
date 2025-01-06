@@ -38,7 +38,7 @@
             </div>
             {% for pac in pacotes %}
             <div class="col-md-2 text-center">
-                <form action="..\..\..\payments\templates\payments\payments_form.html" method="POST">
+                <form action="" method="POST">
                     {% csrf_token %}
                     
                     <div class=" pacote-desc">
@@ -50,7 +50,7 @@
                     <div class="embaixo-pacote bg-verde-escuro text-center text-light">
                         <p class="text-light pt-1">{{pac.preco}} Reais</p>
                     </div>
-                    <button class="btn btn-primary border-rounded font-weight-bold" href="..\..\..\payments\templates\payments\payments_form.html">Contratar</button>
+                    <button class="btn btn-primary border-rounded font-weight-bold">Contratar</button>
 
                 </form>
             </div>
