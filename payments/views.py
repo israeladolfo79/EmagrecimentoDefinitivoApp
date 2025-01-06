@@ -63,7 +63,6 @@ class PaymentMethod(TemplateView):
             'order': order
         }
 
-        print(context)
         return render(self.request, self.template_name, context)
 
 class PaymentCreateView(CreateView):
