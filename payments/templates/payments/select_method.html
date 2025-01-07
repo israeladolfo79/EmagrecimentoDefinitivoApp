@@ -30,9 +30,14 @@
             
             </div>
             <b >Ao clicar em "Pagar" você estará concordando com nossos <a href="{% url 'termos_e_condicoes' %}" target="_blank" style="color: blue">Temos e Condições</a>.</b>
-            
+             <br/><br/>
+            <p><strong>Atenção:</strong> Se optar pelo pagamento via Pix, após efetuar o pagamento, clique em "Voltar ao site" para que o processamento seja concluído. Assim que confirmado, seu acesso será liberado automaticamente!</p>
         </div>
-        <div id="wallet_container"></div>
+         <div class="container mt-1">
+            <div class="d-block mx-auto">
+                <div class="pastel"></div>
+            </div>
+        </div>
     </div>
     <script>
         // Adicione as credenciais do SDK
@@ -41,17 +46,17 @@
           });
         
           // Inicialize o checkout
-            mp.bricks().create("wallet", "wallet_container", {
-            initialization: {
-                preferenceId: '{{preference_id}}',
-            },
-            customization: {
-                texts: {
-                valueProp: 'smart_option',
+         mp.checkout({
+                preference: {
+                    id: '{{preference_id}}'
                 },
-            },
+                render: {
+                    container: '.pastel', // Indique o nome da class onde será exibido o botão de pagamento
+                    label: 'Pagar', // Muda o texto do botão de pagamento (opcional)
+                },
+        
         });
-        </script>
+    </script>
 </div>
 {% include 'parciais/_footer.html' %}
 
