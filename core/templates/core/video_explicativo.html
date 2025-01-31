@@ -70,12 +70,22 @@
             padding: 15px;
             max-width: 90%;
         }
+
+        .text-user {
+            text-align: center;
+        }
     }
 
     @media (max-width: 480px) {
         .container-mobile {
             font-size: 14px;
             padding: 10px;
+        }
+    }
+
+    @media (orientation: landscape) {
+        .text-user {
+            text-align: center;
         }
     }
 
@@ -86,7 +96,7 @@
 
 <div class="container my-4">
   <div class="row video-section">
-    <div class="col-md-12">        
+    <div class="col-md-12 text-user">        
         <p>Olá, <b style="font-family:'roboto-w'!important;text-decoration: underline;text-transform: capitalize;">{{usuario.nome}} {{usuario.sobrenome}}</b>, seja bem-vindo! </p>
     </div>
     
@@ -99,7 +109,8 @@
     
     <div class="container-mobile">
         <p>Este site foi desenvolvido para ser melhor utilizado em computador ou notebook.</p>
-        <p>Se você tiver um celular Android, baixe o aplicativo para uma melhor experiência. <a href="https://play.google.com/store/apps/details?id=com.nutricao.esportiva.nutricaoesportiva" class="link">Clique Aqui</a></p>
+        <p>Se você tiver um celular Android</p>
+        <p>Baixe o aplicativo para uma melhor experiência. <a href="https://play.google.com/store/apps/details?id=com.nutricao.esportiva.nutricaoesportiva" class="link">Clique Aqui</a></p>
     </div>
 
     <div class="col-md-12 d-flex justify-content-center">
