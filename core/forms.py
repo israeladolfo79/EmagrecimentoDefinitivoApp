@@ -3,6 +3,9 @@ from . import models
 from django.contrib.auth.models import User
 
 class CadastroForm(forms.ModelForm):
+    senha = forms.CharField(widget=forms.PasswordInput())
+    repetir_senha = forms.CharField(widget=forms.PasswordInput())
+
     class Meta:
         model = models.Usuario
         fields = [
@@ -12,7 +15,8 @@ class CadastroForm(forms.ModelForm):
             'email',
             'senha',
             'repetir_senha',
-    ]
+        ]
+
 
 class PlanoALimentarForm(forms.ModelForm):
     class Meta:
