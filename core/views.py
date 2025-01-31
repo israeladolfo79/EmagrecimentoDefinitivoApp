@@ -219,8 +219,6 @@ def cadastro(request):
         context['form'] = CadastroForm(request.POST)
         
         return render(request, template_name, context)
-    messages.add_message(request, messages.SUCCESS,
-                                 "Vamos Começar Com Seu Cadatro")
     return render(request, template_name, context)
 
 def Cadastro_alternativo(request):
