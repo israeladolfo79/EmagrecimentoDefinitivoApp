@@ -41,6 +41,7 @@
     font-size: 1.8rem;
     font-weight: 600;
     text-align: center;
+    margin-bottom: 70px; /* Espaçamento padrão */
   }
 
   /* Estilização do formulário */
@@ -75,13 +76,13 @@
     color: white; /* Texto dentro do input em branco */
     background-color: #2B6CA3; /* Fundo azul */
     outline: none;
-}
+  }
 
 /* Placeholder branco */
-input::placeholder {
-    color: white;
-    opacity: 1;
-}
+  input::placeholder {
+      color: white;
+      opacity: 1;
+  }
 
   /* Botão de login */
   button {
@@ -131,6 +132,32 @@ input::placeholder {
   a:hover {
     text-decoration: underline;
   }
+
+  .logo {
+    margin-bottom: 50px; /* Espaçamento padrão */
+  }
+    /* Ajustes para telas menores (tablets e celulares) */
+  @media (max-width: 768px) {
+      .logo {
+          margin-bottom: 20px;
+      }
+
+      h1 {
+          margin-bottom: 40px;
+      }
+  }
+
+  /* Ajustes específicos para celulares menores */
+  @media (max-width: 480px) {
+      .logo {
+          margin-bottom: 20px;
+      }
+
+      h1 {
+          margin-bottom: 30px;
+          font-size: 1.6rem; /* Reduz um pouco o tamanho do título */
+      }
+  }
 </style>
 {% endblock %}
 
@@ -138,7 +165,7 @@ input::placeholder {
 <div class="login-container">
   <img src="https://newemagrecimento2.s3.amazonaws.com/django-summernote/2025-01-30/c2789af5-32a6-4184-a2ce-5c4e32b581f5.png" alt="Logo" class="logo">
 
-  <h1 class="mb-4" id="emagrecimento">Emagrecimento <br>
+  <h1 id="emagrecimento">Emagrecimento <br>
     <span style="color:red">&</span> Definição
   </h1>
 
