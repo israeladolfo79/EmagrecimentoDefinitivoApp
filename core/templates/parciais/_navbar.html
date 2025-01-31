@@ -1,8 +1,34 @@
 {% load static %}
+<style>
+.mobile-logo {
+  display: none;
+  width: 200px; /* Ajuste o tamanho para um menor */
+  height: auto;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+  .desktop-logo {
+      display: none; /* Esconde o H2 no mobile */
+  }
+
+  .mobile-logo {
+      display: block;
+      width: 100px; /* Ajuste conforme necessário */
+      height: auto;
+      margin: 0 auto; /* Centraliza */
+  }
+}
+</style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <header style="position: fixed; width: 100vw; z-index: 9999999999999">
   <nav>
-    <h2 class="logo py-1" href="/">Nutrição Esportiva de Resultado</h2>
+    <h2 class="logo py-1 desktop-logo" href="/">Nutrição Esportiva de Resultado</h2>
+
+    <img src="https://newemagrecimento2.s3.amazonaws.com/django-summernote/2025-01-30/c2789af5-32a6-4184-a2ce-5c4e32b581f5.png" 
+      alt="Logo Nutrição Esportiva" 
+      class="mobile-logo">
+
     <div class="mobile-menus">
       <div class="line 1"></div>
       <div class="line 2"></div>
