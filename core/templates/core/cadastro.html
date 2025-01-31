@@ -1,119 +1,176 @@
 {% extends 'base_alt.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
+
 {% block title %}Cadastro{% endblock %}
-{%block header %}
-<link rel="stylesheet" href="{% static 'core/css/login.css' %}" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link
-  href="https://fonts.googleapis.com/css2?family=Bree+Serif&family=Spinnaker&family=Stardos+Stencil:wght@700&display=swap"
-  rel="stylesheet">
+
+{% block header %}
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+
 <style>
-  #emagrecimento {
-    font-family: Arial, Helvetica, sans-serif;
-    text-transform: uppercase;
-    line-height: 47px;
-    font-weight: bold;
-    font-size: 45px;
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
   }
 
-  #texto {
-    font-family: 'Spinnaker', sans-serif;
-    font-size: 20px;
-    line-height: 21px;
+  .container-cadastro {
+    padding: 2rem;
+    width: 100%;
+    max-width: 360px;
+    text-align: center;
   }
 
-  #f-branco {
-    position: fixed;
-    height: 80vh;
-    width: 700px;
-    top: 10vh;
-    right: 0px;
+  h1 {
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 10px;
   }
 
-  #special-text {
-    font-family: 'Bree Serif', serif;
-    font-size: 22px;
-    margin-top: 100px
+  img {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    object-fit: contain;
+    margin-bottom: clamp(20px, 5vw, 60px);
   }
 
-  @media screen and (max-width:720px) {
-    #emagrecimento {
-      font-family: Arial, Helvetica, sans-serif;
-      text-transform: uppercase;
-      line-height: 32px;
-      font-size: 27px;
-    }
+  h3 {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 10px;
+  }
 
-    #f-branco {
-      position: fixed;
-      height: 80vh;
-      width: 100vw;
-      top: 8vh;
-      right: 0px;
-    }
+  p {
+    text-align: center;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 20px;
+  }
 
-    #texto {
-      font-family: 'Spinnaker', sans-serif;
-      font-size: 18px;
-    }
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
 
-    #special-text {
-      font-family: 'Bree Serif', serif;
-      font-size: 22px;
-      margin-top: 0px
+  .form-group {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 15px;
+  }
+
+  label {
+    display: block;
+    font-weight: 600;
+    color: #2B6CA3;
+    margin-bottom: 5px;
+  } 
+
+  /* Estilização dos inputs */
+  input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #2B6CA3;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 400;
+    color: white; /* Texto dentro do input em branco */
+    background-color: #2B6CA3; /* Fundo azul */
+    outline: none;
+}
+
+/* Placeholder branco */
+input::placeholder {
+    color: white;
+    opacity: 1;
+}
+
+  /* Botão estilizado */
+  button {
+    background-color: #FF6666;
+    color: white;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 150px;
+  }
+
+  button:hover {
+    background-color: #cc5252;
+  }
+
+
+  .text-center {
+    text-align: center;
+    margin-top: 15px;
+  }
+
+  a {
+    color: #007bff;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 600px) {
+    .container-cadastro {
+      width: 90%;
+      padding: 20px;
     }
   }
 </style>
 {% endblock %}
 
-
 {% block conteudo %}
-{% if messages %}
-{% for message in messages %}
-<div class="alert {{message.tags}} " role="alert" style="position:absolute;right: 20%; top: 20px">
-  {{message}}
-</div>
-{% endfor %}
-{% endif %}
-<img id="fundo" src="{% static 'core/img/img-fundo.jpg' %}">
-<img id="footer" src="{% static 'core/img/estrelas.jpg' %}">
-<div id="f-branco" style="background-color: rgba(255,255,255,.5)">
+<div class="container-cadastro">
+  <img src="https://newemagrecimento2.s3.amazonaws.com/django-summernote/2025-01-30/c2789af5-32a6-4184-a2ce-5c4e32b581f5.png" alt="Logo" class="logo">
+  <h3>Crie sua conta</h3>
+  <p>Preencha os campos abaixo para se cadastrar.</p>
 
-</div>
-<div class="container-fluid">
-  <div class="row mt-4">
-    <div class="col-md-12">
-
-      <div class="row">
-        <div class="col-md-6"></div>
-        <div class="col-md-1"></div>
-        <div class="col-md-5 ">
-          <div class="container">
-
-          </div>
-        </div>
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert {{ message.tags }}" style="background: #ffdddd; padding: 10px; margin-bottom: 15px; border-radius: 5px;">
+        {{ message }}
       </div>
+    {% endfor %}
+  {% endif %}
 
-      <div class="row mt-4">
-        <div class="col-md-6 text-right" style="max-width: 790px"></div>
-        <div class="col-md-6">
-          <div class="container d-flex align-items-center justify-content-center">
-            
-          <form action="{% url 'cadastro' %}" method="POST"  style="max-width: 310px;margin-top: 3vh; margin-bottom: 13vh">
-            
-            <p>Já possui um cadastro? <a href="{% url 'login' %}">Clique Aqui</a></p>
-            {% csrf_token %}
-            {{ form|crispy }}
-            <button type="submit" class="btn btn-primary border-rounded">Cadastrar</button>
-          </form>
-          </div>
-        </div>
-      </div>
+  <form action="{% url 'cadastro' %}" method="POST">
+    {% csrf_token %}
 
+    {% for field in form %}
+    <div class="form-group">
+      {{ field }}
+      <script>
+        document.addEventListener("DOMContentLoaded", function() {
+          var input = document.getElementById("{{ field.id_for_label }}");
+          if (input) {
+            input.setAttribute("placeholder", "{{ field.label }}");
+          }
+        });
+      </script>
     </div>
+  {% endfor %}
+
+    <button type="submit">Cadastrar</button>
+  </form>
+
+  <div class="text-center">
+    <p>Já tem uma conta? <a href="{% url 'login' %}">Faça login</a></p>
   </div>
 </div>
-
 {% endblock %}
