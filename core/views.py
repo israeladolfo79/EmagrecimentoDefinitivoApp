@@ -13,12 +13,14 @@ from django.views.generic import TemplateView, ListView, DetailView
 from django.contrib import messages, auth
 from django.contrib.auth.models import User
 from .forms import CadastroForm
-
 from django.http import HttpResponse
 import base64
 import io
 import PIL.Image as Image
 from django.core.files.images import ImageFile
+from django.template.loader import render_to_string
+from weasyprint import HTML, CSS
+import tempfile
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -729,21 +731,27 @@ class Exercicios(Questionario):
         dados = {
             'treino': req.get('treino'),
             'tempo_exercicio': req.get('tempo_exercicio'),
+            'treino_secundario': req.get('treino_secundario'), 
+            'tempo_exercicio_secundario': req.get('tempo_exercicio_secundario'),
             'infos_adicionais': req.get('infos_adicionais'),
         }
+
+        print("📌 POST recebido:", dict(req))
+        print("📦 Dados que vão para update_or_create:", dados)
+
         obj, created = categorias_models.Exercicios.objects.update_or_create(
             user=self.request.user.username,
             defaults=dados
         )
-        dado = categorias_models.Exercicios.objects.get(
-            user=self.request.user.username)
-        usuario = models.Usuario.objects.get(
-            usuario=self.request.user.username)
+
+        dado = categorias_models.Exercicios.objects.get(user=self.request.user.username)
+        usuario = models.Usuario.objects.get(usuario=self.request.user.username)
         usuario.exercicios = dado
         usuario.save()
-        messages.add_message(self.request, messages.SUCCESS,
-                             "Dados atualizados com sucesso!")
+
+        messages.add_message(self.request, messages.SUCCESS, "Dados atualizados com sucesso!")
         return redirect('/confirmacao')
+
 
 class RedirecionadorAvaliacao(TemplateView):
     template_name='core/avaliacao'
@@ -826,18 +834,47 @@ class Avaliacao(TemplateView):
         gm = gordura_meta(gi, ga, infos["sexo"])
         pa = peso_ajustado(float(infos['peso']), float(ga), float(gm))
         variaveis = list(models.Variaveis.objects.all().values())[0]
-        kcal = calorias_sem_treino(infos['sexo'], infos['altura'], infos['peso'], pa, infos['idade'], variavel_1=variaveis['var_1'], variavel_2=variaveis['var_2'],
-                                   variavel_3=variaveis['var_3'], variavel_4=variaveis['var_4'], variavel_5=variaveis['var_5'], variavel_6=variaveis['var_6'])
+
+        # kcal = calorias_sem_treino(infos['sexo'], infos['altura'], infos['peso'], pa, infos['idade'], variavel_1=variaveis['var_1'], variavel_2=variaveis['var_2'],
+        #                            variavel_3=variaveis['var_3'], variavel_4=variaveis['var_4'], variavel_5=variaveis['var_5'], variavel_6=variaveis['var_6'])
+        # kcal_simples = kcal
+        # treino = 'n'
+        # if float(exercicios['treino']) != 0.0:
+        #     treino = 's'
+        #     kcal = calorias_com_treino(kcal, float(
+        #         exercicios['treino']), pa, exercicios['tempo_exercicio'])
+        #     if float(exercicios["treino_secundario"]):
+        #         kcal = cal_com_treino_duplo(kcal, float(
+        #             exercicios["treino_secundario"]), pa, exercicios['tempo_exercicio_secundario'])
+        
+        kcal = calorias_sem_treino(
+        infos['sexo'], infos['altura'], infos['peso'], pa, infos['idade'],
+        variavel_1=variaveis['var_1'], variavel_2=variaveis['var_2'],
+        variavel_3=variaveis['var_3'], variavel_4=variaveis['var_4'],
+        variavel_5=variaveis['var_5'], variavel_6=variaveis['var_6']
+        )
         kcal_simples = kcal
+
+        print(f"⚪ Kcal SEM TREINO: {kcal:.2f}")
+
         treino = 'n'
         if float(exercicios['treino']) != 0.0:
             treino = 's'
             kcal = calorias_com_treino(kcal, float(
                 exercicios['treino']), pa, exercicios['tempo_exercicio'])
+            print(f"🔹 Kcal COM 1 TREINO: {kcal:.2f}")
+
             if float(exercicios["treino_secundario"]):
                 kcal = cal_com_treino_duplo(kcal, float(
                     exercicios["treino_secundario"]), pa, exercicios['tempo_exercicio_secundario'])
+                print(f"🔸 Kcal COM 2 TREINOS: {kcal:.2f}")
+        else:
+            print("⚠️ Nenhum treino informado — permanece Kcal base.")
+        
+        
+        
         # criando o plano alimentar
+        
         plano = {
             'user': self.request.user.username,
             'pescoco': dados_antropometricos['pescoco'],
@@ -885,6 +922,7 @@ class ExibeAvaliacaoTreino(TemplateView):
     template_name = "core/pdf.html"
 
     def get(self, *args, **kwargs):
+        
         # verificando se o usuario preencheu os dados pessoais
         if self.request.GET.get('username'):
             user = self.request.GET.get('username')
@@ -897,6 +935,17 @@ class ExibeAvaliacaoTreino(TemplateView):
             messages.add_message(self.request, messages.ERROR,
                                  "É necessário que você responda todas as perguntas com ATENÇÃO, para no final, ter seus Planos Alimentares Personalizados")
             return redirect('/dados_pessoais')
+        
+        avaliacao_mais_recente = list(
+            models.PlanoAlimentar.objects.filter(user=user).values())[-1]
+
+        usuario = dict(categorias_models.DadosPessoais.objects.filter(
+            usuario=user).values()[0])
+        
+        usuario_obj = models.Usuario.objects.get(usuario=user)
+
+        data_realizacao = avaliacao_mais_recente["data_realizacao"]
+        data_formatada = data_realizacao.strftime("%d/%m/%Y")
 
         # verificando se o usuário concluiu seu cadastro
         sexo = dict(categorias_models.DadosPessoais.objects.filter(
@@ -940,9 +989,11 @@ class ExibeAvaliacaoTreino(TemplateView):
         if avaliacao_mais_recente['treino'] == 'n':
             criar_pa_sem_treino = False
 
-        nome = str(usuario['nome_completo']).split()[0]
-        context = {
-            'nome': nome,
+  
+        usuario_obj = models.Usuario.objects.get(usuario=user)
+
+        context = {            
+            'nome_completo': f"{usuario_obj.nome} {usuario_obj.sobrenome}",
             'treino': avaliacao_mais_recente['treino'],
             'treino_cedo': treino_cedo,
             'kcal': avaliacao_mais_recente['kcal'],
@@ -955,7 +1006,8 @@ class ExibeAvaliacaoTreino(TemplateView):
             'criar_pa_sem_treino': criar_pa_sem_treino,
             "data_realizacao": avaliacao_mais_recente["data_realizacao"],
             "username": user,
-            "tipo_plano": "avaliacao_com_treino"  
+            "tipo_plano": "avaliacao_com_treino",
+            "data_realizacao": data_formatada,
         }
         
         return render(self.request, self.template_name, context)
@@ -964,7 +1016,6 @@ class ExibeAvaliacaoSemTreino(TemplateView):
     template_name = "core/pdf.html"
 
     def get(self, *args, **kwargs):
-
         # verificando se o usuario preencheu os dados pessoais
         if self.request.GET.get('username'):
             user = self.request.GET.get('username')
@@ -978,6 +1029,16 @@ class ExibeAvaliacaoSemTreino(TemplateView):
                                  "Você precisa concluir todo o seu cadastro para poder visualizar suas informações")
             return redirect('/dados_pessoais')
         # verificando se o usuário concluiu seu cadastro
+        avaliacao_mais_recente = list(
+            models.PlanoAlimentar.objects.filter(user=user).values())[-1]
+
+        usuario = dict(categorias_models.DadosPessoais.objects.filter(
+            usuario=user).values()[0])
+        
+        usuario_obj = models.Usuario.objects.get(usuario=user)
+
+        data_realizacao = avaliacao_mais_recente["data_realizacao"]
+        data_formatada = data_realizacao.strftime("%d/%m/%Y")
         sexo = dict(categorias_models.DadosPessoais.objects.filter(
             user=user).values()[0])["sexo"]
         usuario = dict(models.Usuario.objects.filter(usuario=user).values()[0])
@@ -1011,9 +1072,10 @@ class ExibeAvaliacaoSemTreino(TemplateView):
             models.PlanoAlimentar.objects.filter(user=user).values())[-1]
         usuario = dict(categorias_models.DadosPessoais.objects.filter(
             usuario=user).values()[0])
-        nome = str(usuario['nome_completo']).split()[0]
+        
+        usuario_obj = models.Usuario.objects.get(usuario=user)
         context = {
-            'nome': nome,
+            'nome_completo': f"{usuario_obj.nome} {usuario_obj.sobrenome}",
             'treino': 'n',
             'treino_cedo': False,
             'kcal': avaliacao_mais_recente['kcal_simples'],
@@ -1025,6 +1087,7 @@ class ExibeAvaliacaoSemTreino(TemplateView):
             "data_realizacao": avaliacao_mais_recente["data_realizacao"],
             "username": user,
             "tipo_plano": "avaliacao_sem_treino",
+            "data_realizacao": data_formatada,
         }
         return render(self.request, self.template_name, context)
 
@@ -1197,75 +1260,81 @@ class BuscaMaterialApoio(ListView):
             "liberar": liberar_especifico
         }
         return render(self.request, self.template_name, context)
-
+    
 class TelaCarregamento(TemplateView):
     template_name = "core/tela_espera.html"
 
     def get(self, *args, **kwargs):
-        # verificando se o usuario preencheu os dados pessoais
         user = self.request.user.username
-        if dict(models.Usuario.objects.filter(usuario=user).values()[0])['dados_pessoais_id'] == None:
-            messages.add_message(self.request, messages.ERROR,
-                                 "É necessário que você responda todas as perguntas com ATENÇÃO, para no final, ter seus Planos Alimentares Personalizados")
+
+        #  Verificando se o usuário preencheu os dados pessoais
+        usuario_dados = models.Usuario.objects.filter(usuario=user).values().first()
+        if not usuario_dados or usuario_dados.get('dados_pessoais_id') is None:
+            messages.add_message(
+                self.request, messages.ERROR,
+                "É necessário que você responda todas as perguntas com ATENÇÃO, para no final, ter seus Planos Alimentares Personalizados"
+            )
             return redirect('/dados_pessoais')
-        # verificando se o usuário concluiu seu cadastro
-        sexo = dict(categorias_models.DadosPessoais.objects.filter(
-            user=user).values()[0])["sexo"]
-        usuario = dict(models.Usuario.objects.filter(usuario=user).values()[0])
-        for k, v in usuario.items():
+
+        #  Verificando se o usuário concluiu o cadastro
+        dados_pessoais_obj = categorias_models.DadosPessoais.objects.filter(user=user).values().first()
+        if not dados_pessoais_obj:
+            messages.add_message(self.request, messages.ERROR, "Dados pessoais não encontrados.")
+            return redirect('/dados_pessoais')
+
+        sexo = dados_pessoais_obj.get("sexo")
+        for k, v in usuario_dados.items():
             if sexo == 'masculino':
-                if v == None and k != 'ciclo_menstrual_id':
+                if v is None and k != 'ciclo_menstrual_id':
                     categoria_faltante = str(k).split('_')[0]
                     messages.add_message(
-                        self.request, messages.ERROR, f"É necessário que você responda todas as perguntas com ATENÇÃO, para no final, ter seus Planos Alimentares Personalizados. Preencha: {categoria_faltante}")
+                        self.request, messages.ERROR,
+                        f"É necessário que você responda todas as perguntas com ATENÇÃO. Preencha: {categoria_faltante}"
+                    )
                     return redirect('/dados_pessoais')
             else:
-                if v == None:
+                if v is None:
                     categoria_faltante = str(k).split('_')[0]
                     messages.add_message(
-                        self.request, messages.ERROR, f"É necessário que você responda todas as perguntas com ATENÇÃO, para no final, ter seus Planos Alimentares Personalizados. Preencha: {categoria_faltante}")
+                        self.request, messages.ERROR,
+                        f"É necessário que você responda todas as perguntas com ATENÇÃO. Preencha: {categoria_faltante}"
+                    )
                     return redirect('/dados_pessoais')
-        # verificando se o usuário tem avaliações disponíveis
-        avaliacoes = dict(models.Usuario.objects.filter(
-            usuario=user).values()[0])['avaliacoes']
+
+        # Verificando se o usuário tem avaliações disponíveis
+        avaliacoes = usuario_dados.get('avaliacoes', 0)
         if avaliacoes < 1:
             return redirect('/?sem_avaliacao=True')
 
+        #  Verificando tempo restante ou bloqueio
         ver = verifica_usuario(user)
         if not ver:
             messages.add_message(self.request, messages.ERROR, ver)
             return redirect("/?sem_tempo=1")
-        else:
-            pass
 
-        doencas = dict(categorias_models.Doenca.objects.filter(
-            usuario=user).values()[0])
-        medicamentos = dict(
-            categorias_models.Medicamento.objects.filter(usuario=user).values()[0])
-        exame_de_sangue = dict(
-            categorias_models.ExameSangue.objects.filter(usuario=user).values()[0])
-        intestino = dict(categorias_models.Intestino.objects.filter(
-            usuario=user).values()[0])
-        sono = dict(categorias_models.Sono.objects.filter(
-            usuario=user).values()[0])
-        cirurgias = dict(categorias_models.Cirurgia.objects.filter(
-            usuario=user).values()[0])
-        alcool = dict(categorias_models.Alcool.objects.filter(
-            usuario=user).values()[0])
-        suplementos = dict(categorias_models.Suplemento.objects.filter(
-            usuario=user).values()[0])
+        #  Coletando dados de todas as categorias
+        def get_dict(model):
+            obj = model.objects.filter(usuario=user).values().first()
+            return dict(obj) if obj else {}
+
+        doencas = get_dict(categorias_models.Doenca)
+        medicamentos = get_dict(categorias_models.Medicamento)
+        exame_de_sangue = get_dict(categorias_models.ExameSangue)
+        intestino = get_dict(categorias_models.Intestino)
+        sono = get_dict(categorias_models.Sono)
+        cirurgias = get_dict(categorias_models.Cirurgia)
+        alcool = get_dict(categorias_models.Alcool)
+        suplementos = get_dict(categorias_models.Suplemento)
+        dados_antropometricos = get_dict(categorias_models.Antropometricos)
+        horarios = get_dict(categorias_models.Horarios)
+        exercicios = get_dict(categorias_models.Exercicios)
+
         ciclo_menstrual = ''
         if sexo != "masculino":
-            ciclo_menstrual = dict(
-                categorias_models.CicloMenstrual.objects.filter(usuario=user).values()[0])
-        dados_antropometricos = dict(
-            categorias_models.Antropometricos.objects.filter(usuario=user).values()[0])
-        horarios = dict(categorias_models.Horarios.objects.filter(
-            usuario=user).values()[0])
-        exercicios = dict(categorias_models.Exercicios.objects.filter(
-            usuario=user).values()[0])
-        dados_pessoais = dict(
-            categorias_models.DadosPessoais.objects.filter(usuario=user).values()[0])
+            ciclo_menstrual = get_dict(categorias_models.CicloMenstrual)
+
+        dados_pessoais = dados_pessoais_obj
+                # 🔹 Montando o contexto completo
         context = {
             'dados_pessoais': dados_pessoais,
             'doencas': doencas,
@@ -1281,7 +1350,96 @@ class TelaCarregamento(TemplateView):
             'horarios': horarios,
             'exercicios': exercicios,
         }
+
         return render(self.request, self.template_name, context)
+
+
+# class TelaCarregamento(TemplateView):
+#     template_name = "core/tela_espera.html"
+
+#     def get(self, *args, **kwargs):
+#         # verificando se o usuario preencheu os dados pessoais
+#         user = self.request.user.username
+#         if dict(models.Usuario.objects.filter(usuario=user).values()[0])['dados_pessoais_id'] == None:
+#             messages.add_message(self.request, messages.ERROR,
+#                                  "É necessário que você responda todas as perguntas com ATENÇÃO, para no final, ter seus Planos Alimentares Personalizados")
+#             return redirect('/dados_pessoais')
+        
+#         # verificando se o usuário concluiu seu cadastro
+#         sexo = dict(categorias_models.DadosPessoais.objects.filter(
+#             user=user).values()[0])["sexo"]
+#         usuario = dict(models.Usuario.objects.filter(usuario=user).values()[0])
+#         for k, v in usuario.items():
+#             if sexo == 'masculino':
+#                 if v == None and k != 'ciclo_menstrual_id':
+#                     categoria_faltante = str(k).split('_')[0]
+#                     messages.add_message(
+#                         self.request, messages.ERROR, f"É necessário que você responda todas as perguntas com ATENÇÃO, para no final, ter seus Planos Alimentares Personalizados. Preencha: {categoria_faltante}")
+#                     return redirect('/dados_pessoais')
+#             else:
+#                 if v == None:
+#                     categoria_faltante = str(k).split('_')[0]
+#                     messages.add_message(
+#                         self.request, messages.ERROR, f"É necessário que você responda todas as perguntas com ATENÇÃO, para no final, ter seus Planos Alimentares Personalizados. Preencha: {categoria_faltante}")
+#                     return redirect('/dados_pessoais')
+                
+#         # verificando se o usuário tem avaliações disponíveis
+#         avaliacoes = dict(models.Usuario.objects.filter(
+#             usuario=user).values()[0])['avaliacoes']
+#         if avaliacoes < 1:
+#             return redirect('/?sem_avaliacao=True')
+
+#         ver = verifica_usuario(user)
+#         if not ver:
+#             messages.add_message(self.request, messages.ERROR, ver)
+#             return redirect("/?sem_tempo=1")
+#         else:
+#             pass
+
+#         doencas = dict(categorias_models.Doenca.objects.filter(
+#             usuario=user).values()[0])
+#         medicamentos = dict(
+#             categorias_models.Medicamento.objects.filter(usuario=user).values()[0])
+#         exame_de_sangue = dict(
+#             categorias_models.ExameSangue.objects.filter(usuario=user).values()[0])
+#         intestino = dict(categorias_models.Intestino.objects.filter(
+#             usuario=user).values()[0])
+#         sono = dict(categorias_models.Sono.objects.filter(
+#             usuario=user).values()[0])
+#         cirurgias = dict(categorias_models.Cirurgia.objects.filter(
+#             usuario=user).values()[0])
+#         alcool = dict(categorias_models.Alcool.objects.filter(
+#             usuario=user).values()[0])
+#         suplementos = dict(categorias_models.Suplemento.objects.filter(
+#             usuario=user).values()[0])
+#         ciclo_menstrual = ''
+#         if sexo != "masculino":
+#             ciclo_menstrual = dict(
+#                 categorias_models.CicloMenstrual.objects.filter(usuario=user).values()[0])
+#         dados_antropometricos = dict(
+#             categorias_models.Antropometricos.objects.filter(usuario=user).values()[0])
+#         horarios = dict(categorias_models.Horarios.objects.filter(
+#             usuario=user).values()[0])
+#         exercicios = dict(categorias_models.Exercicios.objects.filter(
+#             usuario=user).values()[0])
+#         dados_pessoais = dict(
+#             categorias_models.DadosPessoais.objects.filter(usuario=user).values()[0])
+#         context = {
+#             'dados_pessoais': dados_pessoais,
+#             'doencas': doencas,
+#             'medicamentos': medicamentos,
+#             'exame_sangue': exame_de_sangue,
+#             'intestino': intestino,
+#             'cirurgias': cirurgias,
+#             'sono': sono,
+#             'alcool': alcool,
+#             'suplementos': suplementos,
+#             'ciclo_menstrual': ciclo_menstrual,
+#             'antropometricos': dados_antropometricos,
+#             'horarios': horarios,
+#             'exercicios': exercicios,
+#         }
+#         return render(self.request, self.template_name, context)
 
 class Evolucao(TemplateView):
     template_name = 'core/tela_evolucao.html'
@@ -2043,3 +2201,158 @@ def salvar_imagem(request):
                 form.save()
 
     return HttpResponse("ok")
+
+def gerar_pdf(request):
+    tipo = request.GET.get("tipo")
+    user = request.user.username  # asumimos que el user está logueado
+
+    if tipo == "com_treino":
+        # ---- reutilizamos la lógica de ExibeAvaliacaoTreino ----
+        avaliacao_mais_recente = list(
+            models.PlanoAlimentar.objects.filter(user=user).values()
+        )[-1]
+
+        usuario_obj = models.Usuario.objects.get(usuario=user)
+
+        data_realizacao = avaliacao_mais_recente["data_realizacao"]
+        data_formatada = data_realizacao.strftime("%d/%m/%Y")
+
+        treino_cedo = False
+        if avaliacao_mais_recente['horario_treino'] < avaliacao_mais_recente['café_da_manha']:
+            treino_cedo = True
+
+        context = {
+            'nome_completo': f"{usuario_obj.nome} {usuario_obj.sobrenome}",
+            'treino': 's',
+            'treino_cedo': treino_cedo,
+            'kcal': avaliacao_mais_recente['kcal'],
+            'cafe_da_manha': avaliacao_mais_recente['café_da_manha'],
+            'almoco': avaliacao_mais_recente['almoco'],
+            'lanche_1': avaliacao_mais_recente['lanche_1'],
+            'lanche_2': avaliacao_mais_recente['lanche_2'],
+            'lanche_3': avaliacao_mais_recente['lanche_3'],
+            'jantar': avaliacao_mais_recente['horario_janta'],
+            "data_realizacao": data_formatada,
+            "username": user,
+            "tipo_plano": "avaliacao_com_treino",
+        }
+
+    elif tipo == "sem_treino":
+        # ---- reutilizamos la lógica de ExibeAvaliacaoSemTreino ----
+        avaliacao_mais_recente = list(
+            models.PlanoAlimentar.objects.filter(user=user).values()
+        )[-1]
+
+        usuario_obj = models.Usuario.objects.get(usuario=user)
+
+        data_realizacao = avaliacao_mais_recente["data_realizacao"]
+        data_formatada = data_realizacao.strftime("%d/%m/%Y")
+
+        context = {
+            'nome_completo': f"{usuario_obj.nome} {usuario_obj.sobrenome}",
+            'treino': 'n',
+            'treino_cedo': False,
+            'kcal': avaliacao_mais_recente['kcal_simples'],
+            'cafe_da_manha': avaliacao_mais_recente['café_da_manha'],
+            'almoco': avaliacao_mais_recente['almoco'],
+            'lanche_1': avaliacao_mais_recente['lanche_1'],
+            'lanche_2': avaliacao_mais_recente['lanche_2'],
+            'lanche_3': avaliacao_mais_recente['lanche_3'],
+            "data_realizacao": data_formatada,
+            "username": user,
+            "tipo_plano": "avaliacao_sem_treino",
+        }
+
+    else:
+        return HttpResponse("Tipo inválido", status=400)
+
+    # ---- generar HTML ----
+    html_string = render_to_string("core/pdf_template.html", context)
+
+    # ---- generar PDF ----
+    with tempfile.NamedTemporaryFile(delete=False) as output:
+        HTML(string=html_string, base_url=request.build_absolute_uri('/')).write_pdf(
+            output.name,
+            stylesheets=[CSS(string="""
+            @page {
+            size: 240mm 297mm;  /* ancho 240mm, alto 297mm */
+            margin: 0mm;
+            @bottom-center {
+                content: "Israel Adolfo Nutricionista Esportivo 2024 - CNPJ 45.866.348/0001-02";
+                font-size: 10pt;
+                font-family: 'Open Sans', sans-serif;
+                color: #fff;
+                background-color: #2b6ca3;
+                padding: 4px;
+            }
+            }
+
+                body {
+                    font-family: 'Open Sans', sans-serif;
+                    font-size: 12pt;
+                }
+                .card-refeicao {
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    padding: 12px 16px;
+                    margin-bottom: 12px;
+                    page-break-inside: avoid;
+                }
+            """)]
+        )
+        output.seek(0)
+        pdf = output.read()
+
+    response = HttpResponse(pdf, content_type="application/pdf")
+    response["Content-Disposition"] = 'attachment; filename="plano_alimentar.pdf"'
+    return response
+
+import os
+from datetime import date
+from django.conf import settings
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from django.views.generic import TemplateView
+from django.contrib.staticfiles import finders
+from weasyprint import HTML, CSS
+
+class CapaRelatorioView(TemplateView):
+    template_name = 'core/relatorio_pdf_capa.html'
+
+    def get(self, request, *args, **kwargs):
+        # 1) Contexto
+        context = self.get_context_data(**kwargs)
+
+        # 2) HTML (pasando request para {% static %} y filtros)
+        html_string = render_to_string(self.template_name, context, request=request)
+
+        # 3) Base URL para resolver /static/ y /media/
+        base_url = request.build_absolute_uri('/')
+
+        # 4) CSS opcional (si existe, se aplica)
+        stylesheets = []
+        css_pdf = finders.find('css/pdf.css')  # ej: /static/css/pdf.css
+        if css_pdf:
+            stylesheets.append(CSS(filename=css_pdf))
+
+        # 5) Generar PDF
+        pdf_bytes = HTML(string=html_string, base_url=base_url).write_pdf(
+            stylesheets=stylesheets,
+            presentational_hints=True
+        )
+
+        # 6) Respuesta
+        resp = HttpResponse(pdf_bytes, content_type='application/pdf')
+        resp['Content-Disposition'] = 'inline; filename="relatorio.pdf"'
+        return resp
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        request = self.request
+        ctx.update({
+            'usuario': request.user.get_username() or 'anónimo',
+            'nome_pessoa': 'Thyago Piffer',
+            'sobrenome_pessoa': 'Santi',
+            'hoy': date.today(),
+        })
+        return ctx

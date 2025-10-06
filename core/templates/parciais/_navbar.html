@@ -1,180 +1,183 @@
 {% load static %}
 <style>
-.mobile-logo {
-  width: 200px;
-  height: auto;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%); /* Centraliza horizontalmente */
-}
+  body {
+    padding-top: 90px; 
+  }
+  
+  .navbar-container {
+    width: 100%;
+    background: #2b6ca3;
+    position: fixed;
+    top: 0;
+    z-index: 9999;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
 
-a {
-    font-size: 1rem;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    color: white;
-}
-  
-a:hover {
-    border-bottom: solid;
-    text-decoration: none;
-    color: white;
-}
-  
-nav {
+  .navbar-content {
+    max-width: 1400px;
     display: flex;
     align-items: center;
-    height: 8vh;
-    background: #2b6ca3;
-    position: relative;
-}
-  
-.nav-item {
-    background-color: #4472c4;
-    border-top: 1px solid white;
-    text-align: center;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 800;
-}
-  
-nav h2 {
-    padding-top: 5px;
-    color: white;
-    font-weight: 900;
-}
-  
-h2 {
-    font-size: 20px;
-}
-  
-.nav-list {
-    position: absolute;
-    top: 8vh;
-    right: 0;
-    width: 60vw;
-    height: 92vh;
-    z-index: 10;
     justify-content: space-between;
-    flex-direction: column;
-    background: #ffffff;
-    align-items: center;
-    display: none;
-}
-  
-.nav-list li {
-    margin-left: 0;
-    margin-top: 10vh;
-}
+    height: 6vh;
+  }
 
-.nav-list li a {
-    border-bottom: #2b6ca3 solid;
+  .navbar-logo {
+    height: 60px;
+    width: auto;
+    margin-left: 5px;
+  }
+  
+  .navbar-right .nav-list {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .navbar-right .nav-list li a,
+  .navbar-right .nav-list li button {
     text-decoration: none;
-    color: #2b6ca3;
-    font-size: 0.75rem;
-    padding-top: 5px;
-    padding-bottom: 5px;
-}
-  
-.mobile-menus {
-    display: block !important;
-    position: absolute;
-    right: 20px; /* Ajusta a posição do ícone do menu */
-    top: 50%;
-    transform: translateY(-50%); /* Mantém centralizado verticalmente */
-}
-  
-.mobile-menus div {
-    width: 32px;
-    height: 2px;
-    background-color: #fff;
-    margin: 8px;
-}
-  
-#contato {
     color: white;
-    background-color: transparent;
-}
-  
-/* Media Queries */
-@media (max-width: 768px) {
-    nav {
-        height: 10vh; /* Aumenta a altura da barra de navegação */
-        padding: 0 10px;
-    }
+    font-size: 16px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    padding: 8px 5px;  
+    transition: all 0.3s ease;
+  }
 
-    .mobile-logo {
-        width: 150px; /* Reduz um pouco a logo no mobile */
-        top: 50%;
-        transform: translate(-50%, -50%); /* Mantém centralizada */
+  .navbar-right .nav-list li a::after,
+  .navbar-right .nav-list li button::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background: #ffffff;
+    transition: width 0.3s ease-in-out;
+  }
+  
+  .navbar-right .nav-list li a:hover,
+  .navbar-right .nav-list li button:hover {
+    color: #ffffff;
+    font-weight: 500;
+  }
+
+  .navbar-right .nav-list li a:hover::after,
+  .navbar-right .nav-list li button:hover::after {
+    width: 100%;
+  }
+
+  .mobile-menus {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    margin-left: auto;      
+    margin-right: 30px;    
+    margin-left: 40px;      
+    align-items: flex-end;
+  }
+  
+  .mobile-menus i {
+    color: #fff !important;
+  }
+  
+  /* --- Mobile + Tablet --- */
+  @media (max-width: 1024px) {
+    .navbar-right .nav-list {
+      display: none;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      right: -260px;
+      width: 260px;
+      height: auto;
+      max-height: 90vh;   
+      background: #2b6ca3;
+      padding: 100px 20px 20px;
+      transition: right 0.3s ease;
+      z-index: 99999;
+    }
+  
+    .navbar-right .nav-list.active {
+      right: 0;
+    }
+  
+    .navbar-right .nav-list li {
+      margin-bottom: 12px;  
     }
 
     .mobile-menus {
-        right: 20px; /* Ajusta a posição do menu */
-    }
-
-    .nav-list {
-        width: 80vw; /* Torna o menu lateral mais espaçoso */
-        padding: 10px;
-    }
-
-    .nav-list li {
-        margin-top: 8vh; /* Aumenta o espaçamento entre os itens do menu */
+      display: flex;
     }
   }
-
-  @media (max-width: 1024px) and (orientation: landscape) {
-    nav {
-      height: 25vh !important;
-    }
-  }
-
 </style>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<header style="position: fixed; width: 100vw; z-index: 9999999999999">
-  <nav>
-    <img src="https://newemagrecimento2.s3.amazonaws.com/django-summernote/2025-01-30/c2789af5-32a6-4184-a2ce-5c4e32b581f5.png" 
-      alt="Logo Nutrição Esportiva" 
-      class="mobile-logo">
 
-    <div class="mobile-menus">
-      <div class="line 1"></div>
-      <div class="line 2"></div>
-      <div class="line 3"></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<header style="position: fixed; width: 100vw; z-index: 9999999999999">
+  <nav class="navbar-container">
+    <div class="navbar-content">
+      <div class="navbar-left">
+        <img src="https://newemagrecimento2.s3.amazonaws.com/django-summernote/2025-01-30/c2789af5-32a6-4184-a2ce-5c4e32b581f5.png" 
+             alt="Logo Nutrição Esportiva" 
+             class="navbar-logo">
+      </div>
+
+      {% if not is_termos %}
+      <div class="navbar-right">
+        <ul class="nav-list">
+          <li><a href="/">Início</a></li>
+          <li class="li-plano-alimentar"><a href="{% url 'baixar_avaliacao' %}">Plano Alimentar</a></li>
+          <li class="li-material-apoio"><a href="{% url 'material_apoio' %}">Material de Apoio</a></li>
+          <li class="li-material-apoio"><a href="">Contato</a></li>
+          <li><a href="{% url 'logout' %}">Sair</a></li>
+        </ul>
+      </div>
+      {% endif %}
+  
+      <div class="mobile-menus">
+        <i class="fa-solid fa-bars fa-2x"></i>
+      </div>
     </div>
-    {% if not is_termos %}
-    <ul class="nav-list ul-special" >
-      <li><a href="/"style="font-weight:400!important; letter-spacing: 3px;font-size:17px!important; font-family: 'roboto', sans-serif!important">Início</a></li>
-      <li class="li-plano-alimentar"><a href="{% url 'baixar_avaliacao' %}" style="font-weight:400!important; letter-spacing: 3px;font-size:17px!important; font-family: 'roboto', sans-serif!important">Plano Alimentar</a></li>
-      <li class="li-material-apoio"><a href="{% url 'material_apoio' %}" style="font-weight:400!important; letter-spacing: 3px;font-size:17px!important; font-family: 'roboto', sans-serif!important">Material de Apoio</a></li>
-      
-      <li>
-        <button onclick="myFunction()" id="contato" style="font-weight:400!important; letter-spacing: 3px;font-size:17px!important; font-family: 'roboto', sans-serif!important">Contato</button>
-      </li>
-      <li><a href="{% url 'logout' %}" style="font-weight:400!important; letter-spacing: 3px;font-size:17px!important; font-family: 'roboto', sans-serif!important">Sair</a>
-      </li>
-    </ul>
-    {% endif %}
   </nav>
+  
   <script src="{% static 'core/javascript/mobile.js' %}"></script>
   <script>
-    function myFunction() {
-      var element = document.getElementById("flut");
-      if (element.style.right == '-600px') {
-        element.style.right = '80px';
-      } else {
-        element.style.right = '-600px';
-      }
-    }
+    $(document).ready(function(){
+      $(".mobile-menus").click(function(){
+        $(".nav-list").toggleClass("active");
+      });
+  
+      $(window).resize(function(){
+        if($(window).width() > 768){
+          $(".nav-list").removeClass("active").css("display","flex");
+        } else {
+          $(".nav-list").css("display","");
+        }
+      });
+    });
   </script>
 </header>
-<p id="faixa-v" style="height: 103px; background-color: rgb(255, 93, 93);"></p>
+
+<p id="faixa-v" style="height: 50px; background-color: rgb(255, 93, 93);"></p>
+
 <div id="flut"
   style="padding: 20px;position: fixed; z-index: 9999; top: 90px; right: -600px; background-color: #2b6ca3">
-  <a style="padding: 12px" href="mailto:contato@nutricaoeesporte.com.br"><i
-      class="fa fa-solid fa-at fa-2x text-light"></i>Email</a>
-
+  <a style="padding: 12px" href="mailto:contato@nutricaoeesporte.com.br">
+    <i class="fa fa-solid fa-at fa-2x text-light"></i>Email
+  </a>
   <br><br>
-  <a style="padding: 12px" class="my-2" href="https://web.whatsapp.com/send?phone=5511987707556" target="_blank"><i
-      class="fa fa-brands fa-whatsapp fa-2x text-light"></i>Whatsapp</a>
+  <a style="padding: 12px" class="my-2" href="https://web.whatsapp.com/send?phone=5511987707556" target="_blank">
+    <i class="fa fa-brands fa-whatsapp fa-2x text-light"></i>Whatsapp
+  </a>
 </div>

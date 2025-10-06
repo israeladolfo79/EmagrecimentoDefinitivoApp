@@ -47,6 +47,9 @@ urlpatterns = [
     path('excluir/usuario', views.ExcluirUsuario.as_view(), name="excluir_usuario"),
     path("salvar_imagem", views.salvar_imagem, name="salvar_imagem"),
     path("materiais_usuario", views.MateriaisUsuario.as_view(), name="materiais_usuario"),
+    path("gerar-pdf/", views.gerar_pdf, name="gerar_pdf"),
+    
+    path('teste_capa/', views.CapaRelatorioView.as_view(), name='teste_capa'),
 ]
 handler404 = views.error_404
 handler500 = views.error_500

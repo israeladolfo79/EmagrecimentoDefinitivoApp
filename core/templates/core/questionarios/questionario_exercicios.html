@@ -83,8 +83,16 @@
             <div class="col-md-12">
               <div class="fieldWrapper">
                 {{ form.treino_secundario.errors }}
-                <p class="text-light"><label for="{{ form.treino_secundario.id_for_label }}">Caso você realize um
-                    segundo treino, no mesmo dia, informe abaixo</label></p>
+                <p>
+                  <label for="{{ form.treino_secundario.id_for_label }}" 
+                         style="display: block; background:#2b6ca3; 
+                                padding: 8px 10px; border-radius: 6px; font-weight: 400; color: #fff; line-height: 1.5;">
+                    <span style="font-weight: 500; color: #fff;">
+                      ⚠️ Atenção:
+                    </span> 
+                    só preencha este campo se você realizar um segundo treino no mesmo dia.
+                  </label>
+                </p>
                 {{ form.treino_secundario }}
               </div>
             </div>
@@ -109,10 +117,7 @@
           <button type="submit" class="btn btn-quest border-rounded mt-4"><b class="text-light">Avançar</b></button>
         </form>
       </div>
-
     </div>
   </div>
 </div>
-
-
 {% endblock %}

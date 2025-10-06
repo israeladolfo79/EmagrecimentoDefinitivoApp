@@ -1,91 +1,120 @@
-<div class="container text-center my-3" style="font-weight: 600;">
-    <div class="row ">
-        <div class="col-md-2 cinza-medio d-flex justify-content-center align-items-center">
-            <div class="row">
-                <div class="col-md-12 text-center"><p><b>Almoço</b></p> </div>
-                {% if almoco %}
-                
-                <div class="col-md-12"><p class="text-center"><b>{{almoco}}h</b></p></div>
-                {% endif %}
-            </div>
-            
+<style>
+    .refeicao-box {
+        display: flex;
+        border-radius: 8px;
+        overflow: hidden;
+        margin: 20px 0;
+        font-family: 'Montserrat', sans-serif;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        background: #fafafa;
+      }
+      
+      .refeicao-left {
+        background: #d9d9d9;
+        color: #222;
+        text-align: center;
+        padding: 18px 15px;
+        min-width: 160px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-right: 1px solid #cfcfcf;
+      }
+      
+      .refeicao-left p {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 600;
+      }
+      
+      .refeicao-right {
+        flex: 1;
+        padding: 20px 25px;
+        font-size: 14px;
+        color: #2b2b2b;
+        line-height: 1.5;
+      }
+      
+      .separator {
+        text-align: center;
+        margin: 10px 0;
+        font-size: 16px;
+        font-weight: 700;
+        color: #666;
+      }
+      
+      .nota-suave {
+        margin-top: 12px;
+        font-size: 13px;
+        color: #555;
+        font-style: italic;
+        text-align: center;
+      }
+      
+      .nota-suave strong {
+        font-weight: 600;
+        color: #333;
+      }
+      
+      
+    </style>      
+    <div class="refeicao-box my-3">
+        <!-- Columna izquierda -->
+        <div class="refeicao-left">
+          <p class="refeicao-titulo">Almoço</p>
+          {% if almoco %}
+            <p class="refeicao-hora">{{ almoco }}h</p>
+          {% endif %}
         </div>
-        <div class="col-md-8 cinza-claro">
-            <div class="row">
-                <div class="col-md-12 p-1">
-                    <p style="color:#339966">Salada de folhas livre (mínimo 3 folhas) + </p>
-                    <p style="color:#ff0000">Tomate, Cenoura, Beterraba, Pepino, Palmito <span
-                            style="color: #800080">(Opcional)</span></p>
-                </div>
-                <div class="col-md-12 amarelo" style="color:#ff0000">
-                    +
-                </div>
-                <div class="col-md-12">
-                    <p>Tempero: <span style="color:#339966">limão, acetato ou vinagre +</span> <span>1 colher </span
-                            style="color:#ff0000"> SOBREMESA <span style="color:#ff0000">Azeite</span></p>
-                </div>
-                <div class="col-md-12 text-light cinza-medio">
-                    +
-                </div>
-                <div class="col-md-12 azul-claro">
-                    <p>Legumes <span style="color:#ff0000">- 100g</span> (peso cozido) / <span
-                            style="color:#ff0000">2</span> Colheres de Servir</p>
-                </div>
-                <div class="col-md-12 text-light cinza-medio">
-                    +
-                </div>
-                <div class="col-md-12 p-1 azul-claro">
-                    <p><span style="color:#ff0000">
-                        {% if not kcal > 1300 %}
-                            1</span> Colher
-                        {% elif not kcal > 1600 %}
-                            2</span> Colheres
-                        {% elif kcal > 1600 %}
-                            3</span> Colheres
-                        {% endif %}
-                        de <b>SERVIR</b> de <b>Arroz</b> (qualquer tipo) <b>[165g]</b> <span
-                            style="color:#ff0000">ou</span> </p>
-                    <p><span style="color:#ff0000">3</span> Colheres de <b>SERVIR</b> de <b>Batata Inglesa [360g]</b>
-                        <span style="color:#ff0000">ou</span>
-                    </p>
-                    <p><span style="color:#ff0000">3</span> Colheres de <b>SERVIR</b> de <b>Farinha/Farofa [75g]</b>
-                        <span style="color:#ff0000">ou</span>
-                    </p>
-                    <p><span style="color:#ff0000">3</span> Pegadores <b>Macarrão [75g peso cru]</b> <span
-                            style="color:#ff0000">ou</span></p>
-                    <p><span style="color:#ff0000"><b style="color:#ff0000">MIX</b></span> <b>entre as opções</b> </p>
-                </div>
-                <div class="col-md-12 text-light cinza-medio">
-                    +
-                </div>
-                <div class="col-md-12 azul-claro cinza-medio">
-                    <p>Feijão ou Ervilha ou Lentilha ou Grão de Bico: <b>1 concha (100g)</b></p>
-                </div>
-                <div class="col-md-12 text-light cinza-medio">
-                    +
-                </div>
-                <div class="col-md-12" style="background-color: #8EA9DB">
-                    <p><b>Proteína: 100g</b> (peso cru) / <b>80g</b> (peso preparada) <b>ou</b> Tamanho da <b>Palma da
-                            Mão</b></p>
-                </div>
-                {% if kcal > 2100 %}
-                
-                <div class="col-md-12 cinza-medio">
-                    +
-                </div>
-                <div class="col-md-12">
-                    <p><b>1</b> fruta</p>
-                </div>
-                {% endif %}
-            </div>
-
+      
+        <!-- Columna derecha -->
+        <div class="refeicao-right">
+          <p><b>Salada de folhas livre</b> (mínimo 3 folhas) + 1 colher de sopa de Farinha de Linhaça</p>
+          <p>Tomate, Cenoura, Beterraba, Pepino, Palmito <span>(Opcional)</span></p>
+      
+          <div class="separator">+</div>
+      
+          <p>Tempero: limão, acetato ou vinagre + <b>1 colher de sobremesa de Azeite</b></p>
+      
+          <div class="separator">+</div>
+      
+          <p>Legumes – <b>100g</b> (peso cozido) / <b>2 colheres de servir</b></p>
+      
+          <div class="separator">+</div>
+      
+          <p>
+            {% if not kcal > 1300 %}
+              <b>1</b>
+            {% elif not kcal > 1600 %}
+              <b>2</b>
+            {% elif kcal > 1600 %}
+              <b>3</b>
+            {% endif %}
+            colheres de servir de <b>Arroz</b> [165g] ou
+          </p>
+          <p><b>3</b> colheres de servir de Batata Inglesa [360g] ou</p>
+          <p><b>3</b> colheres de servir de Farinha/Farofa [75g] ou</p>
+          <p><b>3</b> pegadores de Macarrão [75g cru] ou</p>
+          <p><b>MIX</b> entre as opções</p>
+      
+          <div class="separator">+</div>
+      
+          <p>Feijão, Ervilha, Lentilha ou Grão de Bico: <b>1 concha (100g)</b></p>
+      
+          <div class="separator">+</div>
+      
+          <p><b>Proteína: 100g</b> (peso cru) / <b>80g</b> (peso preparado) ou tamanho da <b>Palma da Mão</b></p>
+      
+          {% if kcal > 2100 %}
+            <div class="separator">+</div>
+            <p><b>1 fruta</b></p>
+          {% endif %}
+      
+          <!-- Nota inferior -->
+          <p class="nota-suave">
+            <strong>Suco Livre:</strong> Maracujá, Limão, Acerola · 
+            <strong>Laranja e Uva:</strong> para 200ml diminuir 1 colher de Arroz
+          </p>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-10 amarelo" style="font-size: 12px">
-            <p style="font-size: 12px"><b>Suco Livre:</b> Maracujá, Limão e Acerola / <b>Laranja e Uva:</b> para 200ml
-                diminuir uma
-                colher Arroz</p>
-        </div>
-    </div>
-</div>
+      </div>
+      

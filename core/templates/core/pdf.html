@@ -4,177 +4,177 @@
 {% block header %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.js"></script>
 <link rel="stylesheet" href="{% static 'core/css/dashboard.css' %}" />
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+  /* Fuente */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans&display=swap');
 
-  .helvetica {
-    font-family: Helvetica, sans-serif;
-    padding: 0;
-    margin: 0;
-    color: green
-  }
-  #download {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 15px
-  }
-  p {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 13px;
-    margin: 0;
-    padding-top: 5px;
-    padding-bottom: 5px
-  }
+body {
+  font-family: 'Open Sans', sans-serif;
+  background: #f7f9fc;
+  margin: 0;
+  padding: 0;
+}
 
-  b {
-    font-weight: 900;
-  }
+#download {
+  width: 794px;
+  min-height: 1123px;
+  background: #fff;
+  margin: 20px auto;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+}
+/* Base para ambos botones */
+.custom-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; /* espacio entre logo y texto */
+  padding: 10px 22px;
+  font-size: 14px;
+  border-radius: 8px;
+  font-weight: 500;
+  text-decoration: none;
+  margin: 10px;
+  transition: all 0.3s ease;
+}
 
-  .cinza-escuro {
-    background-color: #A6A6a6;
-  }
+.btn-container {
+  width: 794px;           /* mismo ancho que el plan */
+  margin: 20px auto 0;    /* centrado con el plan */
+  display: flex;
+  gap: 15px;              /* espacio entre botones */
+  justify-content: flex-start; /* alineados a la izquierda */
+}
+.visualizar-btn {
+  background-color: #fff;
+  color: #333333; 
+  border: 1px solid #afafaf;
+}
+.visualizar-btn:hover {
+  background-color: #333333;
+  box-shadow: 0 4px 10px rgba(200,200,200,0.6);
+}
 
-  .cinza-medio {
-    background-color: #C0C0C0;
-  }
+.pdf-btn {
+  background-color: #fff;
+  color: #d32f2f; /* texto rojo */
+  border: 1px solid #ddd;
+}
+.pdf-btn:hover {
+  background-color:  #d32f2f;
+  box-shadow: 0 4px 10px rgba(200,200,200,0.6);
+  border-color: #bbb;
+  font-size: 14px;
+}
 
-  .cinza-claro {
-    background-color: #f1f1f1;
-  }
+.pdf-logo {
+  width: 20px;
+  height: auto;
+}
 
-  .azul-escuro {
-    background-color: #2F75B5;
-  }
 
-  .azul-claro {
-    background-color: #D9E1F2;
-  }
-
-  .amarelo {
-    background-color: #FFC000
-  }
 </style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-{% endblock %}
-{% block conteudo %}
-<!--Inserindo video de Background-->
-{% if criar_pa_sem_treino %}
-  {% if treino == 's'%}
-  <div class="container my-4">
-    <a href="{% url 'baixar_avaliacao_sem_treino' %}" class="btn btn-primary">Visualize seu Plano Sem o treino</a>
-  {% elif treino == 'n'%}
-  <div class="container my-4">
-    <a href="{% url 'baixar_avaliacao' %}" class="btn btn-primary">Visualize seu Plano Com o treino</a>
+<div class="btn-container mt-5">
+  {% if treino == 's' %}
+    <a href="{% url 'baixar_avaliacao_sem_treino' %}" class="custom-btn visualizar-btn">
+      Visualizar Plano Sem Treino
+    </a>
+    <a href="{% url 'gerar_pdf' %}?tipo=com_treino" class="custom-btn pdf-btn">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg" 
+           alt="PDF" class="pdf-logo">
+      Gerar PDF
+    </a>
+  {% elif treino == 'n' %}
+    <a href="{% url 'baixar_avaliacao' %}" class="custom-btn visualizar-btn">
+      Visualizar Plano Com Treino
+    </a>
+    <a href="{% url 'gerar_pdf' %}?tipo=sem_treino" class="custom-btn pdf-btn">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg" 
+           alt="PDF" class="pdf-logo">
+      Gerar PDF
+    </a>
   {% endif %}
 </div>
-{% endif %}
-  <div class="container" id="download">
-    {% include 'parciais/_nome_pessoa.html' %}
+<div id="download-wrapper">
+  <div id="download" class="container">
 
-    {% include 'parciais/_pa.html' %}
+    <!-- Nome da pessoa -->
+    <div class="card-refeicao">
+      {% include 'parciais/_nome_pessoa.html' %}
+    </div>
 
+    <!-- Pré-treino -->
     {% if treino_cedo %}
-    {% include 'parciais/_pre_treino.html' %}
+    <div class="card-refeicao">
+      {% include 'parciais/_pre_treino.html' %}
+    </div>
     {% endif %}
 
-    {% include 'parciais/_hmanha.html' %}
+    <!-- Café da manhã -->
+    <div class="card-refeicao">
+      {% include 'parciais/_hmanha.html' %}
+    </div>
 
-    {% include 'parciais/_lanche_1.html' %}
+    <!-- Lanche da manhã -->
+    <div class="card-refeicao">
+      {% include 'parciais/_lanche_1.html' %}
+    </div>
 
-    {% include 'parciais/_almoco.html' %}
+    <!-- Almoço -->
+    <div class="card-refeicao">
+      {% include 'parciais/_almoco.html' %}
+    </div>
 
-    {% include 'parciais/_lanches.html' %}
+    <!-- Lanches -->
+    <div class="card-refeicao">
+      {% include 'parciais/_lanches.html' %}
+    </div>
 
-
-    {% include 'parciais/_jantar.html' %}
-    <p></p>
-    <p></p>
-    <p></p>
+    <!-- Jantar -->
+    <div class="card-refeicao">
+      {% include 'parciais/_jantar.html' %}
+    </div>
   </div>
-  <div class="container">
-    <button id="demo" class="downloadtable btn btn-primary" onclick="downloadtable()"> Baixar Plano Alimentar</button>
+</div>
 
-  </div>
-
-
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-    crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-    crossorigin="anonymous"></script>
-  <script>
-    var input = document.querySelector("#nome_arquivo");
-    var texto = input.value;
-    console.log(texto);
-    function downloadtable() {
-
-      var node = document.getElementById('download');
-      var options = {
-          bgcolor: '#fff'
-      }
-      domtoimage.toPng(node, options)
-        .then(function (dataUrl) {
-          var img = new Image();
-          img.src = dataUrl;
-          downloadURI(dataUrl, texto)
-        })
-        .catch(function (error) {
-          console.error('oops, something went wrong', error);
-        });
-
-    }
-
-
-
-    function downloadURI(uri, name) {
-      var link = document.createElement("a");
-      link.download = name;
-      link.href = uri;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      delete link;
-    }
-
-
-
-  </script>
-  <!-- Salvar e Baixar a Imagem -->
-  <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
-  <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
-<input type="hidden" id="data_realizacao" value="{{ data_realizacao|safe }}">
-<input type="hidden" id="username" value="{{ username }}">
-<input type="hidden" id="tipo_plano" value="{{ tipo_plano }}">
 <script>
-  $(document).ready(function(){
-    html2canvas(document.querySelector("#download")).then(canvas => {
-    //enviando a imagem para o servidor
-    var dataURL = canvas.toDataURL("image/png");
-    
-    //pegando elemento com id data_realizacao
-    var data_realizacao = document.getElementById('data_realizacao').value;
-    var username = document.getElementById('username').value;
-    var tipo_plano = document.getElementById('tipo_plano').value;
-    $.ajax({
-      type: "POST",
-      url: "{% url 'salvar_imagem' %}",
-      data: {
-        username: username,
-        tipo_plano: tipo_plano,
-        imagem: dataURL,
-        data_realizacao: data_realizacao,
-        csrfmiddlewaretoken: '{{ csrf_token }}'
-      }
-    }).done(function(o) {
-      console.log('saved');
-    });
-  });
-});
+  function downloadtable() {
+    var node = document.getElementById('download');
+    var options = {
+      bgcolor: '#fff',
+      width: node.scrollWidth,
+      height: node.scrollHeight,
+      style: { transform: "scale(1)", transformOrigin: "top left" }
+    };
+    domtoimage.toPng(node, options)
+      .then(function (dataUrl) {
+        var link = document.createElement("a");
+        link.download = "plano_alimentar.png";
+        link.href = dataUrl;
+        link.click();
+      })
+      .catch(function (error) {
+        console.error('oops, algo salió mal', error);
+      });
+  }
 </script>
-  {% include "parciais/_footer.html" %}
-  {% endblock %}
+
+<script>
+  function downloadPDF() {
+    var element = document.getElementById('download');
+    var opt = {
+      margin:       0.5,                          
+      filename:     'plano_alimentar.pdf',        
+      image:        { type: 'jpeg', quality: 0.98 }, 
+      html2canvas:  { scale: 2 },                 
+      jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
+    html2pdf().set(opt).from(element).save();
+  }
+</script>
+
+{% include "parciais/_footer.html" %}
+{% endblock %}

@@ -1,24 +1,70 @@
-<div class="container text-center my-3"style="font-weight: 600;">
-    <div class="row text-light">
-        <div class=" cinza-medio col-md-2 d-flex justify-content-center align-items-center">
-            <p><b> Lanche 1<br>
-                {% if lanche_1 %}
-                {{ lanche_1 }}h
-                {% endif %}
-            </b></p>
-        </div>
-        <div class="col-md-8 d-flex justify-content-center align-items-center cinza-claro">
-            <p><b>100 kcal</b> sementes</p>
-        </div>
+<style>
+    .refeicao-box {
+        display: flex;
+        border-radius: 8px;
+        overflow: hidden;
+        margin: 20px 0;
+        font-family: 'Montserrat', sans-serif;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        background: #fafafa;
+      }
+      
+      .refeicao-left {
+        background: #d9d9d9; /* gris medio */
+        color: #222;
+        text-align: center;
+        padding: 18px 15px;
+        min-width: 160px;      /* siempre mismo ancho */
+        max-width: 160px;      /* evita que se agrande */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-right: 1px solid #cfcfcf;
+      }
+      
+      .refeicao-left p {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 600;
+      }
+      
+      .refeicao-right {
+        flex: 1;
+        padding: 20px 25px;
+        font-size: 14px;
+        color: #2b2b2b;
+        line-height: 1.5;
+      }
+      
+      .refeicao-extra {
+        margin-top: 12px;
+        padding: 10px 15px;
+        background: #f2f2f2;
+        border-radius: 6px;
+        font-size: 13px;
+        color: #444;
+      }
+      
+  </style>
+  
+  <div class="refeicao-box">
+    <!-- Columna izquierda -->
+    <div class="refeicao-left">
+      <p>Lanche 1</p>
+      {% if lanche_1 %}
+        <p>{{ lanche_1 }}h</p>
+      {% endif %}
     </div>
-    {% if treino == 's' %}
-    {% if treino_cedo %}
-    <div class="row ">
-        <div class="col-md-10 azul-claro">
-            <p style="font-size: 12px">Se o tempo entre Café Manhã e Almoço for de 3 horas ou menos, transferir este
-                Lanche para Tarde</p>
-        </div>
+  
+    <!-- Columna derecha -->
+    <div class="refeicao-right">
+      <p><b>100 kcal</b> sementes</p>
+  
+      {% if treino == 's' and treino_cedo %}
+      <div class="refeicao-extra">
+        <p>Se o tempo entre Café da Manhã e Almoço for de 3 horas ou menos, transferir este lanche para a tarde.</p>
+      </div>
+      {% endif %}
     </div>
-    {% endif %}
-    {% endif %}
-</div>
+  </div>
+  

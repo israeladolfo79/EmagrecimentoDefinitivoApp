@@ -1,58 +1,124 @@
-<div class="container text-center my-2"style="font-weight: 600;">
-    <div class="row ">
-        <div class="cinza-medio col-md-2 d-flex justify-content-center align-items-center">
-            <div class="row">
-                <div class="col-md-12 text-center"><p><b>Café da Manhã</b> </p> </div>
-                {% if cafe_da_manha %}
-                
-                <div class="col-md-12"><p class="text-center"><b>{{ cafe_da_manha }}h</b></p></div>
-                {% endif %}
-            </div>
-            
-        </div>
-        <div class="col-md-8 cinza-claro">
-            <div class="row">
-                <div class="col-md-12 p-1">
-                    <p><span style="color: #0066CC">130 kcal em Carboidrato</span> (Pão [Grãos, Wrap, Francês], Torrada,
-                        Tapioca, Granola,<br> Aveia, Flocos Milho)</p>
-                </div>
-                <div class="col-md-12 cinza-medio">
-                    +
-                </div>
-                <div class="col-md-12 p-1">
-                    <p>2 fatias de Peito de Peru <b>ou</b> Presunto sem capa de gordura</p>
-                    <p><b>1</b> ovo</p>
-                    <p><b>50g</b> Proteina Animal (atum / frango desfiado)</p>
-                    <p><b>1</b> Colher SOPA de Mel <b>(1x no dia) ou</b> Mel de Agave</p>
-                    <p><b>2 colheres de Sopa ou:</b> Homus <b>ou</b> Caponata <b>ou</b> Coalhada Seca <b>ou</b> Cottage
-                    </p>
-                    <p><b>4</b> fatias de Salame</p>
-                    <p><b>1 colher de SOPA</b> de Geléia <span style="color: #FF0000">DIET</span> <b>ou</b> Pasta de
-                        Amendoim ou Manteiga ou Maionese</p>
-                    <p><b>1</b> Fatia de Mussarela</p>
-                    <p><b>2</b> Fatias de Mussarela de Bufala</p>
-                    <p><b>1</b> Fatia de Queijo Branco <b>ou</b> Mortadela</p>
-                    <p><b>1 colher de Sopa ou</b>: Requeijão ou Creme de Queijo</p>
-                    <p><b>200 ml</b> de Iogurte <span style="color: #FF0000">DIET</span> <b>ou 200 ml</b> de Leite</p>
-                </div>
-                <div class="col-md-12 cinza-escuro">
-                    <p>Escolha <span class="text-light">DUAS</span> opções</p>
-                </div>
-                <div class="col-md-12 cinza-medio">
-                    +
-                </div>
-                <div class="col-md-12">
-                    <p>Café ou Chá (Adoçante: Xilitol, Eritritol ou Stevia)</p>
-                </div>
-                {% if kcal > 1800 %}
-                <div class="col-md-12 cinza-medio">
-                    +
-                </div>
-                <div class="col-md-12">
-                    <p><b>1</b> fruta</p>
-                </div>
-                {% endif %}
-            </div>
-        </div>
+<style>
+    .refeicao-box {
+        display: flex;
+        border-radius: 8px;
+        overflow: hidden;
+        margin: 20px 0;
+        font-family: 'Montserrat', sans-serif;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        background: #fafafa; /* gris muy claro */
+      }
+      
+      /* Columna izquierda */
+      .refeicao-left {
+        background: #e0e0e0; /* gris medio suave */
+        color: #333;
+        text-align: center;
+        padding: 18px 22px;
+        min-width: 160px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-right: 1px solid #d6d6d6;
+      }
+      
+      .refeicao-left .refeicao-titulo {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 600;
+        color: #2b2b2b;
+      }
+      
+      .refeicao-left .refeicao-hora {
+        margin-top: 6px;
+        font-size: 13px;
+        color: #555;
+      }
+      
+      /* Columna derecha */
+      .refeicao-right {
+        padding: 20px 25px;
+        flex: 1;
+      }
+      
+      .refeicao-right p {
+        margin: 5px 0;
+        font-size: 15px;
+        color: #2b2b2b;
+      }
+      
+      .refeicao-right b {
+        font-weight: 600;
+      }
+      
+      .separator {
+        text-align: center;
+        margin: 10px 0;
+        color: #aaa;
+        font-size: 14px;
+      }
+      
+      .refeicao-info {
+        background: #d6d6d6;
+        border-radius: 4px;
+        text-align: center;
+        font-size: 13px;
+        padding: 6px;
+        margin: 10px 0;
+        color: #333;
+        font-weight: 500;
+      }
+      
+      .calorias {
+        color: #2b6ca3; /* azul corporativo sutil */
+        font-weight: 600;
+      }
+      
+      .diet {
+        color: #b32424; /* rojo elegante para DIET */
+        font-weight: 600;
+      }
+    </style>      
+<div class="refeicao-box my-3">
+    <!-- Columna izquierda -->
+    <div class="refeicao-left">
+      <p class="refeicao-titulo">Café da Manhã</p>
+      {% if cafe_da_manha %}
+        <p class="refeicao-hora">{{ cafe_da_manha }}h</p>
+      {% endif %}
     </div>
-</div>
+  
+    <!-- Columna derecha -->
+    <div class="refeicao-right">
+      <p><span class="calorias">130 kcal em Carboidrato</span> 
+        (Pão [Grãos, Wrap, Francês], Torrada, Tapioca, Granola, Aveia, Flocos Milho)
+      </p>
+  
+      <div class="separator">+</div>
+  
+      <p>2 fatias de Peito de Peru <b>ou</b> Presunto sem capa de gordura</p>
+      <p><b>1</b> ovo</p>
+      <p><b>50g</b> Proteína Animal (atum / frango desfiado)</p>
+      <p><b>1</b> Colher de Sopa de Mel <i>(1x no dia)</i> <b>ou</b> Mel de Agave</p>
+      <p><b>2 colheres de Sopa de:</b> Homus, Caponata, Coalhada Seca ou Cottage</p>
+      <p><b>4</b> fatias de Salame</p>
+      <p><b>1 colher de Sopa</b> de Geléia <span class="diet">DIET</span> ou Pasta de Amendoim ou Manteiga ou Maionese</p>
+      <p><b>1</b> Fatia de Mussarela</p>
+      <p><b>2</b> Fatias de Mussarela de Búfala</p>
+      <p><b>1</b> Fatia de Queijo Branco ou Mortadela</p>
+      <p><b>1 colher de Sopa</b> de Requeijão ou Creme de Queijo</p>
+      <p><b>200 ml</b> de Iogurte <span class="diet">DIET</span> ou <b>200 ml</b> de Leite</p>
+  
+      <div class="refeicao-info">Escolha DUAS opções</div>
+  
+      <div class="separator">+</div>
+  
+      <p>Café ou Chá (Adoçante: Xilitol, Eritritol ou Stevia)</p>
+  
+      {% if kcal > 1800 %}
+        <div class="separator">+</div>
+        <p><b>1</b> fruta</p>
+      {% endif %}
+    </div>
+  </div>
+  

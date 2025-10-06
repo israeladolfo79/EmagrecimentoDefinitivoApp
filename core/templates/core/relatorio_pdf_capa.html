@@ -1,0 +1,688 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>{{ titulo|default:"Informe" }}</title>
+<style>
+  /* --- Página A4 y numeración --- */
+  @page {
+    size: A4;
+    margin: 20mm 15mm 18mm 15mm;              /* top right bottom left */
+    @bottom-right {
+      content: "Página " counter(page) " de " counter(pages);
+      font-size: 10px;
+      color: #666;
+    }
+    background: url("{{ interior_bg_url }}") no-repeat center center;
+    background-size: cover;
+  }
+  @page:first {
+    background: url("{{ portada_bg_url }}") no-repeat center center;
+    background-size: cover;
+  }
+
+  /* --- Reset mínimo --- */
+  * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  html, body { height: 100%; }
+  body { font-family: sans-serif; font-size: 12px; color: #111; margin: 0; }
+
+  /* --- Utilidades --- */
+  .page-break { page-break-before: always; }
+  .avoid-break { page-break-inside: avoid; }
+
+  /* --- PORTADA --- */
+  .cover{
+    min-height: calc(100vh - 38mm);   /* alto útil (A4 menos márgenes ~20+18mm) */
+    display: grid;
+    grid-template-rows: 75% 25%;      /* 75% vacío arriba, 25% para el contenido */
+  }
+  .cover__stack{
+    grid-row: 2;                      /* ubica en el cuarto inferior */
+    place-self: center;               /* centra dentro de ese 25% */
+    text-align: center;
+  }
+
+  /* --- POg2 --- */
+  /* === Páginas con header (2, 3 y 4) === */
+  @page pageHdr {
+    size: A4;
+    margin: 20mm 15mm 18mm 15mm;
+    background: url("{{ interior_bg_url }}") no-repeat center center;
+    background-size: cover;
+    @top-right {
+      content: element(run-hdr);    /* inyecta el header en @top-right */
+      vertical-align: top;
+    }
+  }
+  
+  /* Elemento “corriendo” que se pinta en el margin box @top-right */
+  .run-hdr {
+    position: running(run-hdr);
+    text-align: right;
+    padding-top: 20mm;
+  }
+  
+  /* Tamaño del logo */
+  .logo-medico {
+    width: 45mm;   /* ajustá si hace falta */
+    height: auto;
+  }
+  
+  /* Aplica la página nombrada con header */
+  .with-header {
+    page: pageHdr;
+  }
+  
+  /* Salto de página controlado */
+  .page-break { page-break-before: always; }
+  
+  /*********PAG2********/
+  /* Caja más angosta y centrada */
+  .box-retornos.centrada{
+    max-width: 600px;               /* menos ancha */
+    width: min(92vw, 720px);
+    margin: 12px auto;              /* centrada */
+    padding: 6px;
+    background: #f6f9ff;            /* color suave */
+    border: 1px solid #dbe6f5;
+    border-radius: 10px;
+    box-shadow: 0 1px 0 rgba(0,0,0,.04);
+    margin-top:20mm;
+  }
+  
+  /* Tabla 6×3, columnas equidistantes */
+  .tabla-retornos{
+    width: 100%;
+    table-layout: fixed;            /* columnas iguales */
+    border-collapse: separate;
+    border-spacing: 0;
+    font: 500 13px/1.3 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    color: #4b5563;                 /* texto sutil */
+  }
+  .tabla-retornos col{
+    width: calc(100%/6);            /* equidistante */
+  }
+  .tabla-retornos td{
+    padding: 8px 12px;
+    white-space: nowrap;
+  }
+  
+  /* filas alternadas sutiles */
+  .tabla-retornos tr:nth-child(odd){ background: #f9fbff; }
+  .tabla-retornos tr:nth-child(even){ background: #ffffff; }
+  
+  /* etiquetas/valores */
+  .lbl{ color:#425a70; }
+  .val{ font-weight:400; color:; }      /* azul sutil */
+  .val-roja{ color:; }                  /* destacadas en rojo */
+  .lbl{ font-size:12px; }
+  .val{ font-size:12px; }
+
+  
+  
+  /* separadores verticales suaves entre bloques */
+  .sep{ border-left: 1px solid #e6edf7; }
+  
+  /* esquinas redondeadas */
+  .tabla-retornos tr:first-child td:first-child{ border-top-left-radius:8px; }
+  .tabla-retornos tr:first-child td:last-child{ border-top-right-radius:8px; }
+  .tabla-retornos tr:last-child td:first-child{ border-bottom-left-radius:8px; }
+  .tabla-retornos tr:last-child td:last-child{ border-bottom-right-radius:8px; }
+  /* envolvente centrada y más angosta */
+  .tabla-metricas-wrap{
+    width: min(95vw, 980px);
+    margin: 14px auto 24px;
+  }
+  
+  /* tabla sutil */
+  .tabla-metricas{
+    width: 100%;
+    table-layout: fixed;                 /* columnas equidistantes */
+    border-collapse: separate;
+    border-spacing: 0;
+    font: 500 13px/1.1 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+    color: #344256;                      /* texto gris azulado sutil */
+    background: #fff;
+    border: 1px solid #dfe7f2;           /* borde suave exterior */
+    border-radius: 8px;
+    overflow: hidden;                    /* redondeo real */
+  }
+
+  /* --- modo compacto --- */
+.tabla-metricas.compact{
+  font: 500 12px/1.15 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; /* ↓ tamaño y line-height */
+}
+
+/* anchos de columnas */
+.tabla-metricas col.col-label{ width: 20%; }                 /* primera más ancha */
+.tabla-metricas col.col-data { width: calc(80% / 9); }       /* resto equidistantes */
+
+/* header más bajo y letra más chica */
+.tabla-metricas.compact thead th{
+  padding: 6px 6px;                 /* ↓ alto */
+  font-size: 12px;                  /* ↓ tamaño */
+}
+
+/* 1ª columna (rótulos) más baja y algo más angosta en padding */
+.tabla-metricas.compact tbody th{
+  padding: 6px 10px;                /* ↓ alto */
+  font-size: 12px;
+}
+
+/* celdas: más compactas */
+.tabla-metricas.compact td{
+  padding: 6px 6px;                 /* ↓ alto */
+  font-size: 12px;
+}
+
+/* separador “Dobras” compacto */
+.tabla-metricas.compact .separador td{
+  padding: 6px;
+  font-size: 12px;
+}
+.tabla-metricas-wrap{
+  width: min(95vw, 980px);
+  margin: 14px auto 22px;
+}
+.tabla-metricas{
+  width:100%;
+  table-layout:fixed;           /* fija y equidistante */
+  border-collapse:separate;
+  border-spacing:0;
+  background:#fff;
+  border:1px solid #dfe7f2;
+  border-radius:8px;
+  overflow:hidden;
+  color:#344256;
+  font:500 12px/1.15 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+}
+.tabla-metricas col.col-label{ width:22%; }
+.tabla-metricas col.col-data { width:calc(78%/9); }
+.tabla-metricas thead th{
+  background:#edf3fa;
+  color:#2b3b51;
+  font-weight:700;
+  text-align:center;
+  padding:6px 6px;
+  border-bottom:1px solid #d6e1ef;
+}
+.tabla-metricas tbody th{
+  text-align:left;
+  padding:6px 10px;
+  background:#f6f9fc;
+  color:#2f3f55;
+  font-weight:700;
+  border-right:1px solid #e6edf7;
+  vertical-align:top;
+}
+.tabla-metricas td{
+  padding:6px 6px;
+  text-align:right;
+  border-right:1px solid #eef3fa;
+}
+.tabla-metricas tbody tr:nth-child(odd) td{ background:#fbfdff; }
+.tabla-metricas tbody tr:nth-child(even) td{ background:#f8fbfe; }
+.tabla-metricas .separador td{
+  padding:6px;
+  text-align:center;
+  font-weight:800;
+  color:#2b3b51;
+  background:#edf3fa;
+  border-top:1px solid #d6e1ef;
+  border-bottom:1px solid #d6e1ef;
+}
+.tabla-metricas tr > *:last-child{ border-right:0; }
+
+/* Mantener altura/bordes en celdas vacías */
+.tabla-metricas td:empty::before{ content:"\00a0"; }
+
+</style>
+</head>
+<body>
+
+<!-- PORTADA -->
+<section style="height:259mm; margin:0; padding:0;">
+  <div style="height:194.25mm;"></div>
+  <div style="
+    height:64.75mm;
+    display:flex; align-items:center; justify-content:center;
+    text-align:center; margin:0; padding:0;
+  ">
+    <div style="max-width:120mm;">
+      <div style="font-size:18px; font-weight:600; margin:0 0 10mm 0; color:#0f172a;">
+        Evolução de:
+      </div>
+      <div style="
+        display:inline-block; padding:6mm 10mm; margin:0 0 8mm 0;
+        border:1px solid #e5e7eb; border-radius:9999px; background:#fff;
+        font-size:14px; font-weight:700; min-width:90mm; line-height:1.15;
+      ">
+        {{ paciente.nombre_completo }}
+      </div>
+      <div style="font-size:10px; color:#334155; line-height:1.35; font-weight:600;">
+        {{ profissional.nombre_completo }}<br>
+        Nutricionista do Esporte<br>
+        Cel: {{ profissional.telefono }}
+      </div>
+    </div>
+  </div>
+</section>
+<!-- PAGINA2 -->
+<!-- PAGINA 2 -->
+<section class="page-break with-header">
+  <!-- Header que se inyecta en @top-right SOLO en páginas con page: pageHdr -->
+  <div class="run-hdr">
+    <img
+      src="https://newemagrecimento2.s3.amazonaws.com/django-summernote/2025-01-30/c2789af5-32a6-4184-a2ce-5c4e32b581f5.png"
+      alt="Logo Nutrição Esportiva"
+      class="logo-medico">
+  </div>
+  <div>    
+<!-- ====== Caja Retornos (6×3) ====== -->
+<div class="box-retornos centrada">
+  <table class="tabla-retornos">
+    <!-- columnas equidistantes -->
+    <colgroup>
+      <col span="6">
+    </colgroup>
+    <tbody>
+      <tr>
+        <td class="lbl">Consulta 0:</td>
+        <td class="val val-roja">{{ consulta0|default:"00/00/0000" }}</td>
+
+        <td class="lbl sep">Retorno 30D:</td>
+        <td class="val">{{ retorno30d|default:"00/00/0000" }}</td>
+
+        <td class="lbl sep">Manutenção 1:</td>
+        <td class="val">{{ manutencao1|default:"00/00/0000" }}</td>
+      </tr>
+      <tr>
+        <td class="lbl">Retorno 0 D:</td>
+        <td class="val val-roja">{{ retorno0d|default:"00/00/0000" }}</td>
+
+        <td class="lbl sep">Retorno 45D:</td>
+        <td class="val">{{ retorno45d|default:"00/00/0000" }}</td>
+
+        <td class="lbl sep">Manutenção 2:</td>
+        <td class="val">{{ manutencao2|default:"00/00/0000" }}</td>
+      </tr>
+      <tr>
+        <td class="lbl">Retorno 15D:</td>
+        <td class="val">{{ retorno15d|default:"00/00/0000" }}</td>
+
+        <td class="lbl sep">Retorno 60D:</td>
+        <td class="val">{{ retorno60d|default:"00/00/0000" }}</td>
+
+        <td class="lbl sep">Manutenção 3:</td>
+        <td class="val">{{ manutencao3|default:"00/00/0000" }}</td>
+      </tr>
+    </tbody>    
+  </table>
+</div>
+<div style="position:relative;z-index:99999;background:#2f6fa3;border-radius:9999px;
+            padding:12px 20px;text-align:center;width:600px;margin:20px auto;color:#fff;">
+  EVOLUÇÃO DA MASSA MAGRA x GORDURA CORPORAL
+</div>
+<div class="tabla-metricas-wrap">
+  <table class="tabla-metricas compact">
+    <colgroup>
+      <col class="col-label">                 <!-- 1ª columna más ancha -->
+      <col class="col-data" span="9">         <!-- resto equidistantes -->
+    </colgroup>
+
+    <thead>
+      <tr>
+        <th></th>
+        <th>CI</th><th>R0</th><th>R15</th><th>R30</th><th>R45</th><th>R60</th><th>M1</th><th>M2</th><th>M3</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <!-- ====== METRICAS ====== -->
+      <tr><th>Peso</th>
+        <td>{{ t.peso.ci|default:"" }}</td><td>{{ t.peso.r0|default:"" }}</td><td>{{ t.peso.r15|default:"" }}</td><td>{{ t.peso.r30|default:"" }}</td><td>{{ t.peso.r45|default:"" }}</td><td>{{ t.peso.r60|default:"" }}</td><td>{{ t.peso.m1|default:"" }}</td><td>{{ t.peso.m2|default:"" }}</td><td>{{ t.peso.m3|default:"" }}</td>
+      </tr>
+      <tr><th>% Gordura</th>
+        <td>{{ t.gordura.ci|default:"" }}</td><td>{{ t.gordura.r0|default:"" }}</td><td>{{ t.gordura.r15|default:"" }}</td><td>{{ t.gordura.r30|default:"" }}</td><td>{{ t.gordura.r45|default:"" }}</td><td>{{ t.gordura.r60|default:"" }}</td><td>{{ t.gordura.m1|default:"" }}</td><td>{{ t.gordura.m2|default:"" }}</td><td>{{ t.gordura.m3|default:"" }}</td>
+      </tr>
+      <tr><th>M. Magra</th>
+        <td>{{ t.magra.ci|default:"" }}</td><td>{{ t.magra.r0|default:"" }}</td><td>{{ t.magra.r15|default:"" }}</td><td>{{ t.magra.r30|default:"" }}</td><td>{{ t.magra.r45|default:"" }}</td><td>{{ t.magra.r60|default:"" }}</td><td>{{ t.magra.m1|default:"" }}</td><td>{{ t.magra.m2|default:"" }}</td><td>{{ t.magra.m3|default:"" }}</td>
+      </tr>
+      <tr><th>Peso Gordura</th>
+        <td>{{ t.peso_gordura.ci|default:"" }}</td><td>{{ t.peso_gordura.r0|default:"" }}</td><td>{{ t.peso_gordura.r15|default:"" }}</td><td>{{ t.peso_gordura.r30|default:"" }}</td><td>{{ t.peso_gordura.r45|default:"" }}</td><td>{{ t.peso_gordura.r60|default:"" }}</td><td>{{ t.peso_gordura.m1|default:"" }}</td><td>{{ t.peso_gordura.m2|default:"" }}</td><td>{{ t.peso_gordura.m3|default:"" }}</td>
+      </tr>
+      <tr><th>Ombros</th>
+        <td>{{ t.ombros.ci|default:"" }}</td><td>{{ t.ombros.r0|default:"" }}</td><td>{{ t.ombros.r15|default:"" }}</td><td>{{ t.ombros.r30|default:"" }}</td><td>{{ t.ombros.r45|default:"" }}</td><td>{{ t.ombros.r60|default:"" }}</td><td>{{ t.ombros.m1|default:"" }}</td><td>{{ t.ombros.m2|default:"" }}</td><td>{{ t.ombros.m3|default:"" }}</td>
+      </tr>
+      <tr><th>Braço Contraído</th>
+        <td>{{ t.braco_contraido.ci|default:"" }}</td><td>{{ t.braco_contraido.r0|default:"" }}</td><td>{{ t.braco_contraido.r15|default:"" }}</td><td>{{ t.braco_contraido.r30|default:"" }}</td><td>{{ t.braco_contraido.r45|default:"" }}</td><td>{{ t.braco_contraido.r60|default:"" }}</td><td>{{ t.braco_contraido.m1|default:"" }}</td><td>{{ t.braco_contraido.m2|default:"" }}</td><td>{{ t.braco_contraido.m3|default:"" }}</td>
+      </tr>
+      <tr><th>Cintura</th>
+        <td>{{ t.cintura.ci|default:"" }}</td><td>{{ t.cintura.r0|default:"" }}</td><td>{{ t.cintura.r15|default:"" }}</td><td>{{ t.cintura.r30|default:"" }}</td><td>{{ t.cintura.r45|default:"" }}</td><td>{{ t.cintura.r60|default:"" }}</td><td>{{ t.cintura.m1|default:"" }}</td><td>{{ t.cintura.m2|default:"" }}</td><td>{{ t.cintura.m3|default:"" }}</td>
+      </tr>
+      <tr><th>Abdominal</th>
+        <td>{{ t.abdominal.ci|default:"" }}</td><td>{{ t.abdominal.r0|default:"" }}</td><td>{{ t.abdominal.r15|default:"" }}</td><td>{{ t.abdominal.r30|default:"" }}</td><td>{{ t.abdominal.r45|default:"" }}</td><td>{{ t.abdominal.r60|default:"" }}</td><td>{{ t.abdominal.m1|default:"" }}</td><td>{{ t.abdominal.m2|default:"" }}</td><td>{{ t.abdominal.m3|default:"" }}</td>
+      </tr>
+      <tr><th>Quadril</th>
+        <td>{{ t.quadril.ci|default:"" }}</td><td>{{ t.quadril.r0|default:"" }}</td><td>{{ t.quadril.r15|default:"" }}</td><td>{{ t.quadril.r30|default:"" }}</td><td>{{ t.quadril.r45|default:"" }}</td><td>{{ t.quadril.r60|default:"" }}</td><td>{{ t.quadril.m1|default:"" }}</td><td>{{ t.quadril.m2|default:"" }}</td><td>{{ t.quadril.m3|default:"" }}</td>
+      </tr>
+
+      <!-- ====== SEPARADOR ====== -->
+      <tr class="separador"><td colspan="10">Dobras</td></tr>
+
+      <!-- ====== DOBRAS ====== -->
+      <tr><th>Tríceps</th>
+        <td>{{ t.triceps.ci|default:"" }}</td><td>{{ t.triceps.r0|default:"" }}</td><td>{{ t.triceps.r15|default:"" }}</td><td>{{ t.triceps.r30|default:"" }}</td><td>{{ t.triceps.r45|default:"" }}</td><td>{{ t.triceps.r60|default:"" }}</td><td>{{ t.triceps.m1|default:"" }}</td><td>{{ t.triceps.m2|default:"" }}</td><td>{{ t.triceps.m3|default:"" }}</td>
+      </tr>
+      <tr><th>Costas</th>
+        <td>{{ t.costas.ci|default:"" }}</td><td>{{ t.costas.r0|default:"" }}</td><td>{{ t.costas.r15|default:"" }}</td><td>{{ t.costas.r30|default:"" }}</td><td>{{ t.costas.r45|default:"" }}</td><td>{{ t.costas.r60|default:"" }}</td><td>{{ t.costas.m1|default:"" }}</td><td>{{ t.costas.m2|default:"" }}</td><td>{{ t.costas.m3|default:"" }}</td>
+      </tr>
+      <tr><th>Peito</th>
+        <td>{{ t.peito.ci|default:"" }}</td><td>{{ t.peito.r0|default:"" }}</td><td>{{ t.peito.r15|default:"" }}</td><td>{{ t.peito.r30|default:"" }}</td><td>{{ t.peito.r45|default:"" }}</td><td>{{ t.peito.r60|default:"" }}</td><td>{{ t.peito.m1|default:"" }}</td><td>{{ t.peito.m2|default:"" }}</td><td>{{ t.peito.m3|default:"" }}</td>
+      </tr>
+      <tr><th>Axila</th>
+        <td>{{ t.axila.ci|default:"" }}</td><td>{{ t.axila.r0|default:"" }}</td><td>{{ t.axila.r15|default:"" }}</td><td>{{ t.axila.r30|default:"" }}</td><td>{{ t.axila.r45|default:"" }}</td><td>{{ t.axila.r60|default:"" }}</td><td>{{ t.axila.m1|default:"" }}</td><td>{{ t.axila.m2|default:"" }}</td><td>{{ t.axila.m3|default:"" }}</td>
+      </tr>
+      <tr><th>Abdome Lateral</th>
+        <td>{{ t.abdome_lateral.ci|default:"" }}</td><td>{{ t.abdome_lateral.r0|default:"" }}</td><td>{{ t.abdome_lateral.r15|default:"" }}</td><td>{{ t.abdome_lateral.r30|default:"" }}</td><td>{{ t.abdome_lateral.r45|default:"" }}</td><td>{{ t.abdome_lateral.r60|default:"" }}</td><td>{{ t.abdome_lateral.m1|default:"" }}</td><td>{{ t.abdome_lateral.m2|default:"" }}</td><td>{{ t.abdome_lateral.m3|default:"" }}</td>
+      </tr>
+      <tr><th>Abdome</th>
+        <td>{{ t.abdome.ci|default:"" }}</td><td>{{ t.abdome.r0|default:"" }}</td><td>{{ t.abdome.r15|default:"" }}</td><td>{{ t.abdome.r30|default:"" }}</td><td>{{ t.abdome.r45|default:"" }}</td><td>{{ t.abdome.r60|default:"" }}</td><td>{{ t.abdome.m1|default:"" }}</td><td>{{ t.abdome.m2|default:"" }}</td><td>{{ t.abdome.m3|default:"" }}</td>
+      </tr>
+      <tr><th>Coxa</th>
+        <td>{{ t.coxa.ci|default:"" }}</td><td>{{ t.coxa.r0|default:"" }}</td><td>{{ t.coxa.r15|default:"" }}</td><td>{{ t.coxa.r30|default:"" }}</td><td>{{ t.coxa.r45|default:"" }}</td><td>{{ t.coxa.r60|default:"" }}</td><td>{{ t.coxa.m1|default:"" }}</td><td>{{ t.coxa.m2|default:"" }}</td><td>{{ t.coxa.m3|default:"" }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</section>
+
+<!-- PAGINA 3 -->
+<section class="page-break with-header">
+  <div class="run-hdr">
+    <img
+      src="https://newemagrecimento2.s3.amazonaws.com/django-summernote/2025-01-30/c2789af5-32a6-4184-a2ce-5c4e32b581f5.png"
+      alt="Logo Nutrição Esportiva"
+      class="logo-medico">
+  </div>
+  <table class="tabla-6x3 avoid-break">
+    <tr>
+      <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+      <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+      <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+      <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+    </tr>
+  </table>
+</section>
+
+<!-- PAGINA 4 -->
+<section class="page-break with-header">
+  <div class="run-hdr">
+    <img
+      src="https://newemagrecimento2.s3.amazonaws.com/django-summernote/2025-01-30/c2789af5-32a6-4184-a2ce-5c4e32b581f5.png"
+      alt="Logo Nutrição Esportiva"
+      class="logo-medico">
+  </div>
+
+  <!-- Contenido de la PÁGINA 4 -->
+  <div>
+    <!-- TODO: tu contenido de la página 4 -->
+  </div>
+</section>
+
+<!-- A PARTIR DE ACÁ ya no hay header (usa tu @page default) -->
+<section class="page-break">
+  <!-- Páginas 5+ sin header -->
+  <!-- TODO: más contenido -->
+</section>
+
+
+  <!-- CUERPO (ejemplos para forzar multipágina; reemplazá con tu contenido) -->
+  <div class="page-break"></div>
+
+  <h2>Resumen ejecutivo</h2>
+  <p class="muted">Contenido de ejemplo. Reemplazar por tus secciones reales.</p>
+
+  <table class="avoid-break">
+    <thead>
+      <tr><th>#</th><th>Descripción</th></tr>
+    </thead>
+    <tbody>
+      {% for it in items %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ it }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="page-break"></div>
+
+
+
+<!-- Salto de página: después de la portada empieza el informe -->
+<div class="page-break"></div>
+
+  <!-- 1) RESUMEN EJECUTIVO -->
+  <section class="avoid-break">
+    <div class="section-title">1) Resumen ejecutivo</div>
+    <div class="lead-tight"><strong>Objetivo principal:</strong> {{ objetivo_principal_1_linea }}</div>
+    <ul class="mt-2 mb-2">
+      <li>{{ highlight_1 }}</li>
+      <li>{{ highlight_2 }}</li>
+      <li>{{ highlight_3 }}</li>
+    </ul>
+    <p class="small text-muted mb-0">
+      Se observa {{ sintesis_cualitativa_evolucion }}. Mantener adherencia nutricional y carga de entrenamiento.
+    </p>
+  </section>
+
+  <!-- 2) COMPOSICIÓN CORPORAL Y EVOLUCIÓN -->
+  <section class="page-break">
+    <div class="section-title">2) Composición corporal y evolución</div>
+
+    <div class="row g-2 mb-2">
+      <div class="col-3"><div class="kpi text-center"><div class="muted tiny">Peso</div><div class="h6 mb-0">{{ kpi.peso }} kg</div></div></div>
+      <div class="col-3"><div class="kpi text-center"><div class="muted tiny">% Grasa</div><div class="h6 mb-0">{{ kpi.porcentaje_grasa }} %</div></div></div>
+      <div class="col-3"><div class="kpi text-center"><div class="muted tiny">Masa magra</div><div class="h6 mb-0">{{ kpi.masa_magra }} kg</div></div></div>
+      <div class="col-3"><div class="kpi text-center"><div class="muted tiny">IMC</div><div class="h6 mb-0">{{ kpi.imc }}</div></div></div>
+    </div>
+
+    <div class="section-sub">Comparativo</div>
+    <table class="table table-sm align-middle">
+      <thead>
+        <tr>
+          <th>Métrica</th><th class="text-end">Anterior</th><th class="text-end">Actual</th><th class="text-end">Δ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Peso (kg)</td><td class="text-end">{{ ev.peso_prev }}</td><td class="text-end">{{ ev.peso_act }}</td><td class="text-end">{{ ev.peso_delta }}</td></tr>
+        <tr><td>% Grasa</td><td class="text-end">{{ ev.gc_prev }}</td><td class="text-end">{{ ev.gc_act }}</td><td class="text-end">{{ ev.gc_delta }}</td></tr>
+        <tr><td>Masa magra (kg)</td><td class="text-end">{{ ev.mm_prev }}</td><td class="text-end">{{ ev.mm_act }}</td><td class="text-end">{{ ev.mm_delta }}</td></tr>
+        <tr><td>IMC</td><td class="text-end">{{ ev.imc_prev }}</td><td class="text-end">{{ ev.imc_act }}</td><td class="text-end">{{ ev.imc_delta }}</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 3) CIRCUNFERENCIAS Y RIESGOS -->
+  <section class="avoid-break">
+    <div class="section-title">3) Circunferencias y riesgos</div>
+    <table class="table table-sm">
+      <thead><tr><th>Zona</th><th class="text-end">Anterior</th><th class="text-end">Actual</th><th class="text-end">Δ</th></tr></thead>
+      <tbody>
+        <tr><td>Cintura</td><td class="text-end">{{ circ.cintura_prev }}</td><td class="text-end">{{ circ.cintura_act }}</td><td class="text-end">{{ circ.cintura_delta }}</td></tr>
+        <tr><td>Cadera</td><td class="text-end">{{ circ.cadera_prev }}</td><td class="text-end">{{ circ.cadera_act }}</td><td class="text-end">{{ circ.cadera_delta }}</td></tr>
+        <tr><td>Cuello</td><td class="text-end">{{ circ.cuello_prev }}</td><td class="text-end">{{ circ.cuello_act }}</td><td class="text-end">{{ circ.cuello_delta }}</td></tr>
+        <tr><td>Brazo</td><td class="text-end">{{ circ.brazo_prev }}</td><td class="text-end">{{ circ.brazo_act }}</td><td class="text-end">{{ circ.brazo_delta }}</td></tr>
+        <tr><td>Muslo</td><td class="text-end">{{ circ.muslo_prev }}</td><td class="text-end">{{ circ.muslo_act }}</td><td class="text-end">{{ circ.muslo_delta }}</td></tr>
+        <tr><td>Pantorrilla</td><td class="text-end">{{ circ.pantorrilla_prev }}</td><td class="text-end">{{ circ.pantorrilla_act }}</td><td class="text-end">{{ circ.pantorrilla_delta }}</td></tr>
+      </tbody>
+    </table>
+    <p class="tiny muted mb-0">Leyenda de riesgo: N = normal, AU = aumentado, MA = muy aumentado.</p>
+  </section>
+
+  <!-- 4) GASTO ENERGÉTICO Y METAS -->
+  <section class="page-break">
+    <div class="section-title">4) Gasto energético y metas</div>
+    <div class="row g-2">
+      <div class="col-6">
+        <div class="kpi">
+          <div class="muted tiny">Gasto Energético Diario</div>
+          <div class="h6 mb-1">{{ gasto.diario_kcal }} kcal/día</div>
+          <div class="tiny">Fórmula/Referencia: {{ gasto.metodo }}</div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="kpi">
+          <div class="muted tiny">Gasto en el período</div>
+          <div class="h6 mb-1">{{ gasto.periodo_kcal }} kcal</div>
+          <div class="tiny">Período: {{ informe.desde }} — {{ informe.hasta }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="section-sub mt-2">Metas por etapa</div>
+    <table class="table table-sm">
+      <thead><tr><th>Etapa</th><th>Semanas</th><th>Meta</th><th>Notas</th></tr></thead>
+      <tbody>
+        <tr><td>Etapa 1</td><td>0–4</td><td>{{ metas.etapa1 }}</td><td>{{ metas.nota1 }}</td></tr>
+        <tr><td>Etapa 2</td><td>4–8</td><td>{{ metas.etapa2 }}</td><td>{{ metas.nota2 }}</td></tr>
+        <tr><td>Etapa 3</td><td>8–12</td><td>{{ metas.etapa3 }}</td><td>{{ metas.nota3 }}</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 5) ANTROPOMETRÍA DETALLADA -->
+  <section class="avoid-break">
+    <div class="section-title">5) Antropometría detallada</div>
+    <table class="table table-sm">
+      <thead><tr><th>Métrica</th><th class="text-end">Valor</th></tr></thead>
+      <tbody>
+        <tr><td>Peso</td><td class="text-end">{{ antro.peso }} kg</td></tr>
+        <tr><td>Talla</td><td class="text-end">{{ antro.talla }} cm</td></tr>
+        <tr><td>IMC</td><td class="text-end">{{ antro.imc }}</td></tr>
+        <tr><td>% GC</td><td class="text-end">{{ antro.gc }} %</td></tr>
+        <tr><td>Masa magra</td><td class="text-end">{{ antro.mm }} kg</td></tr>
+        <tr><td>Masa grasa</td><td class="text-end">{{ antro.mg }} kg</td></tr>
+        <tr><td>Pliegues (resumen)</td><td class="text-end">{{ antro.pliegues_resumen }}</td></tr>
+        <tr><td>Perímetros (resumen)</td><td class="text-end">{{ antro.perimetros_resumen }}</td></tr>
+      </tbody>
+    </table>
+    <div class="tiny"><strong>Observaciones:</strong> {{ antro.observaciones }}</div>
+  </section>
+
+  <!-- 6) PLAN ALIMENTARIO (DÍA TIPO) -->
+  <section class="page-break">
+    <div class="section-title">6) Plan alimentario (día tipo)</div>
+    <div class="section-sub">Distribución sugerida y ejemplos</div>
+
+    <table class="table table-sm">
+      <thead><tr><th>Comida</th><th>Opciones/Porciones</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Desayuno</strong></td><td>{{ plan.desayuno }}</td></tr>
+        <tr><td><strong>Almuerzo</strong></td><td>{{ plan.almuerzo }}</td></tr>
+        <tr><td><strong>Merienda</strong></td><td>{{ plan.merienda }}</td></tr>
+        <tr><td><strong>Cena</strong></td><td>{{ plan.cena }}</td></tr>
+        <tr><td><strong>Colaciones</strong></td><td>{{ plan.colaciones }}</td></tr>
+      </tbody>
+    </table>
+
+    <div class="row g-2">
+      <div class="col-6">
+        <div class="kpi">
+          <div class="muted tiny">Hidratación</div>
+          <div class="h6 mb-1">{{ plan.hidratacion }}</div>
+          <div class="tiny">Ej.: {{ plan.hidratacion_ej }}</div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="kpi">
+          <div class="muted tiny">Ajustes individuales</div>
+          <div class="tiny mb-0">{{ plan.ajustes_individuales }}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7) INTERCAMBIOS / PORCIONES -->
+  <section class="avoid-break">
+    <div class="section-title">7) Intercambios / Porciones de referencia</div>
+    <table class="table table-sm">
+      <thead><tr><th>Grupo</th><th>Equivalentes (1 porción)</th></tr></thead>
+      <tbody>
+        <tr><td>Hidratos</td><td>{{ intercambios.hc }}</td></tr>
+        <tr><td>Proteínas</td><td>{{ intercambios.prote }}</td></tr>
+        <tr><td>Grasas</td><td>{{ intercambios.grasas }}</td></tr>
+        <tr><td>Frutas</td><td>{{ intercambios.frutas }}</td></tr>
+        <tr><td>Verduras</td><td>{{ intercambios.verduras }}</td></tr>
+        <tr><td>Lácteos</td><td>{{ intercambios.lacteos }}</td></tr>
+      </tbody>
+    </table>
+    <p class="tiny muted mb-0">Elegí 1 opción por intercambio y rotá durante la semana.</p>
+  </section>
+
+  <!-- 8) RECOMENDACIONES Y ADHERENCIA -->
+  <section class="page-break">
+    <div class="section-title">8) Recomendaciones y adherencia</div>
+    <ul>
+      <li>{{ recs.item1 }}</li>
+      <li>{{ recs.item2 }}</li>
+      <li>{{ recs.item3 }}</li>
+      <li>{{ recs.item4 }}</li>
+      <li>{{ recs.item5 }}</li>
+    </ul>
+    <p class="tiny muted mb-0">
+      El tiempo hasta el objetivo depende de adherencia, carga de ejercicio, genética y adaptación metabólica.
+    </p>
+  </section>
+
+  <!-- 9) SUPLEMENTACIÓN (si aplica) -->
+  <section class="avoid-break">
+    <div class="section-title">9) Suplementación (si aplica)</div>
+    <table class="table table-sm">
+      <thead><tr><th>Suplemento</th><th>Dosis</th><th>Momento</th><th>Duración</th></tr></thead>
+      <tbody>
+        {% for s in suplementos %}
+          <tr>
+            <td>{{ s.nombre }}</td>
+            <td>{{ s.dosis }}</td>
+            <td>{{ s.momento }}</td>
+            <td>{{ s.duracion }}</td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="4" class="text-center tiny muted">Sin suplementación indicada.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <p class="tiny muted mb-0">Usar bajo seguimiento profesional. Revisar interacciones.</p>
+  </section>
+
+  <!-- 10) COMENTARIOS FINALES, PRÓXIMA CITA Y FIRMA -->
+  <section class="page-break">
+    <div class="section-title">10) Comentarios finales</div>
+    <p>{{ comentarios_finales }}</p>
+
+    <div class="row g-2 mt-3">
+      <div class="col-6">
+        <div class="kpi">
+          <div class="muted tiny">Próxima cita</div>
+          <div class="h6 mb-0">{{ proxima_cita.fecha }}</div>
+        </div>
+      </div>
+      <div class="col-6 text-end">
+        <div class="tiny muted">Firma del profesional</div>
+        <div style="height:60px;"></div>
+        <div><strong>{{ profesional.nombre_completo }}</strong></div>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

@@ -1,8 +1,72 @@
-<div class="container text-center my-3" style="font-weight: bolder;">
-    <div class="row">
-        <div class="col-md-10 d-flex justify-content-center align-items-center"
-            style="background-color: red;">
-            <h1 class="text-center helvetica text-light my-1" style="font-weight: bold;">{{ nome }}</h1>
-        </div>
+<style>
+  .header-plan {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;   /* reparte igual los bloques */
+    background: #2b6ca3;
+    padding: 20px 30px;
+    border-radius: 10px 10px 0 0;
+    font-family: 'Montserrat', sans-serif;
+    color: #fff;
+    width: 100%; /* ocupa todo el ancho disponible */
+  }
+  
+  .header-left {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+  }
+  
+  .logo-medico {
+    height: 45px;
+    width: auto;
+  }
+  
+  .header-center {
+    flex: 1; /* mismo peso que las otras columnas */
+    text-align: center; /* centrado dinámico */
+    border-left: 1px solid rgba(255,255,255,0.3);
+    border-right: 1px solid rgba(255,255,255,0.3);
+    padding: 0 20px;
+  }
+  
+  .header-center p {
+    margin: 2px 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+  }
+  
+  .header-right {
+    flex: 1; /* mismo peso */
+    text-align: right; /* pegado a la derecha */
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  
+            
+    </style>    
+    <div class="header-plan">
+
+      <!-- Columna izquierda -->
+      <div class="header-left">
+        <img src="https://newemagrecimento2.s3.amazonaws.com/django-summernote/2025-01-30/c2789af5-32a6-4184-a2ce-5c4e32b581f5.png" 
+             alt="Logo Nutrição Esportiva" 
+             class="logo-medico">
+      </div>
+    
+      <!-- Columna central -->
+      <div class="header-center">
+        <p class="paciente">Paciente: {{ nome_completo }}</p>
+        <p class="data">Data: {{ data_realizacao }}</p>
+      </div>
+    
+      <!-- Columna derecha -->
+      <div class="header-right">
+        <span>{% if treino == 's' %} COM TREINOS {% else %} SEM TREINO {% endif %}</span>
+      </div>
+    
     </div>
-</div>
+    

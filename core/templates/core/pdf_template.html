@@ -1,0 +1,105 @@
+
+{% load static %}
+{% block header %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.js"></script>
+<link rel="stylesheet" href="{% static 'core/css/dashboard.css' %}" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Open+Sans&display=swap');
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  background: #f7f9fc;
+  margin: 0;
+  padding: 0;
+}
+#download-wrapper {
+  display: flex;
+  justify-content: center; /* centra horizontalmente */
+  padding: 20px 0;         /* margen arriba y abajo */
+  background: #f7f9fc;     /* fondo gris claro */
+}
+
+#download {
+  width: 210mm;            /* ancho fijo de A4 (si querés más ancho, subilo) */
+  min-height: 297mm;       /* altura A4 */
+  background: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  margin: auto;            /* por seguridad */
+}
+.header-wrapper {
+  display: flex;
+  justify-content: center; /* lo centra en la página */
+  background: #f7f9fc;     /* gris claro como margen */
+  padding: 10px 0;
+}
+
+.header-plan {
+  width: 210mm;  /* mismo ancho que A4 */
+  max-width: 100%;
+  background: #2b6ca3;
+  border-radius: 8px 8px 0 0;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 30px;
+  box-sizing: border-box; /* importante para PDF */
+}
+
+</style>
+<div id="download-wrapper">
+  <div id="download" class="container">
+    {% comment %} <div class="header-wrapper">
+      <div class="header-plan">    
+          <div class="header-center">
+          <p class="paciente">Paciente: {{ nome_completo }}</p>
+          <p class="data">Data: {{ data_realizacao }}</p>
+        </div>
+      </div>
+    </div> {% endcomment %}
+    
+    <!-- Nome da pessoa -->
+    <div class="card-refeicao">
+      {% include 'parciais/_nome_pessoa.html' %}
+    </div>
+
+    <!-- Pré-treino -->
+    {% if treino_cedo %}
+    <div class="card-refeicao">
+      {% include 'parciais/_pre_treino.html' %}
+    </div>
+    {% endif %}
+
+    <!-- Café da manhã -->
+    <div class="card-refeicao">
+      {% include 'parciais/_hmanha.html' %}
+    </div>
+
+    <!-- Lanche da manhã -->
+    <div class="card-refeicao">
+      {% include 'parciais/_lanche_1.html' %}
+    </div>
+
+    <!-- Almoço -->
+    <div class="card-refeicao">
+      {% include 'parciais/_almoco.html' %}
+    </div>
+
+    <!-- Lanches -->
+    <div class="card-refeicao">
+      {% include 'parciais/_lanches.html' %}
+    </div>
+
+    <!-- Jantar -->
+    <div class="card-refeicao">
+      {% include 'parciais/_jantar.html' %}
+    </div>
+
+  </div>
+</div>
+{% endblock %}
