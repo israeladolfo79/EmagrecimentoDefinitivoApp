@@ -94,30 +94,30 @@ WSGI_APPLICATION = 'projeto.wsgi.application'
 
 ############BASE DE DATOS  PAR APRODUCCION
 
-# if DEVELOPMENT_MODE is True:
-#     DATABASES = {
-#         "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
-#     }
-# elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
-#     if os.getenv("DATABASE_URL", None) is None:
-#         raise Exception("DATABASE_URL environment variable not defined")
-#     DATABASES = {
-#         "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
-#     }
-
-if os.getenv("DATABASE_URL"):
-    # Producción: usar Postgres
+if DEVELOPMENT_MODE is True:
     DATABASES = {
         "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
     }
-else:
-    # Desarrollo/local: usar SQLite
+elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
+    if os.getenv("DATABASE_URL", None) is None:
+        raise Exception("DATABASE_URL environment variable not defined")
     DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
+        "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
     }
+
+# if os.getenv("DATABASE_URL"):
+#     # Producción: usar Postgres
+#     DATABASES = {
+#         "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
+#     }
+# else:
+#     # Desarrollo/local: usar SQLite
+#     DATABASES = {
+#         "default": {
+#             "ENGINE": "django.db.backends.sqlite3",
+#             "NAME": BASE_DIR / "db.sqlite3",
+#         }
+#     }
 
 
 # Password validation
