@@ -166,20 +166,22 @@
 
 /* 1ª columna (rótulos) más baja y algo más angosta en padding */
 .tabla-metricas.compact tbody th{
-  padding: 6px 10px;                /* ↓ alto */
-  font-size: 12px;
+  padding: 5px 8px;                /* ↓ alto */
+  font-size: 11px;
 }
 
 /* celdas: más compactas */
 .tabla-metricas.compact td{
-  padding: 6px 6px;                 /* ↓ alto */
-  font-size: 12px;
+  padding: 5px 5px;                 /* ↓ alto */
+  font-size: 11px;
 }
 
 /* separador “Dobras” compacto */
 .tabla-metricas.compact .separador td{
   padding: 6px;
   font-size: 12px;
+  background:#dfe7f2;
+  color:#344256;
 }
 .tabla-metricas-wrap{
   width: min(95vw, 980px);
@@ -212,7 +214,7 @@
   padding:6px 10px;
   background:#f6f9fc;
   color:#2f3f55;
-  font-weight:700;
+  font-weight:600;
   border-right:1px solid #e6edf7;
   vertical-align:top;
 }
@@ -221,12 +223,12 @@
   text-align:right;
   border-right:1px solid #eef3fa;
 }
-.tabla-metricas tbody tr:nth-child(odd) td{ background:#fbfdff; }
-.tabla-metricas tbody tr:nth-child(even) td{ background:#f8fbfe; }
+.tabla-metricas tbody tr:nth-child(odd)  td { background: rgba(154,205,255,0.25); } /* #9ACDFF al 25% */
+.tabla-metricas tbody tr:nth-child(even) td { background: rgba(202,228,255,0.25); }
 .tabla-metricas .separador td{
   padding:6px;
   text-align:center;
-  font-weight:800;
+  font-weight:600;
   color:#2b3b51;
   background:#edf3fa;
   border-top:1px solid #d6e1ef;
@@ -269,9 +271,7 @@
   </div>
 </section>
 <!-- PAGINA2 -->
-<!-- PAGINA 2 -->
 <section class="page-break with-header">
-  <!-- Header que se inyecta en @top-right SOLO en páginas con page: pageHdr -->
   <div class="run-hdr">
     <img
       src="https://newemagrecimento2.s3.amazonaws.com/django-summernote/2025-01-30/c2789af5-32a6-4184-a2ce-5c4e32b581f5.png"
@@ -279,10 +279,8 @@
       class="logo-medico">
   </div>
   <div>    
-<!-- ====== Caja Retornos (6×3) ====== -->
 <div class="box-retornos centrada">
   <table class="tabla-retornos">
-    <!-- columnas equidistantes -->
     <colgroup>
       <col span="6">
     </colgroup>
@@ -327,19 +325,16 @@
 <div class="tabla-metricas-wrap">
   <table class="tabla-metricas compact">
     <colgroup>
-      <col class="col-label">                 <!-- 1ª columna más ancha -->
-      <col class="col-data" span="9">         <!-- resto equidistantes -->
+      <col class="col-label">              
+      <col class="col-data" span="9">    
     </colgroup>
-
     <thead>
       <tr>
         <th></th>
         <th>CI</th><th>R0</th><th>R15</th><th>R30</th><th>R45</th><th>R60</th><th>M1</th><th>M2</th><th>M3</th>
       </tr>
     </thead>
-
     <tbody>
-      <!-- ====== METRICAS ====== -->
       <tr><th>Peso</th>
         <td>{{ t.peso.ci|default:"" }}</td><td>{{ t.peso.r0|default:"" }}</td><td>{{ t.peso.r15|default:"" }}</td><td>{{ t.peso.r30|default:"" }}</td><td>{{ t.peso.r45|default:"" }}</td><td>{{ t.peso.r60|default:"" }}</td><td>{{ t.peso.m1|default:"" }}</td><td>{{ t.peso.m2|default:"" }}</td><td>{{ t.peso.m3|default:"" }}</td>
       </tr>
@@ -367,11 +362,7 @@
       <tr><th>Quadril</th>
         <td>{{ t.quadril.ci|default:"" }}</td><td>{{ t.quadril.r0|default:"" }}</td><td>{{ t.quadril.r15|default:"" }}</td><td>{{ t.quadril.r30|default:"" }}</td><td>{{ t.quadril.r45|default:"" }}</td><td>{{ t.quadril.r60|default:"" }}</td><td>{{ t.quadril.m1|default:"" }}</td><td>{{ t.quadril.m2|default:"" }}</td><td>{{ t.quadril.m3|default:"" }}</td>
       </tr>
-
-      <!-- ====== SEPARADOR ====== -->
       <tr class="separador"><td colspan="10">Dobras</td></tr>
-
-      <!-- ====== DOBRAS ====== -->
       <tr><th>Tríceps</th>
         <td>{{ t.triceps.ci|default:"" }}</td><td>{{ t.triceps.r0|default:"" }}</td><td>{{ t.triceps.r15|default:"" }}</td><td>{{ t.triceps.r30|default:"" }}</td><td>{{ t.triceps.r45|default:"" }}</td><td>{{ t.triceps.r60|default:"" }}</td><td>{{ t.triceps.m1|default:"" }}</td><td>{{ t.triceps.m2|default:"" }}</td><td>{{ t.triceps.m3|default:"" }}</td>
       </tr>
@@ -396,10 +387,16 @@
     </tbody>
   </table>
 </div>
+<div style="position:relative;z-index:99999;background:#2f6fa3;border-radius:9999px;
+            padding:12px 20px;text-align:center;width:600px;margin:20px auto;color:#fff;">
+            RISCOS PREDITOS POR CIRCUNFERÊNCIAS
+</div>
+
+
 
 </section>
 
-<!-- PAGINA 3 -->
+
 <section class="page-break with-header">
   <div class="run-hdr">
     <img
