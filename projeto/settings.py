@@ -35,7 +35,8 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", get_random_secret_key())
 #DEBUG = False
 DEBUG = True
 
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost", "israeladolfo.pythonanywhere.com").split(",")
+#ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost", "israeladolfo.pythonanywhere.com").split(",")
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', "127.0.0.1,localhost", 'israeladolfo.pythonanywhere.com')
 # Application definition
 
 DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "False"
