@@ -19,20 +19,22 @@
         flex-direction: column;
         justify-content: center;
         border-right: 1px solid #cfcfcf;
+        align-items: center;
       }
       
-      .refeicao-left p {
+      .almoco-left p {
         margin: 0;
         font-size: 15px;
         font-weight: 600;
       }
       
-      .refeicao-right {
+      .almoco-right {
         flex: 1;
         padding: 20px 25px;
         font-size: 14px;
         color: #2b2b2b;
         line-height: 1.5;
+        text-align: center;
       }
       
       .separator {
@@ -42,21 +44,93 @@
         font-weight: 700;
         color: #666;
       }
+      .separator-amarillo{
+        text-align: center;
+        margin: 10px 0;
+        font-size: 16px;
+        font-weight: 500;
+        color: #666;
+        background-color: #F5C227;
+      }
       
       .nota-suave {
         margin-top: 12px;
-        font-size: 13px;
-        color: #555;
-        font-style: italic;
+        font-size: 14px;
+        color: #000000;
         text-align: center;
+        background:#F5C227;  
       }
       
-      .nota-suave strong {
-        font-weight: 600;
-        color: #333;
+ 
+      
+      .almoco-right-verde {
+        font-weight: 500 !important;
+        color: #2e7d32 !important; /* verde natural */
+        padding: 2px 4px;
+        border-radius: 3px;
+        font-size: 14px !important;
+      }
+      .almoco-right-rojo {
+        font-weight: 600 !important;
+        color: #b32424 !important; /* rojo profesional, combina con tu paleta */
+        padding: 2px 4px;
+        border-radius: 3px;
+        font-size: 14px !important;
       }
       
-      
+      .almoco-right-p {
+        flex: 1;
+        font-size: 14px !important;
+        color: #2b2b2b;
+        line-height: 1.5;
+      }
+      /* Verde natural */
+      .almoco-right-verde {
+        color: #2e7d32 !important;  /* verde saludable */
+        font-weight: 600 !important;
+      }
+
+      /* Rojo elegante */
+      .almoco-right-rojo {
+        color: #b32424 !important;  /* rojo profesional */
+        font-weight: 600 !important;
+        padding: 2px 4px;
+        border-radius: 3px;
+      }
+      .separator-almoco{
+        text-align: center;
+        margin: 10px 0;
+        font-size: 16px;
+        font-weight: 700;
+        color: #666;
+      }
+      .almoco-right-rojo {
+        color: #b32424 !important;  /* rojo profesional */
+        font-weight: 600 !important;
+        padding: 2px 4px;
+        border-radius: 3px;
+      }
+      /* Fondo celeste suave */
+    .almoco-celeste {
+      background-color: #e3f2fd; /* celeste claro */
+      border: 1px solid #c5e1f7;
+      border-radius: 8px;
+      padding: 15px 20px;
+      margin: 15px auto;
+      text-align: center;
+      font-size: 14px !important;
+    }
+
+    .almoco-celeste-oscuro {
+      background-color: #94B0E0; /* azul intermedio del ejemplo */
+      border-radius: 8px;
+      padding: 12px 20px;
+      margin: 15px auto;
+      text-align: center;
+      color: #fff; /* texto blanco para contraste */
+      font-weight: 600;
+    }
+
     </style>      
     <div class="refeicao-box my-3">
         <!-- Columna izquierda -->
@@ -68,46 +142,61 @@
         </div>
       
         <!-- Columna derecha -->
-        <div class="refeicao-right">
-          <p><b>Salada de folhas livre</b> (mínimo 3 folhas) + 1 colher de sopa de Farinha de Linhaça</p>
-          <p>Tomate, Cenoura, Beterraba, Pepino, Palmito <span>(Opcional)</span></p>
-      
-          <div class="separator">+</div>
-      
-          <p>Tempero: limão, acetato ou vinagre + <b>1 colher de sobremesa de Azeite</b></p>
-      
-          <div class="separator">+</div>
-      
-          <p>Legumes – <b>100g</b> (peso cozido) / <b>2 colheres de servir</b></p>
-      
-          <div class="separator">+</div>
-      
-          <p>
-            {% if not kcal > 1300 %}
-              <b>1</b>
-            {% elif not kcal > 1600 %}
-              <b>2</b>
-            {% elif kcal > 1600 %}
-              <b>3</b>
-            {% endif %}
-            colheres de servir de <b>Arroz</b> [165g] ou
+        <div class="almoco-right">
+          <p class="almoco-right-p">
+            <span class="almoco-right-verde">Salada de folhas livre (mínimo 3 folhas)</span>
+            + 1 colher de sopa de Farinha de Linhaça
           </p>
-          <p><b>3</b> colheres de servir de Batata Inglesa [360g] ou</p>
-          <p><b>3</b> colheres de servir de Farinha/Farofa [75g] ou</p>
-          <p><b>3</b> pegadores de Macarrão [75g cru] ou</p>
-          <p><b>MIX</b> entre as opções</p>
+          <p class="almoco-right-rojo">Tomate, Cenoura, Beterraba, Pepino, Palmito <span>(Opcional)</span></p>
       
+          <div class="separator-amarillo m-0">+</div>
+      
+          <p class="almoco-right-p">
+            <span class="almoco-right-verde">Tempero: limão, acetato ou vinagre +</span>
+            1 colher de SOBREMESA de<span class="almoco-right-rojo">Azeite</span>
+          </p>               
           <div class="separator">+</div>
       
-          <p>Feijão, Ervilha, Lentilha ou Grão de Bico: <b>1 concha (100g)</b></p>
-      
+          <div class="almoco-celeste almoco-right-p">
+            <p class="almoco-right-p">
+              Legumes – <span class="almoco-right-rojo"><b>100g</b></span> (peso cozido) /
+              <span class="almoco-right-rojo"><b>2</b></span> colheres de servir
+            </p>
+          </div>
+          
           <div class="separator">+</div>
-      
-          <p><b>Proteína: 100g</b> (peso cru) / <b>80g</b> (peso preparado) ou tamanho da <b>Palma da Mão</b></p>
-      
+          <div class="almoco-celeste almoco-right-p">
+            <p class="almoco-right-p">
+              {% if not kcal > 1300 %}
+                <span class="almoco-right-rojo">1</span>
+              {% elif not kcal > 1600 %}
+                <span class="almoco-right-rojo">2</span>
+              {% elif kcal > 1600 %}
+                <span class="almoco-right-rojo">3</span>
+              {% endif %}
+              colheres de <b>SERVIR</b> de <b>Arroz</b> [165g]
+              <span class="almoco-right-rojo">ou</span>
+            </p>
+            
+              <p class="almoco-right-p"><span class="almoco-right-rojo">3</span> colheres de <b>SERVIR</b> de <b>Batata Inglesa [360g]</b> <span class="almoco-right-rojo">ou</span></p>
+              <p class="almoco-right-p"><span class="almoco-right-rojo">3</span> colheres de <b>SERVIR</b> de <b>Farinha/Farofa [75g]</b> <span class="almoco-right-rojo">ou</span></p>
+              <p class="almoco-right-p"><span class="almoco-right-rojo">3</span> pegadores de <b>Macarrão [75g cru]</b> <span class="almoco-right-rojo">ou</span></p>
+              <p class="almoco-right-p"><b><span class="almoco-right-rojo">MIX</span></b> entre as opções</p>
+          </div>
+          <div class="separator-almoco">+</div>
+          <div class="almoco-celeste almoco-right-p">
+            <p class="almoco-right-p">Feijão, Ervilha, Lentilha ou Grão de Bico: <b>1 concha (100g)</b></p>
+          </div>    
+          <div class="separator-almoco">+</div>
+          <div class="almoco-celeste-oscuro almoco-right-p">
+            <p class="almoco-right-p">
+              <b>Proteína: 100g</b> (peso cru) / <b>80g</b> (peso preparada) <b>ou</b> Tamanho da <b>Palma da Mão</b>
+            </p>
+          </div>
+          
           {% if kcal > 2100 %}
             <div class="separator">+</div>
-            <p><b>1 fruta</b></p>
+            <p class="almoco-right-p"><b>1</b> fruta</p>
           {% endif %}
       
           <!-- Nota inferior -->

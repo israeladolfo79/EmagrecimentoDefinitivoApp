@@ -1,25 +1,24 @@
 <style>
+  
     .refeicao-box {
         display: flex;
         border-radius: 8px;
         overflow: hidden;
-        margin: 20px 0;
+        margin: 20px auto !important;
         font-family: 'Montserrat', sans-serif;
         box-shadow: 0 2px 6px rgba(0,0,0,0.05);
         background: #fafafa; /* gris muy claro */
+        
       }
       
-      /* Columna izquierda */
       .refeicao-left {
-        background: #e0e0e0; /* gris medio suave */
+        background: #e0e0e0;
         color: #333;
         text-align: center;
         padding: 18px 22px;
-        min-width: 160px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        border-right: 1px solid #d6d6d6;
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #d6d6d6;
       }
       
       .refeicao-left .refeicao-titulo {
@@ -39,12 +38,13 @@
       .refeicao-right {
         padding: 20px 25px;
         flex: 1;
+        text-align: center;
       }
       
       .refeicao-right p {
         margin: 5px 0;
         font-size: 15px;
-        color: #2b2b2b;
+        color: #000000;
       }
       
       .refeicao-right b {
@@ -54,12 +54,15 @@
       .separator {
         text-align: center;
         margin: 10px 0;
-        color: #aaa;
         font-size: 14px;
+        background-color: #e0e0e0 !important; /* gris oscuro */
+        padding: 6px 0; /* un poco de espacio vertical */
+        border-radius: 4px; /* bordes suaves */
+        color: #000 !important;
       }
       
       .refeicao-info {
-        background: #d6d6d6;
+        background: #b0b0b0 !important;
         border-radius: 4px;
         text-align: center;
         font-size: 13px;
@@ -77,6 +80,16 @@
       .diet {
         color: #b32424; /* rojo elegante para DIET */
         font-weight: 600;
+      }
+      .refeicao-right b {
+        font-weight: 700 !important; /* negro más intenso */
+        color: #000 !important; /* color negro fuerte */
+        letter-spacing: 0.3px; /* leve separación para legibilidad */
+      }
+
+      .branco {
+        color: #fff !important; /* blanco */
+        font-weight: 600;       /* un poco más de fuerza visual */
       }
     </style>      
 <div class="refeicao-box my-3">
@@ -109,7 +122,7 @@
       <p><b>1 colher de Sopa</b> de Requeijão ou Creme de Queijo</p>
       <p><b>200 ml</b> de Iogurte <span class="diet">DIET</span> ou <b>200 ml</b> de Leite</p>
   
-      <div class="refeicao-info">Escolha DUAS opções</div>
+      <div class="refeicao-info">Escolha <span class="branco">DUAS</span> opções</div>
   
       <div class="separator">+</div>
   

@@ -7,6 +7,22 @@
     color: #666;        /* gris medio sutil */
     letter-spacing: 1px;
   }
+  .jantar-verde {
+    color: #2e7d32; /* verde saludable */
+    font-weight: 600;
+    margin: 5px 0;
+  }
+  .jantar-vermelho {
+    color: #b32424; /* rojo profesional */
+    font-weight: 600;
+    margin: 5px 0;
+  }
+  
+  /* Roxo (violeta) para el "(Opcional)" */
+  .jantar-roxo {
+    color: #800080; /* violeta */
+    font-weight: 500;
+  }
 </style>
 <div class="refeicao-box my-3">
     <!-- Columna izquierda -->
@@ -19,46 +35,52 @@
   
     <!-- Columna derecha -->
     <div class="refeicao-right">
-      <p><span class="">Salada de folhas livre (mínimo 3 folhas)</span> + Colher SOPA de Farinha de Linhaça</p>
-      <p class="">Tomate, Cenoura, Beterraba, Pepino, Palmito <span style="color:#800080">(Opcional)</span></p>
+      <p><span class="jantar-verde ">Salada de folhas livre (mínimo 3 folhas)</span> +<b> Colher SOPA de Farinha de Linhaça</b></p>
+      <p class=""style="color:#b32424">Tomate, Cenoura, Beterraba, Pepino, Palmito <span style="color:#800080">(Opcional)</span></p>
   
-      <div class="separator">+</div>
+      <div class="separator-amarillo">+</div>
   
-      <p>
-        Tempero: <span class="">limão, acetato ou vinagre</span>
+      <p class="almoco-right-p">
+        Tempero: <span class="almoco-right-verde">limão, acetato ou vinagre</span>
         {% if kcal > 1201 %}
-          + <span>1 colher SOPA</span> <span class="">Azeite</span>
+          + <span>1 colher SOPA</span> <span class="almoco-right-rojo">Azeite</span>
         {% endif %}
       </p>
-  
-      <div class="separator">+</div>
-  
-      <p>Legumes <span class="">- 100g</span> (peso cozido)</p>
-  
-      <div class="separator">+</div>
-  
-      {% if kcal > 1600 %}
-        <p><span class="">200g (peso cru)</span> de Abóbora, Batata Doce, Mandioca, Mandioquinha, Cará, Inhame <span class="">ou</span></p>
-        <p><span class="">3</span> colheres de Servir de Arroz (não todos os dias) <span class="">ou</span></p>
-        <p><span class="">160g (peso cozido)</span> de <b>Macarrão sem Trigo (Grão de Bico ou Mandioca)</b></p>
-      {% else %}
-        <p><span class="">100g (peso cru)</span> de Abóbora, Batata Doce, Mandioca, Mandioquinha, Cará, Inhame <span class="">ou</span></p>
-        <p><span class="">2</span> colheres de Servir de Arroz (não todos os dias) <span class="">ou</span></p>
-        <p><span class="">110g (peso cozido)</span> de <b>Macarrão sem Trigo (Grão de Bico ou Mandioca)</b></p>
-      {% endif %}
-  
-      <div class="refeicao-extra" style="background:#f0f0f5; color:#333; font-style:italic;">
-        é permitido variar as formas de preparação
+
+      <div class="separator-amarillo">+</div>
+      <div class="almoco-celeste almoco-right-p">
+        <p class="almoco-right-p">
+          Legumes – <span class="almoco-right-rojo"><b>100g</b></span> (peso cozido)         </p>
       </div>
   
+
+  
       <div class="separator">+</div>
-  
-      <p><b>Proteína: 100g</b> (peso cru) / <b>80g</b> (peso preparada) <b>ou</b> Tamanho da <b>Palma da Mão</b></p>
-  
+
+
+      <div class="almoco-celeste almoco-right-p">
+        <p class="almoco-right-p">
+          {% if kcal > 1600 %}
+          <p><span class="almoco-right-rojo">200g (peso cru)</span> de Abóbora, Batata Doce, Mandioca, Mandioquinha, Cará, Inhame <span class="almoco-right-rojo">ou</span></p>
+          <p><span class="almoco-right-rojo">3</span> colheres de Servir de Arroz (não todos os dias) <span class="almoco-right-rojo">ou</span></p>
+          <p><span class="almoco-right-rojo">160g (peso cozido)</span> de <b>Macarrão sem Trigo (Grão de Bico ou Mandioca)</b></p>
+        {% else %}
+          <p><span class="">100g (peso cru)</span> de Abóbora, Batata Doce, Mandioca, Mandioquinha, Cará, Inhame <span class="">ou</span></p>
+          <p><span class="">2</span> colheres de Servir de Arroz (não todos os dias) <span class="">ou</span></p>
+          <p><span class="">110g (peso cozido)</span> de <b>Macarrão sem Trigo (Grão de Bico ou Mandioca)</b></p>
+        {% endif %}      
+      </div>
+      <div class="refeicao-extra" style="background:#f0f0f5; color:#000000;">
+        é permitido variar as formas de preparação
+      </div>  
+      <div class="separator">+</div>  
+      <div class="almoco-celeste almoco-right-p">
+        <p><b>Proteína: 100g</b> (peso cru) / <b>80g</b> (peso preparada) <b>ou</b> Tamanho da <b>Palma da Mão</b></p>
+      </div>
       {% if kcal > 2200 %}
-        <div class="separator">+</div>
-        <p><b>1</b> fruta</p>
-      {% endif %}
+      <div class="separator">+</div>
+      <p><b>1</b> fruta</p>
+    {% endif %}
     </div>
   </div>
   
