@@ -32,7 +32,8 @@ SECURE_SSL_REDIRECT = False
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", get_random_secret_key())
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+#DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 # Application definition
@@ -91,16 +92,31 @@ WSGI_APPLICATION = 'projeto.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 
+############BASE DE DATOS  PAR APRODUCCION
 
-if DEVELOPMENT_MODE is True:
+# if DEVELOPMENT_MODE is True:
+#     DATABASES = {
+#         "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
+#     }
+# elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
+#     if os.getenv("DATABASE_URL", None) is None:
+#         raise Exception("DATABASE_URL environment variable not defined")
+#     DATABASES = {
+#         "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
+#     }
+
+if os.getenv("DATABASE_URL"):
+    # Producción: usar Postgres
     DATABASES = {
         "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
     }
-elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
-    if os.getenv("DATABASE_URL", None) is None:
-        raise Exception("DATABASE_URL environment variable not defined")
+else:
+    # Desarrollo/local: usar SQLite
     DATABASES = {
-        "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
     }
 
 
@@ -140,34 +156,55 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 #STATIC_URL = '/home/emagrecimentodefinitivo/apps_wsgi/projeto/static/'
-DEFAULT_FILE_STORAGE = os.getenv("DEFAULT_FILE_STORAGE", "django.core.files.storage.FileSystemStorage")
-STATICFILES_STORAGE = os.getenv("STATICFILES_STORAGE", "django.contrib.staticfiles.storage.StaticFilesStorage")
-AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID", None)
-AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY", None)
-AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME", None)
-AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400',
-}
-AWS_DEFAULT_ACL = "public-read"
-AWS_QUERYSTRING_AUTH = False
-AWS_S3_FILE_OVERWRITE = True
-AWS_HEADERS = {
-    'Access-Control-Allow-Origin': '*',
-}
 
-STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
-MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+###################PRODUCCION################333333
+# DEFAULT_FILE_STORAGE = os.getenv("DEFAULT_FILE_STORAGE", "django.core.files.storage.FileSystemStorage")
+# STATICFILES_STORAGE = os.getenv("STATICFILES_STORAGE", "django.contrib.staticfiles.storage.StaticFilesStorage")
+# AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID", None)
+# AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY", None)
+# AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME", None)
+# AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+# AWS_S3_OBJECT_PARAMETERS = {
+#     'CacheControl': 'max-age=86400',
+# }
+# AWS_DEFAULT_ACL = "public-read"
+# AWS_QUERYSTRING_AUTH = False
+# AWS_S3_FILE_OVERWRITE = True
+# AWS_HEADERS = {
+#     'Access-Control-Allow-Origin': '*',
+# }
+
+#############PRODUCCION##############################
+# STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+# MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
 
 
-STATIC_ROOT = BASE_DIR / 'static'
+
+# STATIC_ROOT = BASE_DIR / 'static'
+# STATICFILES_DIRS = [
+#     BASE_DIR / 'core/static',
+#     BASE_DIR / 'payments/static',
+#     BASE_DIR / 'pedidos/static',
+# ]
+# MEDIA_ROOT = BASE_DIR / 'media'
+
+
+# --- Archivos estáticos y media ---
+STATIC_URL = '/static/'
+
+# Directorio donde Django juntará todos los archivos estáticos al ejecutar collectstatic
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Directorios donde Django buscará archivos estáticos dentro de las apps
 STATICFILES_DIRS = [
     BASE_DIR / 'core/static',
     BASE_DIR / 'payments/static',
     BASE_DIR / 'pedidos/static',
 ]
-MEDIA_ROOT = BASE_DIR / 'media'
 
+# --- Archivos subidos por usuarios ---
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
     
     
