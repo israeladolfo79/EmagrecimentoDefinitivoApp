@@ -34,9 +34,8 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", get_random_secret_key())
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-#ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost", "israeladolfo.pythonanywhere.com").split(",")
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 # Application definition
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", "israeladolfo.pythonanywhere.com"]
 
 DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "False"
 
@@ -92,28 +91,18 @@ WSGI_APPLICATION = 'projeto.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 
-DATABASES = {
 
-
-    "default": {
-
-        "ENGINE": "django.db.backends.mysql",
-
-        "NAME": "IsraelAdolfo$default",
-
-        "USER": "IsraelAdolfo",
-
-        "PASSWORD": "Emagrecimento25",
-
-        "HOST" : "IsraelAdolfo.mysql.pythonanywhere-services.com",
-
-        "PORT" : "3306",
-
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        },
+if DEVELOPMENT_MODE is True:
+    DATABASES = {
+        "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
     }
-}
+elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
+    if os.getenv("DATABASE_URL", None) is None:
+        raise Exception("DATABASE_URL environment variable not defined")
+    DATABASES = {
+        "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
+    }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -167,11 +156,9 @@ AWS_HEADERS = {
     'Access-Control-Allow-Origin': '*',
 }
 
-# STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
-# MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATIC_ROOT = BASE_DIR / 'static'
 STATICFILES_DIRS = [
