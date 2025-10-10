@@ -97,37 +97,22 @@ DATABASES = {
 
     "default": {
 
-
         "ENGINE": "django.db.backends.mysql",
-
 
         "NAME": "IsraelAdolfo$default",
 
-
         "USER": "IsraelAdolfo",
-
 
         "PASSWORD": "Emagrecimento25",
 
-
         "HOST" : "IsraelAdolfo.mysql.pythonanywhere-services.com",
-
 
         "PORT" : "3306",
 
-
         'OPTIONS': {
-
-
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-
-
         },
-
-
     }
-
-
 }
 
 # Password validation
@@ -182,9 +167,10 @@ AWS_HEADERS = {
     'Access-Control-Allow-Origin': '*',
 }
 
-STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
-MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+# STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+# MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATIC_ROOT = BASE_DIR / 'static'
 STATICFILES_DIRS = [
