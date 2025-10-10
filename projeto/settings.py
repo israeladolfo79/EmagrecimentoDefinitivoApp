@@ -96,20 +96,30 @@ WSGI_APPLICATION = 'projeto.wsgi.application'
 
 
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "IsraelAdolfo$default",
-        "USER": "IsraelAdolfo",
-        "PASSWORD": "Emagrecimento25",
-        "HOST" : "IsraelAdolfo.mysql.pythonanywhere-services.com",
-        "PORT" : "3306",
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        },
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.mysql",
+#         "NAME": "IsraelAdolfo$default",
+#         "USER": "IsraelAdolfo",
+#         "PASSWORD": "Emagrecimento25",
+#         "HOST" : "IsraelAdolfo.mysql.pythonanywhere-services.com",
+#         "PORT" : "3306",
+#         'OPTIONS': {
+#             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+#         },
+#     }
+# }
 
+if DEVELOPMENT_MODE is True:
+   DATABASES = {
+       "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
+   }
+elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
+   if os.getenv("DATABASE_URL", None) is None:
+       raise Exception("DATABASE_URL environment variable not defined")
+   DATABASES = {
+       "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
+   }
 
 
 # DATABASES = {
