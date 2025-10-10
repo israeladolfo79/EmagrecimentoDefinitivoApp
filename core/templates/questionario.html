@@ -22,24 +22,8 @@
 <div >
     <div style='margin-bottom: -9rem'>
     {% block questionario %}
-    {% comment %} {% endblock %}
+    {% endblock %}
     </div>
-    {% include 'parciais/_footer.html' %} {% endcomment %}
-    <footer class="text-center text-light d-flex align-items-center justify-content-center"
-        style="
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background-color: #2b6ca3;
-        height: 60px;
-        font-size: 13px;
-        z-index: 1000;">
-    <p class="text-light font-weight-bold m-0">
-        Israel Adolfo Nutricionista Esportivo
-        <i class="fa fa-solid fa-copyright text-light"></i>
-        2024 - CNPJ 45.866.348/0001-02
-    </p>
-</footer>
+    {% include 'parciais/_footer.html' %}
 </div>
 {% endblock %}
