@@ -170,6 +170,7 @@ AWS_HEADERS = {
 # STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
 # MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
 
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATIC_ROOT = BASE_DIR / 'static'
