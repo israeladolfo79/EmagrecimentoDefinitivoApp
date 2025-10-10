@@ -25,7 +25,7 @@ SECURE_SSL_REDIRECT = False
 SECRET_KEY = 'django-insecure-r)%(=%h%#yp&fyl^xkh51v6(k3scqlyn)w=_x)q-(!i_fucvzw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1','www.emagrecimentodefinitivo.app.br', 'emagrecimentodefinitivo.app.br']
 # Application definition
