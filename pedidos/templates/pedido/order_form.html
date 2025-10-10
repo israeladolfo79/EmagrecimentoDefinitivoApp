@@ -6,12 +6,29 @@
 <link rel="stylesheet" href="{% static 'pedidos/css/pedidos.css' %}" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <Style>
-.section-wrap{
-    padding-block: clamp(24px, 6vh, 96px); /* min 24px, ideal 6% de alto, máx 96px */
+    /* Fondo general gris para todo lo que NO sea nav ni footer */
+    html, body {
+      background: #f2f2f2;   /* gris claro */
     }
-
+    
+    /* Asegurá que navbar y footer NO tomen el gris del body */
+    .navbar-container,
+    header.navbar,
+    .site-footer,
+    footer {
+      background: inherit;   /* usa su propio color del theme */
+    }
+    
+    /* Si tu navbar/ footer necesitan color fijo, explícitalo: */
+    .navbar-container { background: #2b6ca3; }   /* tu azul actual */
+    .site-footer, footer { background: #ffffff; }
+    
+    /* Espaciado vertical responsivo (lo tuyo) */
+    .section-wrap{
+      padding-block: clamp(24px, 6vh, 96px);
+    }
     .section-wrap--bottom{
-    padding-bottom: clamp(32px, 8vh, 128px);
+      padding-bottom: clamp(32px, 8vh, 128px);
     }
 </style>
 {% endblock %}
