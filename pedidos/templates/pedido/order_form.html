@@ -5,12 +5,20 @@
 <link rel="stylesheet" href="{% static 'core/css/dashboard.css' %}" />
 <link rel="stylesheet" href="{% static 'pedidos/css/pedidos.css' %}" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<Style>
+.section-wrap{
+    padding-block: clamp(24px, 6vh, 96px); /* min 24px, ideal 6% de alto, máx 96px */
+    }
 
+    .section-wrap--bottom{
+    padding-bottom: clamp(32px, 8vh, 128px);
+    }
+</style>
 {% endblock %}
 
 {% block conteudo %}
 
-<div class="container-fluid mb-4 pt-4" style="background-color: #f2f2f2;margin-top: -20px;">
+<div class="container-fluid  section-wrap" style="background-color: #f2f2f2;margin-top: -20px;">
     {% if messages %}
     {% for message in messages %}
     <div class="alert {{message.tags}} " role="alert" >
@@ -23,7 +31,7 @@
         <h4 style="color: #2b6ca3; font-weight: bold">Escolha seu plano de acompanhamento</h4>
         
     </div>
-    <div class="container-fluid" id="escalavel">
+    <div class="container-fluid section-wrap--bottom" id="escalavel">
         <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-3">
