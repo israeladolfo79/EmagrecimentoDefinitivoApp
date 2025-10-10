@@ -35,7 +35,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", get_random_secret_key())
 #DEBUG = False
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'israeladolfo.pythonanywhere.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'israeladolfo.pythonanywhere.com', 'emagrecimentodefinitivo.app.br']
 
 
 
