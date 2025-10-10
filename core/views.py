@@ -21,6 +21,7 @@ from django.core.files.images import ImageFile
 from django.template.loader import render_to_string
 from weasyprint import HTML, CSS
 import tempfile
+from django.contrib.auth.decorators import login_required
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -2202,6 +2203,7 @@ def salvar_imagem(request):
 
     return HttpResponse("ok")
 
+@login_required
 def gerar_pdf(request):
     tipo = request.GET.get("tipo")
     user = request.user.username  # asumimos que el user está logueado
