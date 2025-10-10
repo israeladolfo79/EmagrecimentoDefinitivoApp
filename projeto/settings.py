@@ -35,11 +35,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", get_random_secret_key())
 #DEBUG = False
 DEBUG = True
 
-# ALLOWED_HOSTS = ['127.0.0.1', 'israeladolfo.pythonanywhere.com', 'emagrecimentodefinitivo.app.br']
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
-
-
-
 # Application definition
 
 DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "False"
@@ -96,39 +92,32 @@ WSGI_APPLICATION = 'projeto.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.mysql",
-#         "NAME": "IsraelAdolfo$default",
-#         "USER": "IsraelAdolfo",
-#         "PASSWORD": "Emagrecimento25",
-#         "HOST" : "IsraelAdolfo.mysql.pythonanywhere-services.com",
-#         "PORT" : "3306",
-#         'OPTIONS': {
-#             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-#         },
-#     }
-# }
+############BASE DE DATOS  PAR APRODUCCION
 
 if DEVELOPMENT_MODE is True:
-   DATABASES = {
-       "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
-   }
+    DATABASES = {
+        "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
+    }
 elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
-   if os.getenv("DATABASE_URL", None) is None:
-       raise Exception("DATABASE_URL environment variable not defined")
-   DATABASES = {
-       "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
-   }
+    if os.getenv("DATABASE_URL", None) is None:
+        raise Exception("DATABASE_URL environment variable not defined")
+    DATABASES = {
+        "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
+    }
 
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
+# if os.getenv("DATABASE_URL"):
+#     # Producción: usar Postgres
+#     DATABASES = {
+#         "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
 #     }
-# }
+# else:
+#     # Desarrollo/local: usar SQLite
+#     DATABASES = {
+#         "default": {
+#             "ENGINE": "django.db.backends.sqlite3",
+#             "NAME": BASE_DIR / "db.sqlite3",
+#         }
+#     }
 
 
 # Password validation
@@ -191,27 +180,27 @@ USE_TZ = True
 
 
 
-STATIC_ROOT = BASE_DIR / 'static'
-STATICFILES_DIRS = [
-    BASE_DIR / 'core/static',
-    BASE_DIR / 'payments/static',
-    BASE_DIR / 'pedidos/static',
-]
-MEDIA_ROOT = BASE_DIR / 'media'
+# STATIC_ROOT = BASE_DIR / 'static'
+# STATICFILES_DIRS = [
+#     BASE_DIR / 'core/static',
+#     BASE_DIR / 'payments/static',
+#     BASE_DIR / 'pedidos/static',
+# ]
+# MEDIA_ROOT = BASE_DIR / 'media'
 
 
 # --- Archivos estáticos y media ---
 STATIC_URL = '/static/'
 
 # Directorio donde Django juntará todos los archivos estáticos al ejecutar collectstatic
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Directorios donde Django buscará archivos estáticos dentro de las apps
-# STATICFILES_DIRS = [
-#     BASE_DIR / 'core/static',
-#     BASE_DIR / 'payments/static',
-#     BASE_DIR / 'pedidos/static',
-# ]
+STATICFILES_DIRS = [
+    BASE_DIR / 'core/static',
+    BASE_DIR / 'payments/static',
+    BASE_DIR / 'pedidos/static',
+]
 
 # --- Archivos subidos por usuarios ---
 MEDIA_URL = '/media/'
