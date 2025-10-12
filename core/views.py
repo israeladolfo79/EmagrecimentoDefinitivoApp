@@ -2275,7 +2275,7 @@ def gerar_pdf(request):
     with tempfile.NamedTemporaryFile(delete=False) as output:
         HTML(string=html_string, base_url=request.build_absolute_uri('/')).write_pdf(
             output.name,
-            stylesheets=[CSS(string="""
+           stylesheets=[CSS(string="""
             @page {
                 size: A4 portrait;
                 margin: 10mm 10mm 15mm 10mm; /* margen más cómodo */
@@ -2315,6 +2315,7 @@ def gerar_pdf(request):
                 }
             }
         """)]
+
 
         )
         output.seek(0)
