@@ -2275,46 +2275,33 @@ def gerar_pdf(request):
     with tempfile.NamedTemporaryFile(delete=False) as output:
         HTML(string=html_string, base_url=request.build_absolute_uri('/')).write_pdf(
             output.name,
-           stylesheets=[CSS(string="""
-            @page {
-                size: A4 portrait;
-                margin: 10mm 10mm 15mm 10mm; /* margen más cómodo */
-            }
-
-            body {
-                font-family: 'Open Sans', sans-serif;
-                font-size: 12pt;
-                line-height: 1.4;
-                margin: 0;
-                padding: 0;
-            }
-
-            .card-refeicao {
-                border: 1px solid #ddd;
-                border-radius: 8px;
-                padding: 10px 15px;
-                margin-bottom: 8px;
-                page-break-inside: avoid;
-            }
-
-            /* Elimina los saltos innecesarios entre páginas */
-            html, body {
-                height: auto;
-                overflow: visible;
-            }
-
-            /* Pie de página fijo, con margen suave */
-            @page {
-                @bottom-center {
-                    content: "Israel Adolfo Nutricionista Esportivo 2024 - CNPJ 45.866.348/0001-02";
-                    font-size: 9pt;
-                    font-family: 'Open Sans', sans-serif;
-                    color: white;
-                    background-color: #2b6ca3;
-                    padding: 3px;
+          stylesheets=[CSS(string="""
+                @page {
+                    size: auto;               /* ❗ sin tamaño fijo */
+                    margin: 0;                /* sin márgenes predeterminados */
                 }
-            }
-        """)]
+
+                body {
+                    font-family: 'Open Sans', sans-serif;
+                    font-size: 12pt;
+                    line-height: 1.4;
+                    margin: 0;
+                    padding: 0;
+                }
+
+                .card-refeicao {
+                    border: 1px solid #ccc;
+                    border-radius: 8px;
+                    padding: 12px 16px;
+                    margin-bottom: 8px;
+                    page-break-inside: avoid;
+                }
+
+                * {
+                    page-break-before: avoid;
+                    page-break-after: avoid;
+                }
+            """)]
 
 
         )
