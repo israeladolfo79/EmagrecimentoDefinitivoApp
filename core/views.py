@@ -2277,30 +2277,45 @@ def gerar_pdf(request):
             output.name,
             stylesheets=[CSS(string="""
             @page {
-            size: 240mm 297mm;  /* ancho 240mm, alto 297mm */
-            margin: 0mm;
-            @bottom-center {
-                content: "Israel Adolfo Nutricionista Esportivo 2024 - CNPJ 45.866.348/0001-02";
-                font-size: 10pt;
-                font-family: 'Open Sans', sans-serif;
-                color: #fff;
-                background-color: #2b6ca3;
-                padding: 4px;
-            }
+                size: A4 portrait;
+                margin: 10mm 10mm 15mm 10mm; /* margen más cómodo */
             }
 
-                body {
+            body {
+                font-family: 'Open Sans', sans-serif;
+                font-size: 12pt;
+                line-height: 1.4;
+                margin: 0;
+                padding: 0;
+            }
+
+            .card-refeicao {
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                padding: 10px 15px;
+                margin-bottom: 8px;
+                page-break-inside: avoid;
+            }
+
+            /* Elimina los saltos innecesarios entre páginas */
+            html, body {
+                height: auto;
+                overflow: visible;
+            }
+
+            /* Pie de página fijo, con margen suave */
+            @page {
+                @bottom-center {
+                    content: "Israel Adolfo Nutricionista Esportivo 2024 - CNPJ 45.866.348/0001-02";
+                    font-size: 9pt;
                     font-family: 'Open Sans', sans-serif;
-                    font-size: 12pt;
+                    color: white;
+                    background-color: #2b6ca3;
+                    padding: 3px;
                 }
-                .card-refeicao {
-                    border: 1px solid #ddd;
-                    border-radius: 8px;
-                    padding: 12px 16px;
-                    margin-bottom: 12px;
-                    page-break-inside: avoid;
-                }
-            """)]
+            }
+        """)]
+
         )
         output.seek(0)
         pdf = output.read()
