@@ -3,7 +3,7 @@ from django.db.models import Q
 import os
 from .formulas import *
 from time import sleep
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from pathlib import Path
 from categorias import models as categorias_models
 from categorias import forms as categorias_forms
@@ -22,8 +22,10 @@ from django.template.loader import render_to_string
 from weasyprint import HTML, CSS
 import tempfile
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
+from django.contrib.staticfiles import finders
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -753,7 +755,6 @@ class Exercicios(Questionario):
         messages.add_message(self.request, messages.SUCCESS, "Dados atualizados com sucesso!")
         return redirect('/confirmacao')
 
-
 class RedirecionadorAvaliacao(TemplateView):
     template_name='core/avaliacao'
     def get(self, *args, **kwargs):
@@ -1353,94 +1354,6 @@ class TelaCarregamento(TemplateView):
         }
 
         return render(self.request, self.template_name, context)
-
-
-# class TelaCarregamento(TemplateView):
-#     template_name = "core/tela_espera.html"
-
-#     def get(self, *args, **kwargs):
-#         # verificando se o usuario preencheu os dados pessoais
-#         user = self.request.user.username
-#         if dict(models.Usuario.objects.filter(usuario=user).values()[0])['dados_pessoais_id'] == None:
-#             messages.add_message(self.request, messages.ERROR,
-#                                  "É necessário que você responda todas as perguntas com ATENÇÃO, para no final, ter seus Planos Alimentares Personalizados")
-#             return redirect('/dados_pessoais')
-        
-#         # verificando se o usuário concluiu seu cadastro
-#         sexo = dict(categorias_models.DadosPessoais.objects.filter(
-#             user=user).values()[0])["sexo"]
-#         usuario = dict(models.Usuario.objects.filter(usuario=user).values()[0])
-#         for k, v in usuario.items():
-#             if sexo == 'masculino':
-#                 if v == None and k != 'ciclo_menstrual_id':
-#                     categoria_faltante = str(k).split('_')[0]
-#                     messages.add_message(
-#                         self.request, messages.ERROR, f"É necessário que você responda todas as perguntas com ATENÇÃO, para no final, ter seus Planos Alimentares Personalizados. Preencha: {categoria_faltante}")
-#                     return redirect('/dados_pessoais')
-#             else:
-#                 if v == None:
-#                     categoria_faltante = str(k).split('_')[0]
-#                     messages.add_message(
-#                         self.request, messages.ERROR, f"É necessário que você responda todas as perguntas com ATENÇÃO, para no final, ter seus Planos Alimentares Personalizados. Preencha: {categoria_faltante}")
-#                     return redirect('/dados_pessoais')
-                
-#         # verificando se o usuário tem avaliações disponíveis
-#         avaliacoes = dict(models.Usuario.objects.filter(
-#             usuario=user).values()[0])['avaliacoes']
-#         if avaliacoes < 1:
-#             return redirect('/?sem_avaliacao=True')
-
-#         ver = verifica_usuario(user)
-#         if not ver:
-#             messages.add_message(self.request, messages.ERROR, ver)
-#             return redirect("/?sem_tempo=1")
-#         else:
-#             pass
-
-#         doencas = dict(categorias_models.Doenca.objects.filter(
-#             usuario=user).values()[0])
-#         medicamentos = dict(
-#             categorias_models.Medicamento.objects.filter(usuario=user).values()[0])
-#         exame_de_sangue = dict(
-#             categorias_models.ExameSangue.objects.filter(usuario=user).values()[0])
-#         intestino = dict(categorias_models.Intestino.objects.filter(
-#             usuario=user).values()[0])
-#         sono = dict(categorias_models.Sono.objects.filter(
-#             usuario=user).values()[0])
-#         cirurgias = dict(categorias_models.Cirurgia.objects.filter(
-#             usuario=user).values()[0])
-#         alcool = dict(categorias_models.Alcool.objects.filter(
-#             usuario=user).values()[0])
-#         suplementos = dict(categorias_models.Suplemento.objects.filter(
-#             usuario=user).values()[0])
-#         ciclo_menstrual = ''
-#         if sexo != "masculino":
-#             ciclo_menstrual = dict(
-#                 categorias_models.CicloMenstrual.objects.filter(usuario=user).values()[0])
-#         dados_antropometricos = dict(
-#             categorias_models.Antropometricos.objects.filter(usuario=user).values()[0])
-#         horarios = dict(categorias_models.Horarios.objects.filter(
-#             usuario=user).values()[0])
-#         exercicios = dict(categorias_models.Exercicios.objects.filter(
-#             usuario=user).values()[0])
-#         dados_pessoais = dict(
-#             categorias_models.DadosPessoais.objects.filter(usuario=user).values()[0])
-#         context = {
-#             'dados_pessoais': dados_pessoais,
-#             'doencas': doencas,
-#             'medicamentos': medicamentos,
-#             'exame_sangue': exame_de_sangue,
-#             'intestino': intestino,
-#             'cirurgias': cirurgias,
-#             'sono': sono,
-#             'alcool': alcool,
-#             'suplementos': suplementos,
-#             'ciclo_menstrual': ciclo_menstrual,
-#             'antropometricos': dados_antropometricos,
-#             'horarios': horarios,
-#             'exercicios': exercicios,
-#         }
-#         return render(self.request, self.template_name, context)
 
 class Evolucao(TemplateView):
     template_name = 'core/tela_evolucao.html'
@@ -2151,9 +2064,6 @@ class MateriaisUsuario(TemplateView):
     def get(self, *args, **kwargs):
         return render(self.request, self.template_name)
         
-
-   
-
 def salvar_imagem(request):
     if request.method == 'POST':
         #transformando o base64 em imagem
@@ -2202,6 +2112,7 @@ def salvar_imagem(request):
                 form.save()
 
     return HttpResponse("ok")
+
 
 @login_required
 def gerar_pdf(request):
@@ -2317,52 +2228,213 @@ def gerar_pdf(request):
     response["Content-Disposition"] = 'attachment; filename="plano_alimentar.pdf"'
     return response
 
-import os
-from datetime import date
-from django.conf import settings
-from django.http import HttpResponse
-from django.template.loader import render_to_string
-from django.views.generic import TemplateView
-from django.contrib.staticfiles import finders
-from weasyprint import HTML, CSS
-
+from django.templatetags.static import static
 class CapaRelatorioView(TemplateView):
     template_name = 'core/relatorio_pdf_capa.html'
 
-    def get(self, request, *args, **kwargs):
-        # 1) Contexto
-        context = self.get_context_data(**kwargs)
+    def _abs_static(self, path: str) -> str:
+        return self.request.build_absolute_uri(static(path))
 
-        # 2) HTML (pasando request para {% static %} y filtros)
-        html_string = render_to_string(self.template_name, context, request=request)
+    def get(self, *args, **kwargs):
+        user = self.request.user.username
 
-        # 3) Base URL para resolver /static/ y /media/
-        base_url = request.build_absolute_uri('/')
+        if dict(models.Usuario.objects.filter(usuario=user).values()[0])['dados_pessoais_id'] is None:
+            messages.add_message(self.request, messages.ERROR,
+                                 "É necessário que você responda todas as perguntas com ATENÇÃO, para no final, ter seus Planos Alimentares Personalizados")
+            return redirect('/dados_pessoais')
 
-        # 4) CSS opcional (si existe, se aplica)
-        stylesheets = []
-        css_pdf = finders.find('css/pdf.css')  # ej: /static/css/pdf.css
-        if css_pdf:
-            stylesheets.append(CSS(filename=css_pdf))
+        sexo = dict(categorias_models.DadosPessoais.objects.filter(user=user).values()[0])["sexo"]
+        usuario = dict(models.Usuario.objects.filter(usuario=user).values()[0])
+        for k, v in usuario.items():
+            if sexo == 'masculino':
+                if v is None and k != 'ciclo_menstrual_id':
+                    categoria_faltante = str(k).split('_')[0]
+                    messages.add_message(self.request, messages.ERROR,
+                        f"É necessário que você responda todas as perguntas com ATENÇÃO, para no final, ter seus Planos Alimentares Personalizados. Preencha: {categoria_faltante}")
+                    return redirect('/dados_pessoais')
+            else:
+                if v is None:
+                    categoria_faltante = str(k).split('_')[0]
+                    messages.add_message(self.request, messages.ERROR,
+                        f"É necessário que você responda todas as perguntas com ATENÇÃO, para no final, ter seus Planos Alimentares Personalizados. Preencha: {categoria_faltante}")
+                    return redirect('/dados_pessoais')
 
-        # 5) Generar PDF
-        pdf_bytes = HTML(string=html_string, base_url=base_url).write_pdf(
-            stylesheets=stylesheets,
-            presentational_hints=True
-        )
+        ver = verifica_usuario(user)
+        if not ver:
+            messages.add_message(self.request, messages.ERROR, ver)
+            return redirect("/?sem_tempo=1")
 
-        # 6) Respuesta
-        resp = HttpResponse(pdf_bytes, content_type='application/pdf')
-        resp['Content-Disposition'] = 'inline; filename="relatorio.pdf"'
+        # -------- DATOS BÁSICOS --------
+        dados_pessoais = dict(categorias_models.DadosPessoais.objects.filter(user=user).values()[0])
+        altura = dados_pessoais["altura"]
+        idade = int((datetime.now().date() - dados_pessoais['nascimento']).days // 365.25)
+        sexo = dados_pessoais['sexo']
+
+        dados_antropometricos = dict(categorias_models.Antropometricos.objects.filter(usuario=user).values()[0])
+        peso = dados_antropometricos["peso"]
+
+        if not models.PlanoAlimentar.objects.filter(user=user).exists():
+            messages.add_message(self.request, messages.ERROR, "Realize uma avaliação para ter acesso ao seu relatório de evolução")
+            return redirect("/")
+        plano = dict(models.PlanoAlimentar.objects.filter(user=user).values().order_by("data_realizacao")[0])
+
+        percentual_gordura_atual = plano["percentual_gordura"]
+
+        # -------- CÁLCULOS --------
+        percentual_gordura_ideal = gordura_ideal(sexo, idade)
+
+        i_altura = 1.45
+        i_const = 19.5
+        rel_alt_const = {}
+        for _ in range(100):
+            rel_alt_const[f"{i_altura:.2f}"] = round(i_const, 1)
+            i_altura += 0.01
+            i_const += 0.1
+
+        altura_str = str(round(altura/100, 2))
+        constante = rel_alt_const[altura_str]
+
+        peso_ideal = round(float(constante) * float((altura/100)**2), 2)
+        if peso < peso_ideal - 1:
+            estado_peso = "abaixo"
+        elif peso > peso_ideal + 1:
+            estado_peso = "acima"
+        else:
+            estado_peso = 'na_media'
+
+        MM_ideal = round(peso_ideal - ((peso_ideal / 100) * percentual_gordura_ideal), 2)
+        MM_real = round(peso - ((peso / 100) * percentual_gordura_atual), 2)
+        if MM_real > MM_ideal:
+            massa_magra = "acima"
+        elif MM_real < MM_ideal:
+            massa_magra = "baixa"
+        else:
+            massa_magra = "normal"
+
+        per_gordura, estado_per_gordura = gera_estado_e_per_gordura(percentual_gordura_atual, idade, sexo)
+        if per_gordura == "Valor inválido":
+            messages.add_message(self.request, messages.ERROR,
+                                 "Seu valor de Gordura é inválido, por favor, verifique se você preencheu corretamente o formulário de Antropometria.")
+            return redirect("/")
+
+        planos = list(models.PlanoAlimentar.objects.filter(user=user).values().order_by("data_realizacao"))[0:1]
+        quadris, cinturas, abdomens = [], [], []
+        for p in planos:
+            cinturas.append(p["cintura"])
+            quadris.append(p["quadril"])
+            abdomens.append(p["abdomen"])
+
+        riscos_cintura = [calcula_cintura(altura, c) for c in cinturas]
+        riscos_quadril = [calcula_quadril(sexo, float(q), float(altura)) for q in quadris]
+        riscos_abdomen = [calcula_abdomen(sexo, a) for a in abdomens]
+        riscos_quad_cint = [cintura_quadril(sexo, idade, quadris[i], cinturas[i]) for i in range(len(cinturas))]
+
+        infos = {
+            'idade': int((datetime.now().date() - dados_pessoais['nascimento']).days // 365.25),
+            'sexo': dados_pessoais['sexo'],
+            'altura': float(dados_pessoais['altura']),
+            'abdomen': float(dados_antropometricos['abdomen']),
+            'pulso': float(dados_antropometricos['pulso']),
+            'peso': float(dados_antropometricos['peso']),
+            'quadril': float(dados_antropometricos['quadril'])
+        }
+
+        parte = parte_a(infos['peso'], infos['abdomen'], infos['pulso'], infos['sexo'], infos['quadril'], infos['altura'])
+        gi = gordura_ideal(infos["sexo"], infos['idade'])
+        parte = parte_a(infos['peso'], infos['abdomen'], infos['pulso'], infos['sexo'], infos['quadril'], infos['altura'])
+        ga = gordura_atual(infos['peso'], parte, infos['sexo'])
+        gi = gordura_ideal(infos["sexo"], infos['idade'])
+        gm = gordura_meta(gi, ga, infos["sexo"])
+        pa = peso_ajustado(float(infos['peso']), float(ga), float(gm))
+
+        plano_1 = list(models.PlanoAlimentar.objects.filter(user=user).values().order_by("data_realizacao"))[0]
+        per_gor_inicial = float(plano_1["percentual_gordura"]) - float(0.3)
+
+        lista_metas, lista_oks = {0: 0}, {0: 0}
+        if percentual_gordura_atual <= per_gor_inicial + 0.3:
+            for i in range(80):
+                lista_oks[i] = "--"
+
+        i = 1
+        while i < 80:
+            lista_metas[i] = "-----"
+            i += 1
+
+        gm = gordura_meta(percentual_gordura_ideal, percentual_gordura_atual, sexo)
+        pa = peso_ajustado(float(infos['peso']), float(percentual_gordura_atual), float(gm))
+
+        i = 1
+        while per_gor_inicial > gm:
+            per_gor_inicial -= 0.3
+            lista_oks[i] = "OK" if percentual_gordura_atual <= per_gor_inicial else "--"
+            lista_metas[i] = round(per_gor_inicial, 1)
+            i += 1
+
+        P7 = peso
+        P8 = percentual_gordura_atual
+        P9 = P7 / 100 * P8
+        R9 = percentual_gordura_ideal
+        R10 = 100 - R9
+        P10 = P7 - P9
+        S10 = P10
+        S9 = R9 * S10 / R10
+        peso_desejado = S9 + S10
+
+        # -------- CONTEXTO --------
+        context = {
+            "nome_pessoa": usuario["nome"],
+            "sobrenome_pessoa": usuario["sobrenome"],
+            "peso": peso,
+            "estado_peso": estado_peso,
+            "massa_media": massa_magra,
+            "per_gordura": per_gordura,
+            "altura": round(altura/100, 2),
+            "sexo": sexo,
+            "peso_ideal": round(peso_desejado, 1),
+            "peso_ideal_min": int(peso_ideal) - 1,
+            "peso_ideal_max": int(peso_ideal) + 1,
+            "percentual_gordura_ideal": round(percentual_gordura_ideal, 1),
+            'percentual_gordura_real': round(percentual_gordura_atual, 1),
+            "estado_per_gordura": estado_per_gordura,
+            "peso_real_gordura": round(float(peso) - float(MM_real), 1),
+            "peso_ideal_gordura": round(float(percentual_gordura_ideal) * float(MM_real)/float(100 - float(percentual_gordura_ideal)), 1),
+            "peso_real_MM": round(MM_real, 1),
+            "riscos_cintura": riscos_cintura,
+            "riscos_quad_cint": riscos_quad_cint,
+            "riscos_abdomen": riscos_abdomen,
+            "riscos_quadril": riscos_quadril,
+            "kcal_1": int(round((pa*30)/100)*100),
+            "kcal_2": int(plano["kcal"]),
+            "kcal_3": int(plano["kcal_simples"]),
+            "lista": lista_metas,
+            "lista_oks": lista_oks
+        }
+        print("\n═══════════════════════════════════════════════════════")
+        print("🧩 CONTEXTO COMPLETO DA CAPA DO RELATÓRIO")
+        print("═══════════════════════════════════════════════════════")
+
+        for k, v in context.items():
+            print(f"{k}: {v}")
+
+        print("═══════════════════════════════════════════════════════\n")
+
+        # siempre el mismo template para capa
+        self.template_name = "core/relatorio_pdf_capa.html"
+
+        # -------- IMÁGENES DE FONDO --------
+        context["portada_bg_url"] = self._abs_static("core/images/portada-bg.jpg")
+        context["interior_bg_url"] = self._abs_static("core/images/interior-bg.jpg")
+
+        # -------- MODO PREVIEW HTML O PDF --------
+        # ?preview=1 -> HTML sin PDF (útil para depurar variables)
+        # ?pdf=1 (o por defecto) -> PDF con WeasyPrint
+        if self.request.GET.get("preview") == "1":
+            # modo navegador
+            return render(self.request, self.template_name, context)
+
+        # modo PDF
+        html_str = render_to_string(self.template_name, context)
+        pdf_bytes = HTML(string=html_str, base_url=self.request.build_absolute_uri("/")).write_pdf()
+        resp = HttpResponse(pdf_bytes, content_type="application/pdf")
+        resp['Content-Disposition'] = 'inline; filename="relatorio_capa.pdf"'
         return resp
-
-    def get_context_data(self, **kwargs):
-        ctx = super().get_context_data(**kwargs)
-        request = self.request
-        ctx.update({
-            'usuario': request.user.get_username() or 'anónimo',
-            'nome_pessoa': 'Thyago Piffer',
-            'sobrenome_pessoa': 'Santi',
-            'hoy': date.today(),
-        })
-        return ctx

@@ -49,7 +49,7 @@ urlpatterns = [
     path("materiais_usuario", views.MateriaisUsuario.as_view(), name="materiais_usuario"),
     path("gerar-pdf/", views.gerar_pdf, name="gerar_pdf"),
     
-    path('teste_capa/', views.CapaRelatorioView.as_view(), name='teste_capa'),
+    path('relatorio-capa/', views.CapaRelatorioView.as_view(), name='teste_capa'),
 ]
 handler404 = views.error_404
 handler500 = views.error_500
