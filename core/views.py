@@ -2275,24 +2275,25 @@ def gerar_pdf(request):
     with tempfile.NamedTemporaryFile(delete=False) as output:
         HTML(string=html_string, base_url=request.build_absolute_uri('/')).write_pdf(
             output.name,
-          stylesheets=[CSS(string="""
+            stylesheets=[CSS(string="""
                 @page {
-                    size: auto;               /* ❗ sin tamaño fijo */
-                    margin: 0;                /* sin márgenes predeterminados */
+                    size: 220mm 1300mm;   /* una sola hoja larga */
+                    margin: 10mm 10mm 15mm 10mm;
                 }
 
-                body {
+                html, body {
+                    margin: 0;
+                    padding: 0;
                     font-family: 'Open Sans', sans-serif;
                     font-size: 12pt;
                     line-height: 1.4;
-                    margin: 0;
-                    padding: 0;
+                    background: white;
                 }
 
                 .card-refeicao {
-                    border: 1px solid #ccc;
+                    border: 1px solid #ddd;
                     border-radius: 8px;
-                    padding: 12px 16px;
+                    padding: 10px 15px;
                     margin-bottom: 8px;
                     page-break-inside: avoid;
                 }
@@ -2300,7 +2301,11 @@ def gerar_pdf(request):
                 * {
                     page-break-before: avoid;
                     page-break-after: avoid;
+                    page-break-inside: avoid;
                 }
+
+
+
             """)]
 
 
