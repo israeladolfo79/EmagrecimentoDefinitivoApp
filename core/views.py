@@ -2277,7 +2277,7 @@ def gerar_pdf(request):
             output.name,
             stylesheets=[CSS(string="""
                 @page {
-                    size: 220mm 1300mm;   /* una sola hoja larga */
+                    size: 240mm 1300mm;   /* una sola hoja larga */
                     margin: 10mm 10mm 15mm 10mm;
                 }
 
