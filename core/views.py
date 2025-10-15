@@ -24,6 +24,7 @@ import tempfile
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.contrib.staticfiles import finders
+import logging
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -1423,7 +1424,6 @@ class Evolucao(TemplateView):
 
 class Checkout(TemplateView):
     template_name = "core/checkout.html"
-
 class RelatorioEvolucao(TemplateView):
     def get(self, *args, **kwargs):
         # verificando se o usuario preencheu os dados pessoais
@@ -1650,6 +1650,11 @@ class RelatorioEvolucao(TemplateView):
             "lista": lista_metas,
             "lista_oks": lista_oks
         }
+        import pprint
+
+        print("\n===== CONTEXTO COMPLETO DO RELATÓRIO =====")
+        pprint.pprint(context)
+        print("==========================================\n")
         if sexo == "masculino":
             self.template_name = "core/relatorio_m.html"
             user = self.request.user.username
@@ -1663,6 +1668,7 @@ class RelatorioEvolucao(TemplateView):
             if not passaram_7_dias:
                 self.template_name = "core/relatorio_f_incompleto.html"
         return render(self.request, self.template_name, context)
+
 
 class EvolucaoFinal(TemplateView):
     template_name = 'core/evolucao_modelo.html'
@@ -1890,6 +1896,25 @@ class EvolucaoFinal(TemplateView):
             'valores': valores,
             'kcals': kcals
         }
+
+        print("───────────────────────────────")
+        print("📆 DATAS:")
+        for k, v in datas.items():
+            print(f"   {k}: {v}")
+
+        print("\n🔥 KCALS:")
+        for k, v in kcals.items():
+            print(f"   {k}: {v}")
+
+        print("\n⚖️  DIFERENÇAS:")
+        for k, v in diferencas.items():
+            print(f"   {k}: {v}")
+
+        print("\n🎯 VALORES (meta de evolução):")
+        for k, v in valores.items():
+            print(f"   {k}: {v}")
+        print("───────────────────────────────")
+
         return render(self.request, self.template_name, context)
 
 class Calculadora(TemplateView):
@@ -2228,213 +2253,306 @@ def gerar_pdf(request):
     response["Content-Disposition"] = 'attachment; filename="plano_alimentar.pdf"'
     return response
 
-from django.templatetags.static import static
+
+
+# === Logging para debug controlado ===
+logger = logging.getLogger(__name__)
+
 class CapaRelatorioView(TemplateView):
+    
     template_name = 'core/relatorio_pdf_capa.html'
 
-    def _abs_static(self, path: str) -> str:
-        return self.request.build_absolute_uri(static(path))
-
     def get(self, *args, **kwargs):
-        user = self.request.user.username
 
-        if dict(models.Usuario.objects.filter(usuario=user).values()[0])['dados_pessoais_id'] is None:
+        # verificando se o usuario preencheu os dados pessoais
+        user = self.request.user.username
+        if not categorias_models.DadosPessoais.objects.filter(usuario=user).exists():
             messages.add_message(self.request, messages.ERROR,
                                  "É necessário que você responda todas as perguntas com ATENÇÃO, para no final, ter seus Planos Alimentares Personalizados")
             return redirect('/dados_pessoais')
 
-        sexo = dict(categorias_models.DadosPessoais.objects.filter(user=user).values()[0])["sexo"]
+        # verificando se o usuário concluiu seu cadastro
+        sexo = dict(categorias_models.DadosPessoais.objects.filter(
+            user=user).values()[0])["sexo"]
+        altura = dict(categorias_models.DadosPessoais.objects.filter(
+            user=user).values()[0])["altura"]
+        idade = int((datetime.now().date() - dict(categorias_models.DadosPessoais.objects.filter(
+            user=user).values()[0])["nascimento"]).days // 365.25)
         usuario = dict(models.Usuario.objects.filter(usuario=user).values()[0])
         for k, v in usuario.items():
             if sexo == 'masculino':
-                if v is None and k != 'ciclo_menstrual_id':
+                if v == None and k != 'ciclo_menstrual_id':
                     categoria_faltante = str(k).split('_')[0]
-                    messages.add_message(self.request, messages.ERROR,
-                        f"É necessário que você responda todas as perguntas com ATENÇÃO, para no final, ter seus Planos Alimentares Personalizados. Preencha: {categoria_faltante}")
+                    messages.add_message(
+                        self.request, messages.ERROR, f"É necessário que você responda todas as perguntas com ATENÇÃO, para no final, ter seus Planos Alimentares Personalizados. Preencha: {categoria_faltante}")
                     return redirect('/dados_pessoais')
             else:
-                if v is None:
+                if v == None:
                     categoria_faltante = str(k).split('_')[0]
-                    messages.add_message(self.request, messages.ERROR,
-                        f"É necessário que você responda todas as perguntas com ATENÇÃO, para no final, ter seus Planos Alimentares Personalizados. Preencha: {categoria_faltante}")
+                    messages.add_message(
+                        self.request, messages.ERROR, f"É necessário que você responda todas as perguntas com ATENÇÃO, para no final, ter seus Planos Alimentares Personalizados. Preencha: {categoria_faltante}")
                     return redirect('/dados_pessoais')
 
         ver = verifica_usuario(user)
         if not ver:
             messages.add_message(self.request, messages.ERROR, ver)
-            return redirect("/?sem_tempo=1")
-
-        # -------- DATOS BÁSICOS --------
-        dados_pessoais = dict(categorias_models.DadosPessoais.objects.filter(user=user).values()[0])
-        altura = dados_pessoais["altura"]
-        idade = int((datetime.now().date() - dados_pessoais['nascimento']).days // 365.25)
-        sexo = dados_pessoais['sexo']
-
-        dados_antropometricos = dict(categorias_models.Antropometricos.objects.filter(usuario=user).values()[0])
-        peso = dados_antropometricos["peso"]
-
-        if not models.PlanoAlimentar.objects.filter(user=user).exists():
-            messages.add_message(self.request, messages.ERROR, "Realize uma avaliação para ter acesso ao seu relatório de evolução")
-            return redirect("/")
-        plano = dict(models.PlanoAlimentar.objects.filter(user=user).values().order_by("data_realizacao")[0])
-
-        percentual_gordura_atual = plano["percentual_gordura"]
-
-        # -------- CÁLCULOS --------
-        percentual_gordura_ideal = gordura_ideal(sexo, idade)
-
-        i_altura = 1.45
-        i_const = 19.5
-        rel_alt_const = {}
-        for _ in range(100):
-            rel_alt_const[f"{i_altura:.2f}"] = round(i_const, 1)
-            i_altura += 0.01
-            i_const += 0.1
-
-        altura_str = str(round(altura/100, 2))
-        constante = rel_alt_const[altura_str]
-
-        peso_ideal = round(float(constante) * float((altura/100)**2), 2)
-        if peso < peso_ideal - 1:
-            estado_peso = "abaixo"
-        elif peso > peso_ideal + 1:
-            estado_peso = "acima"
+            return redirect("index")
         else:
-            estado_peso = 'na_media'
+            pass
 
-        MM_ideal = round(peso_ideal - ((peso_ideal / 100) * percentual_gordura_ideal), 2)
-        MM_real = round(peso - ((peso / 100) * percentual_gordura_atual), 2)
-        if MM_real > MM_ideal:
-            massa_magra = "acima"
-        elif MM_real < MM_ideal:
-            massa_magra = "baixa"
-        else:
-            massa_magra = "normal"
+        usuario = dict(models.Usuario.objects.filter(usuario=user).values()[0])
+        planos = list(models.PlanoAlimentar.objects.filter(user=user).values().order_by("data_realizacao"))[:6]
+        
+        #verificando se o usuário possui menos de dois planos alimentares realizados
+        if len(planos) < 2:
+            messages.error(self.request, "Você precisa ter realizado ao menos dois Planos Alimentares para ter acesso à Evolução Alimentar")
+            return redirect("index")
+        datas_lista = [plano['data_realizacao'].strftime('%d/%m/%Y') for plano in planos]
+        datas_planos = {}
+        for i in range(len(datas_lista)):
+            datas_planos[f'data_{i+1}'] = datas_lista[i]
 
-        per_gordura, estado_per_gordura = gera_estado_e_per_gordura(percentual_gordura_atual, idade, sexo)
-        if per_gordura == "Valor inválido":
-            messages.add_message(self.request, messages.ERROR,
-                                 "Seu valor de Gordura é inválido, por favor, verifique se você preencheu corretamente o formulário de Antropometria.")
-            return redirect("/")
+            
+        consultas = {}
+        riscos = {}
+        i = 1
+        for plano in planos:
+            ### Consultas ###
+            consultas[f'peso_{i}'] = round(plano['peso'], 2 if len(
+                str(plano['peso']).split('.')[0]) < 3 else 1)
+            consultas[f'per_gordura_{i}'] = round(
+                plano['percentual_gordura'], 1)
+            consultas[f'massa_magra_{i}'] = round(
+                float(plano['peso']) - float(plano['gordura_corporal']), 1)
+            consultas[f'peso_gordura_{i}'] = round(plano['gordura_corporal'], 2 if len(
+                str(plano['gordura_corporal']).split('.')[0]) < 2 else 1)
+            consultas[f'cintura_{i}'] = round(plano['cintura'], 2 if len(
+                str(plano['cintura']).split('.')[0]) < 3 else 1)
+            consultas[f'abdomen_{i}'] = round(plano['abdomen'], 2 if len(
+                str(plano['abdomen']).split('.')[0]) < 3 else 1)
+            consultas[f'quadril_{i}'] = round(plano['quadril'], 2 if len(
+                str(plano['quadril']).split('.')[0]) < 3 else 1)
 
-        planos = list(models.PlanoAlimentar.objects.filter(user=user).values().order_by("data_realizacao"))[0:1]
-        quadris, cinturas, abdomens = [], [], []
-        for p in planos:
-            cinturas.append(p["cintura"])
-            quadris.append(p["quadril"])
-            abdomens.append(p["abdomen"])
+            ### Riscos ###
+            riscos[f'quadril_{i}'] = calcula_quadril(
+                sexo, float(plano['quadril']), float(altura))
+            riscos[f'cintura_{i}'] = calcula_cintura(altura, plano['cintura'])
+            riscos[f'abdomen_{i}'] = calcula_abdomen(sexo, plano['abdomen'])
+            riscos[f'cintura_quadril_{i}'] = cintura_quadril(
+                sexo, idade, float(plano['quadril']), float(plano['cintura']))
 
-        riscos_cintura = [calcula_cintura(altura, c) for c in cinturas]
-        riscos_quadril = [calcula_quadril(sexo, float(q), float(altura)) for q in quadris]
-        riscos_abdomen = [calcula_abdomen(sexo, a) for a in abdomens]
-        riscos_quad_cint = [cintura_quadril(sexo, idade, quadris[i], cinturas[i]) for i in range(len(cinturas))]
+            i += 1
 
-        infos = {
-            'idade': int((datetime.now().date() - dados_pessoais['nascimento']).days // 365.25),
-            'sexo': dados_pessoais['sexo'],
-            'altura': float(dados_pessoais['altura']),
-            'abdomen': float(dados_antropometricos['abdomen']),
-            'pulso': float(dados_antropometricos['pulso']),
-            'peso': float(dados_antropometricos['peso']),
-            'quadril': float(dados_antropometricos['quadril'])
+        # Pegando Kcal
+        ultimo_plano = planos[-1]
+        print(ultimo_plano)
+
+        # Comparação 2 últimos planos
+        ultimos = planos[-2:]
+        datas = {}
+        i = 1
+        for plano in ultimos:
+            datas[f'data_{i}'] = plano['data_realizacao'].strftime('%d/%m/%Y')
+            i += 1
+
+        kcals = {}
+        # pegando os valores caloricos
+        parte = parte_a(planos[-1]['peso'], planos[-1]['abdomen'],
+                        planos[-1]['pulso'], sexo, planos[-1]['quadril'], altura)
+        gi = gordura_ideal(sexo, idade)
+        per_gordura_atual = round(float(planos[-1]['percentual_gordura']), 2 if len(str(planos[-2]['percentual_gordura']).split('.')[0]) < 2 else 1)
+        gm = gordura_meta(gi, per_gordura_atual, sexo)
+        pa = peso_ajustado(float(planos[-1]['peso']), float(per_gordura_atual), float(gm))
+        kcals['kcal_1'] = int(round((pa*30)/100)*100)
+        kcals['kcal_2'] = int(planos[-1]['kcal'])
+        mes_realizacao = int(planos[-1]['data_realizacao'].strftime('%m'))
+        meses = {
+            1: 'JANEIRO',
+            2: 'FEVEREIRO',
+            3: 'MARÇO',
+            4: 'ABRIL',
+            5: 'MAIO',
+            6: 'JUNHO',
+            7: 'JULHO',
+            8: 'AGOSTO',
+            9: 'SETEMBRO',
+            10: 'OUTUBRO',
+            11: 'NOVEMBRO',
+            12: 'DEZEMBRO',
         }
+        kcals['mes'] = meses[mes_realizacao]
+        # Pegando as diferenças
+        diferencas = {}
 
-        parte = parte_a(infos['peso'], infos['abdomen'], infos['pulso'], infos['sexo'], infos['quadril'], infos['altura'])
-        gi = gordura_ideal(infos["sexo"], infos['idade'])
-        parte = parte_a(infos['peso'], infos['abdomen'], infos['pulso'], infos['sexo'], infos['quadril'], infos['altura'])
-        ga = gordura_atual(infos['peso'], parte, infos['sexo'])
-        gi = gordura_ideal(infos["sexo"], infos['idade'])
-        gm = gordura_meta(gi, ga, infos["sexo"])
-        pa = peso_ajustado(float(infos['peso']), float(ga), float(gm))
+        # diferenca de peso
+        diferenca_peso = float(planos[-1]['peso']) - float(planos[-2]['peso'])
+        diferenca_peso = round(diferenca_peso, 2 if len(str(diferenca_peso).split('.')[0]) < 2 else 1)
+        if diferenca_peso == 0:
+            diferenca_peso_estado = 'MANUTENCAO'
+        elif 0 < diferenca_peso <= 1.5:
+            diferenca_peso_estado = 'AUMENTO'
+        elif diferenca_peso > 1.5:
+            diferenca_peso_estado = 'GRANDE AUMENTO'
+        elif -1.5 <= diferenca_peso < 0:
+            diferenca_peso_estado = 'DIMINUICAO'
+        elif diferenca_peso < -1.5:
+            diferenca_peso_estado = 'GRANDE DIMINUICAO'
+        diferenca_peso = str(abs(diferenca_peso))
+        diferencas['peso'] = diferenca_peso
+        diferencas['peso_descricao'] = diferenca_peso_estado
 
-        plano_1 = list(models.PlanoAlimentar.objects.filter(user=user).values().order_by("data_realizacao"))[0]
-        per_gor_inicial = float(plano_1["percentual_gordura"]) - float(0.3)
+        # diferenca de % gordura
+        diferenca_percentual_gordura = float(planos[-1]['percentual_gordura']) - float(planos[-2]['percentual_gordura'])
+        diferenca_percentual_gordura = round(diferenca_percentual_gordura, 2 if len(str(diferenca_percentual_gordura).split('.')[0]) < 2 else 1)
+        if diferenca_percentual_gordura == 0:
+            diferenca_percentual_gordura_estado = 'MANUTENCAO'
+        elif 0 < diferenca_percentual_gordura <= 0.2:
+            diferenca_percentual_gordura_estado = 'LEVE AUMENTO'
+        elif diferenca_percentual_gordura > 0.2:
+            diferenca_percentual_gordura_estado = 'AUMENTO'
+        elif -0.2 <= diferenca_percentual_gordura < 0:
+            diferenca_percentual_gordura_estado = 'LEVE DIMINUICAO'
+        elif diferenca_percentual_gordura < -0.2:
+            diferenca_percentual_gordura_estado = 'DIMINUICAO'
+        diferenca_percentual_gordura = str(abs(diferenca_percentual_gordura))
+        diferencas['percentual_gordura'] = diferenca_percentual_gordura
+        diferencas['percentual_gordura_descricao'] = diferenca_percentual_gordura_estado
 
-        lista_metas, lista_oks = {0: 0}, {0: 0}
-        if percentual_gordura_atual <= per_gor_inicial + 0.3:
-            for i in range(80):
-                lista_oks[i] = "--"
+        # diferenca de peso da gordura
+        diferenca_peso_gordura = float(
+            planos[-1]['gordura_corporal']) - float(planos[-2]['gordura_corporal'])
+        diferenca_peso_gordura = round(diferenca_peso_gordura, 2 if len(
+            str(diferenca_peso_gordura).split('.')[0]) < 2 else 1)
+        if diferenca_peso_gordura == 0:
+            diferenca_peso_gordura_estado = 'MANUTENCAO'
+        elif diferenca_peso_gordura > 0:
+            diferenca_peso_gordura_estado = 'AUMENTO'
+        elif -0.2 <= diferenca_peso_gordura < 0:
+            diferenca_peso_gordura_estado = 'LEVE DIMINUICAO'
+        elif diferenca_peso_gordura < -0.2:
+            diferenca_peso_gordura_estado = 'DIMINUICAO'
+        diferenca_peso_gordura = str(abs(diferenca_peso_gordura)) 
+        diferencas['peso_gordura'] = diferenca_peso_gordura
+        diferencas['peso_gordura_descricao'] = diferenca_peso_gordura_estado
 
-        i = 1
-        while i < 80:
-            lista_metas[i] = "-----"
+        # diferenca de Massa Magra
+        diferenca_MM = (float(planos[-1]['peso']) - float(planos[-1]['gordura_corporal'])) - (
+            float(planos[-2]['peso']) - float(planos[-2]['gordura_corporal']))
+        diferenca_MM = round(diferenca_MM, 2 if len(
+            str(diferenca_MM).split('.')[0]) < 2 else 1)
+        if diferenca_MM == 0:
+            diferenca_MM_estado = 'MANUTENCAO'
+        elif 0 < diferenca_MM <= 0.2:
+            diferenca_MM_estado = 'LEVE AUMENTO'
+        elif diferenca_MM > 0.2:
+            diferenca_MM_estado = 'AUMENTO'
+        elif diferenca_MM < 0:
+            diferenca_MM_estado = 'DIMINUICAO'
+        diferenca_MM = str(abs(diferenca_MM))
+        diferencas['peso_MM'] = diferenca_MM
+        diferencas['peso_MM_descricao'] = diferenca_MM_estado
+
+        # Pegando a meta de evolução
+        per_gordura_inicial = round(float(planos[0]['percentual_gordura']), 2 if len(str(planos[0]['percentual_gordura']).split('.')[0]) < 2 else 1)
+        per_gordura_meta = gm
+
+        valores = {
+            'meta_1': per_gordura_inicial,
+            'meta_1_estado': 'OK'
+        }
+        i = 2
+        for _ in range(65):
+            if per_gordura_inicial >= per_gordura_meta:
+                per_gordura_inicial -= 0.3
+                valores[f'meta_{i}'] = round(per_gordura_inicial, 2 if len(
+                    str(per_gordura_inicial).split('.')[0]) < 2 else 1)
+                if per_gordura_atual <= per_gordura_inicial:
+                    valores[f'meta_{i}_estado'] = 'OK'
+                else:
+                    valores[f'meta_{i}_estado'] = '__'
+            else:
+                valores[f'meta_{i}'] = '____'
+                valores[f'meta_{i}_estado'] = '__'
             i += 1
 
-        gm = gordura_meta(percentual_gordura_ideal, percentual_gordura_atual, sexo)
-        pa = peso_ajustado(float(infos['peso']), float(percentual_gordura_atual), float(gm))
+        metas = []
+        for i in range(1, 49):  # ajustá el rango según cuántas tengas
+            valor = valores.get(f"meta_{i}", "-")
+            estado = valores.get(f"meta_{i}_estado", "")
+            metas.append({
+                "num": i,
+                "valor": valor,
+                "estado": estado
+            })
 
-        i = 1
-        while per_gor_inicial > gm:
-            per_gor_inicial -= 0.3
-            lista_oks[i] = "OK" if percentual_gordura_atual <= per_gor_inicial else "--"
-            lista_metas[i] = round(per_gor_inicial, 1)
-            i += 1
+        # 🔹 Partir la lista metas en dos mitades iguales
+        metas_1 = metas[:24]
+        metas_2 = metas[24:]
 
-        P7 = peso
-        P8 = percentual_gordura_atual
-        P9 = P7 / 100 * P8
-        R9 = percentual_gordura_ideal
-        R10 = 100 - R9
-        P10 = P7 - P9
-        S10 = P10
-        S9 = R9 * S10 / R10
-        peso_desejado = S9 + S10
-
-        # -------- CONTEXTO --------
+        # 🔹 Emparejar los dos bloques (una fila con dos metas)
+        filas_metas = []
+        for i in range(len(metas_1)):
+            m1 = metas_1[i]
+            m2 = metas_2[i] if i < len(metas_2) else None
+            filas_metas.append((m1, m2))
         context = {
             "nome_pessoa": usuario["nome"],
             "sobrenome_pessoa": usuario["sobrenome"],
-            "peso": peso,
-            "estado_peso": estado_peso,
-            "massa_media": massa_magra,
-            "per_gordura": per_gordura,
-            "altura": round(altura/100, 2),
-            "sexo": sexo,
-            "peso_ideal": round(peso_desejado, 1),
-            "peso_ideal_min": int(peso_ideal) - 1,
-            "peso_ideal_max": int(peso_ideal) + 1,
-            "percentual_gordura_ideal": round(percentual_gordura_ideal, 1),
-            'percentual_gordura_real': round(percentual_gordura_atual, 1),
-            "estado_per_gordura": estado_per_gordura,
-            "peso_real_gordura": round(float(peso) - float(MM_real), 1),
-            "peso_ideal_gordura": round(float(percentual_gordura_ideal) * float(MM_real)/float(100 - float(percentual_gordura_ideal)), 1),
-            "peso_real_MM": round(MM_real, 1),
-            "riscos_cintura": riscos_cintura,
-            "riscos_quad_cint": riscos_quad_cint,
-            "riscos_abdomen": riscos_abdomen,
-            "riscos_quadril": riscos_quadril,
-            "kcal_1": int(round((pa*30)/100)*100),
-            "kcal_2": int(plano["kcal"]),
-            "kcal_3": int(plano["kcal_simples"]),
-            "lista": lista_metas,
-            "lista_oks": lista_oks
+            'datas_planos': datas_planos,
+            't': consultas,
+            'riscos': riscos,
+            'datas': datas,
+            'diferencas': diferencas,
+            'valores': valores,
+            'kcals': kcals,
+           'filas_metas': filas_metas,
         }
-        print("\n═══════════════════════════════════════════════════════")
-        print("🧩 CONTEXTO COMPLETO DA CAPA DO RELATÓRIO")
-        print("═══════════════════════════════════════════════════════")
+        import pprint
+        print("🧩 Contenido de t (consultas):", consultas)
+        print("🧠 Tipo de t:", type(consultas))
+        print("\n=== CONSULTAS (debug) ===")
+        pprint.pprint(consultas)
+        print("=========================\n")
 
-        for k, v in context.items():
-            print(f"{k}: {v}")
+        print("───────────────────────────────")
+        print("📆 DATAS:")
+        for k, v in datas.items():
+            print(f"   {k}: {v}")
 
-        print("═══════════════════════════════════════════════════════\n")
+        print("\n🔥 KCALS:")
+        for k, v in kcals.items():
+            print(f"   {k}: {v}")
 
-        # siempre el mismo template para capa
-        self.template_name = "core/relatorio_pdf_capa.html"
+        print("\n⚖️  DIFERENÇAS:")
+        for k, v in diferencas.items():
+            print(f"   {k}: {v}")
 
-        # -------- IMÁGENES DE FONDO --------
-        context["portada_bg_url"] = self._abs_static("core/images/portada-bg.jpg")
-        context["interior_bg_url"] = self._abs_static("core/images/interior-bg.jpg")
+        print("\n🎯 VALORES (meta de evolução):")
+        for k, v in valores.items():
+            print(f"   {k}: {v}")
+        print("───────────────────────────────")
 
-        # -------- MODO PREVIEW HTML O PDF --------
-        # ?preview=1 -> HTML sin PDF (útil para depurar variables)
-        # ?pdf=1 (o por defecto) -> PDF con WeasyPrint
-        if self.request.GET.get("preview") == "1":
-            # modo navegador
-            return render(self.request, self.template_name, context)
+        # return render(self.request, self.template_name, context)
+        return self._gerar_pdf(context)
+        
+    
 
-        # modo PDF
-        html_str = render_to_string(self.template_name, context)
-        pdf_bytes = HTML(string=html_str, base_url=self.request.build_absolute_uri("/")).write_pdf()
-        resp = HttpResponse(pdf_bytes, content_type="application/pdf")
-        resp['Content-Disposition'] = 'inline; filename="relatorio_capa.pdf"'
-        return resp
+
+    def _gerar_pdf(self, context):
+        from django.conf import settings
+        html_string = render_to_string(self.template_name, context)
+        css = CSS(string='''
+            @page { size: A4; margin: 20mm; }
+            body { font-family: 'Open Sans', sans-serif; font-size: 11pt; color: #333; }
+            .RC-item { background: #f7f9fc; border-radius: 8px; padding: 8px 14px; margin-bottom: 6px; }
+            .RC-label { font-weight: 600; color: #1e3a8a; }
+            .RC-desc { font-size: 10pt; color: #555; margin-left: 6px; }
+        ''')
+        with tempfile.NamedTemporaryFile(delete=True) as output:
+            HTML(string=html_string, base_url=str(settings.BASE_DIR)).write_pdf(output.name, stylesheets=[css])
+            output.seek(0)
+            pdf = output.read()
+        response = HttpResponse(pdf, content_type='application/pdf')
+        response['Content-Disposition'] = 'inline; filename="relatorio_capa.pdf"'
+        return response
+
