@@ -8,13 +8,11 @@
     /* --- Página A4 y numeración --- */
     @page {
       size: A4;
-      margin: 20mm 15mm 18mm 15mm;              /* top right bottom left */
-      @bottom-right {
-        content: "Página " counter(page) " de " counter(pages);
-        font-size: 10px;
-        color: #666;
-      }
-      {% comment %} background: url("{{ interior_bg_url }}") no-repeat center center; {% endcomment %}
+      margin: 0mm 0mm 5mm 0mm;
+    
+
+    
+      background: url("https://newemagrecimento2.s3.sa-east-1.amazonaws.com/core/img/portadaRelatorioM.webp") no-repeat center center;
       background-size: cover;
     }
     @page:first {
@@ -47,8 +45,8 @@
     /* === Páginas con header (2, 3 y 4) === */
     @page pageHdr {
       size: A4;
-      margin: 20mm 15mm 18mm 15mm;
-      background: url("{{ interior_bg_url }}") no-repeat center center;
+      margin: 0mm 0mm 0mm 0mm;
+      background: url("https://newemagrecimento2.s3.sa-east-1.amazonaws.com/core/img/img2RelM.webp") no-repeat center center;
       background-size: cover;
       @top-right {
         content: element(run-hdr);    /* inyecta el header en @top-right */
@@ -56,16 +54,57 @@
       }
     }
     
+
+    /* === Página 3 === */
+    @page page3 {
+      size: A4;
+      margin: 0;
+      background: url("https://newemagrecimento2.s3.sa-east-1.amazonaws.com/core/img/img3RelM.webp") no-repeat center center;
+      background-size: cover;
+      @top-right {
+        content: element(run-hdr);  /* 🔹 Esto “inyecta” el header */
+        vertical-align: top;
+      }
+
+    }
+
+    /* === Página 4 === */
+    @page page4 {
+      size: A4;
+      margin: 0;
+      background: url("https://newemagrecimento2.s3.sa-east-1.amazonaws.com/core/img/img4RelM.webp") no-repeat center center;
+      background-size: cover;
+      @top-right {
+        content: element(run-hdr);  /* 🔹 Esto “inyecta” el header */
+        vertical-align: top;
+      }
+    }
+
+    /* === Página 5 === */
+    @page page5 {
+      size: A4;
+      margin: 0;
+      background: url("https://newemagrecimento2.s3.sa-east-1.amazonaws.com/core/img/img5RelM.webp") no-repeat center center;
+      background-size: cover;
+      @top-right {
+        content: element(run-hdr);  /* 🔹 Esto “inyecta” el header */
+        vertical-align: top;
+        
+      }
+    }
+
+
     /* Elemento “corriendo” que se pinta en el margin box @top-right */
     .run-hdr {
       position: running(run-hdr);
       text-align: right;
-      padding-top: 20mm;
+      padding-top: 10mm;
+      padding-right: 10mm;
     }
     
     /* Tamaño del logo */
     .logo-medico {
-      width: 45mm;   /* ajustá si hace falta */
+      width: 65mm;   /* ajustá si hace falta */
       height: auto;
     }
     
@@ -77,31 +116,28 @@
     /* Salto de página controlado */
     .page-break { page-break-before: always; }
     
-    /*********PAG2********/
-    /* Caja más angosta y centrada */
+    /*********PAG2  TABLA 1********/
+
     .box-retornos.centrada{
-      max-width: 600px;               /* menos ancha */
+      max-width: 600px;
       width: min(92vw, 720px);
-      margin: 12px auto;              /* centrada */
+      margin: 12px auto;
       padding: 6px;
-      background: #f6f9ff;            /* color suave */
-      border: 1px solid #dbe6f5;
-      border-radius: 10px;
-      box-shadow: 0 1px 0 rgba(0,0,0,.04);
-      margin-top:20mm;
+      background: #ffffff;                      
+      box-shadow: none;          
+      margin-top:42mm;
     }
-    
-    /* Tabla 6×3, columnas equidistantes */
+
     .tabla-retornos{
       width: 100%;
-      table-layout: fixed;            /* columnas iguales */
-      border-collapse: separate;
+      table-layout: fixed;        
       border-spacing: 0;
       font: 500 13px/1.3 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-      color: #4b5563;                 /* texto sutil */
+      color: #1F1E1E;                       
     }
+
     .tabla-retornos col{
-      width: calc(100%/6);            /* equidistante */
+      width: calc(100%/6);            
     }
     .tabla-retornos td{
       padding: 8px 12px;
@@ -109,98 +145,56 @@
     }
     
     /* filas alternadas sutiles */
-    .tabla-retornos tr:nth-child(odd){ background: #f9fbff; }
+    .tabla-retornos tr:nth-child(odd){ background: #e1e1e1; }
     .tabla-retornos tr:nth-child(even){ background: #ffffff; }
-    
-    /* etiquetas/valores */
-    .lbl{ color:#425a70; }
-    .val{ font-weight:400; color:; }      /* azul sutil */
-    .val-roja{ color:; }                  /* destacadas en rojo */
-    .lbl{ font-size:12px; }
-    .val{ font-size:12px; }
-
-    
-    
-    /* separadores verticales suaves entre bloques */
-    .sep{ border-left: 1px solid #e6edf7; }
-    
-    /* esquinas redondeadas */
-    .tabla-retornos tr:first-child td:first-child{ border-top-left-radius:8px; }
-    .tabla-retornos tr:first-child td:last-child{ border-top-right-radius:8px; }
-    .tabla-retornos tr:last-child td:first-child{ border-bottom-left-radius:8px; }
-    .tabla-retornos tr:last-child td:last-child{ border-bottom-right-radius:8px; }
-    /* envolvente centrada y más angosta */
-    .tabla-metricas-wrap{
-      width: min(95vw, 980px);
-      margin: 14px auto 24px;
+       
+    /*********PAG2  TABLA 2********/
+    .tabla-metricas-wrap {
+      width: 80%;             
+      max-width: 700px;       
+      margin: 20px auto;       
     }
-    
-    /* tabla sutil */
+
     .tabla-metricas{
       width: 100%;
-      table-layout: fixed;                 /* columnas equidistantes */
+      table-layout: fixed;                
       border-collapse: separate;
       border-spacing: 0;
       font: 500 13px/1.1 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
-      color: #344256;                      /* texto gris azulado sutil */
+      color: #344256;                     
       background: #fff;
-      border: 1px solid #dfe7f2;           /* borde suave exterior */
+      border: 1px solid #dfe7f2;        
       border-radius: 8px;
-      overflow: hidden;                    /* redondeo real */
+      overflow: hidden;                  
     }
 
-    /* --- modo compacto --- */
-  .tabla-metricas.compact{
-    font: 500 12px/1.15 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; /* ↓ tamaño y line-height */
-  }
-
-  /* anchos de columnas */
-  .tabla-metricas col.col-label{ width: 20%; }                 /* primera más ancha */
-  .tabla-metricas col.col-data { width: calc(80% / 9); }       /* resto equidistantes */
-
-  /* header más bajo y letra más chica */
   .tabla-metricas.compact thead th{
-    padding: 6px 6px;                 /* ↓ alto */
-    font-size: 12px;                  /* ↓ tamaño */
+    padding: 9px 6px;                 
+    font-size: 12px;  
+    background:#ff5d5d;
+    color:#fff;                     
   }
 
-  /* 1ª columna (rótulos) más baja y algo más angosta en padding */
   .tabla-metricas.compact tbody th{
-    padding: 5px 8px;                /* ↓ alto */
-    font-size: 11px;
-  }
-
-  /* celdas: más compactas */
-  .tabla-metricas.compact td{
-    padding: 5px 5px;                 /* ↓ alto */
-    font-size: 11px;
-  }
-
-  /* separador “Dobras” compacto */
-  .tabla-metricas.compact .separador td{
-    padding: 6px;
+    padding: 6px 8px;               
     font-size: 12px;
+    background:#2b6ca3;
+    color:#fff;
+  }
+
+  .tabla-metricas.compact td{
+    padding: 6px 6px;                
+    font-size: 12px;
+  }
+
+  .tabla-metricas.compact .separador td{
     background:#dfe7f2;
     color:#344256;
+    text-align:center;
   }
-  .tabla-metricas-wrap{
-    width: min(95vw, 980px);
-    margin: 14px auto 22px;
-  }
-  .tabla-metricas{
-    width:100%;
-    table-layout:fixed;           /* fija y equidistante */
-    border-collapse:separate;
-    border-spacing:0;
-    background:#fff;
-    border:1px solid #dfe7f2;
-    border-radius:8px;
-    overflow:hidden;
-    color:#344256;
-    font:500 12px/1.15 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
-  }
-  .tabla-metricas col.col-label{ width:22%; }
-  .tabla-metricas col.col-data { width:calc(78%/9); }
+
+  .tabla-metricas col.col-label{ width:17%; }
+  .tabla-metricas col.col-data { width:calc(67%/9); }
   .tabla-metricas thead th{
     background:#edf3fa;
     color:#2b3b51;
@@ -209,36 +203,99 @@
     padding:6px 6px;
     border-bottom:1px solid #d6e1ef;
   }
-  .tabla-metricas tbody th{
-    text-align:left;
-    padding:6px 10px;
-    background:#f6f9fc;
-    color:#2f3f55;
-    font-weight:600;
-    border-right:1px solid #e6edf7;
-    vertical-align:top;
-  }
-  .tabla-metricas td{
-    padding:6px 6px;
-    text-align:right;
-    border-right:1px solid #eef3fa;
-  }
-  .tabla-metricas tbody tr:nth-child(odd)  td { background: rgba(154,205,255,0.25); } /* #9ACDFF al 25% */
-  .tabla-metricas tbody tr:nth-child(even) td { background: rgba(202,228,255,0.25); }
-  .tabla-metricas .separador td{
-    padding:6px;
-    text-align:center;
-    font-weight:600;
-    color:#2b3b51;
-    background:#edf3fa;
-    border-top:1px solid #d6e1ef;
-    border-bottom:1px solid #d6e1ef;
-  }
+
+.tabla-metricas tbody tr:nth-child(odd)  td { background: rgba(240, 240, 240, 0.9); }  /* #F0F0F0 */
+.tabla-metricas tbody tr:nth-child(even) td { background: rgba(250, 250, 250, 0.9); } /* #FAFAFA */
+
   .tabla-metricas tr > *:last-child{ border-right:0; }
 
-  /* Mantener altura/bordes en celdas vacías */
   .tabla-metricas td:empty::before{ content:"\00a0"; }
 
+  /*********PAG2  TABLA 3********/
+  .tabla-riscos-wrap3 {
+    width: 80%;              /* igual que la tabla-metricas-wrap */
+    max-width: 700px;
+    margin: 0 auto 15mm auto; /* centrada y con aire inferior */
+  }
+
+  .tabla-riscos-inner {
+    display: flex;
+    align-items: flex-start; /* o center si querés alinear verticalmente */
+    justify-content: space-between;
+    gap: 10px;
+  }
+  
+  /* 🔹 Tabla principal */
+  .tabla-riscos-table {
+    flex: 0 0 72%;
+  }
+  
+  .tabla-riscos {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    font-weight: 500;
+    font-size: 12px;
+    border: 1px solid #e0e6ee;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  
+  /* 🔹 Cabecera */
+  .tabla-riscos thead th {
+    background: #2f6fa3;
+    color: #fff;
+
+    text-align: center;
+    font-weight: 600;
+    font-size: 12px;
+  }
+  
+  /* 🔹 Primera columna más angosta */
+  .tabla-riscos td:first-child,
+  .tabla-riscos th:first-child {
+    width: 22%;
+    text-align: left;
+    color: #2f6fa3;
+    font-weight: 600;
+    padding-left: 10px;
+  }
+  .tabla-riscos th,
+.tabla-riscos td {
+  padding: 8px 8px;
+}
+  
+  /* 🔹 Zebra gris elegante */
+  .tabla-riscos tbody tr:nth-child(odd) {
+    background: #f3f4f6;
+  }
+  .tabla-riscos tbody tr:nth-child(even) {
+    background: #ffffff;
+  }
+  
+  /* 🔹 Leyenda */
+  .tabla-riscos-leyenda {
+    font-size: 11px;
+    text-align: center;
+    margin-top: 8px;
+    color: #555;
+  }
+  
+  /* 🔹 Bloque lateral */
+  .tabla-riscos-info {
+    flex: 0 0 25%;
+    text-align: center;
+  }
+  .tabla-riscos-info p {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #444;
+  }
+  .tabla-riscos-info img {
+    width: 80px;
+    margin-top: 8px;
+  }
+  
   /* ==========================================================
     PAG 3 RC-RESUMO DE RESULTADOS 
     ========================================================== */
@@ -253,7 +310,15 @@
     font-family: 'Open Sans', sans-serif;
     color: #1e293b;
   }
-
+  .fila {
+    display: flex;
+    justify-content: space-between; /* o center, según lo que necesites */
+    align-items: flex-start;
+    width: 100%;        /* 🔹 ocupa todo el ancho disponible */
+    margin: 0;          /* 🔹 elimina márgenes */
+    padding: 0 0px;    /* 🔹 opcional: agrega aire a los lados */
+    box-sizing: border-box;
+  }
   /* Coluna imagem */
   .RC-resumo-img {
     flex: 0 0 35%;
@@ -336,22 +401,92 @@
   /* ==========================================================
     PAG 4 RC-RESUMO DE RESULTADOS 
     ========================================================== */
-  .contenedor {
-    padding: 20px;
-    width: 700px;
-    margin: 40px auto;
-    margin-top: 30px;
+
+  .capsula-container-full {
+    display: flex;
+    align-items: center;
+    width: 70%;
+    max-width: 600px; 
+    margin: 45mm auto 0 25mm;
+    font-weight: 600;
+    font-size: 11pt;
+    color: #1e3a8a;
+
+    justify-content: center; 
   }
 
-  .fila {
-    display: flex;
-    justify-content: space-between; /* o center, según lo que necesites */
-    align-items: flex-start;
-    width: 100%;        /* 🔹 ocupa todo el ancho disponible */
-    margin: 0;          /* 🔹 elimina márgenes */
-    padding: 0 0px;    /* 🔹 opcional: agrega aire a los lados */
-    box-sizing: border-box;
+  .titulo-etapas-pag4 {
+    text-align: center;
+    color: #404040;
+    font-weight: 400;
+    font-size: 11pt;
+    line-height: 1.4;
+    margin-top: 15px;
   }
+
+  .capsula-izq-full {
+    background: #2b6ca3;
+    padding: 10px 24px;
+    border-radius: 50px 50px 50px 50px;
+    z-index: 2;
+    position: relative;
+    color:#ffffff;
+  }
+  
+  .capsula-der-full {
+    background: #d2d2d2;
+    padding: 10px 24px;
+    border-radius: 0 50px 50px 0;
+    flex: 1; 
+    margin-left: -20px; 
+    z-index: 1;
+    text-align: center; 
+    color:#3465a4;
+  }
+  
+  .tabela-meta table {
+    width: 75%;
+    border-collapse: collapse;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10pt;
+    text-align: center;
+    margin: 5mm auto 0 25mm;
+  }
+  
+  .tabela-meta th {
+    background-color: #f66c6c; /* rojo del encabezado */
+    color: white;
+    padding: 5px 4px;
+    font-weight: 600;
+  }
+  
+  .tabela-meta td {
+    padding: 5px 5px;
+    border-bottom: 1px solid #ddd;
+  }
+  .tabela-meta tr:nth-child(even) td {
+  background-color: #f8f8f8;
+}
+  
+  .tabela-meta td.meta {
+    background-color: #2b6ca3 !important;
+    color: white !important;
+    font-weight: 500;
+  }
+  
+  .tabela-meta td.status {
+    font-weight: 700;
+  }
+  .relatorio-capa {
+    font-family: 'Montserrat', sans-serif;
+    color: #333;
+    padding: 0;
+    margin: 0;
+  }
+  
+
+
+
   .bloque-der {
     width: 50%;             /* 🔹 ocupa la mitad derecha */
     padding: 20px;
@@ -440,115 +575,6 @@
     gap: 8px; 
     height: 90%; 
   }
-
-
-  .capsula-container-full {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    max-width: 600px; 
-    margin: 65px auto 0 auto;
-    font-weight: 600;
-    font-size: 11pt;
-    color: #1e3a8a;
-  }
-
-  .capsula-izq-full {
-    background: #2b6ca3;
-    padding: 10px 24px;
-    border-radius: 50px 50px 50px 50px;
-    z-index: 2;
-    position: relative;
-    color:#ffffff;
-  }
-  
-  .capsula-der-full {
-    background: #d2d2d2;
-    padding: 10px 24px;
-    border-radius: 0 50px 50px 0;
-    flex: 1; 
-    margin-left: -20px; 
-    z-index: 1;
-    text-align: center; 
-    color:#3465a4;
-  }
-  
-
-  
-  .titulo-etapas-pag4 {
-    text-align: center;
-    color: #404040;
-    font-weight: 400;
-    font-size: 11pt;
-    line-height: 1.4;
-    margin-top: 15px;
-  }
-
-  .tabela-meta table {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 10pt;
-    text-align: center;
-    margin-top:5mm;
-  }
-  
-  .tabela-meta th {
-    background-color: #f66c6c; /* rojo del encabezado */
-    color: white;
-    padding: 5px 4px;
-    font-weight: 600;
-  }
-  
-  .tabela-meta td {
-    padding: 5px 5px;
-    border-bottom: 1px solid #ddd;
-  }
-  .tabela-meta tr:nth-child(even) td {
-  background-color: #f8f8f8;
-}
-  
-  .tabela-meta td.meta {
-    background-color: #2b6ca3 !important;
-    color: white !important;
-    font-weight: 500;
-  }
-  
-  .tabela-meta td.status {
-    font-weight: 700;
-  }
-  .relatorio-capa {
-    font-family: 'Montserrat', sans-serif;
-    color: #333;
-    padding: 0;
-    margin: 0;
-  }
-  
-  /* 🔹 ENCABEZADO */
-  .header-capa {
-    position: relative;
-    background-color: #1e3a8a; /* azul principal */
-    height: 120px;
-    border-bottom: 10px solid #f66c6c; /* franja roja */
-  }
-  
-  .header-faixa {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 10px;
-    background-color: #f66c6c;
-    transform: skewY(-3deg);
-    transform-origin: left;
-  }
-  
-  .logo-capa {
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    width: 170px;
-  }
   
   /* 🔹 CAJA DE SUPLEMENTOS */
   .box-capa {
@@ -558,53 +584,55 @@
     background: #f9f9f9;
     border-radius: 10px;
     padding: 20px 25px;
-    margin: 40px auto 25px auto;
-    width: 90%;
+    margin: 55mm auto auto 25mm;
+    width: 75%;
+    min-height: 4cm;      /* 🔹 mantiene un alto mínimo de 3 cm */
+    box-sizing: border-box; /* 🔹 asegura que el padding no aumente el alto total */
   }
-  
-  .suplementos {
-    flex: 1;
-    font-size: 12pt;
-    line-height: 1.6;
-    color: #333;
-  }
-  
-  .img-capsulas {
-    width: 250px;
-    margin-left: 20px;
-  }
-  
-  /* 🔹 BLOQUES DE INFORMACIÓN */
+
   .bloco {
-    background: #f9f9f9;
-    border-radius: 10px;
-    padding: 20px;
-    width: 90%;
-    margin: 20px auto;
+    position: relative;
+    background: #f3f3f3;            /* 🔹 gris suave (más limpio que #f9f9f9) */
+    border-radius: 12px;
+    padding: 25px 20px 20px 20px;   /* 🔹 deja espacio para el texto interno */
+    margin: 20mm auto 0 auto;       /* 🔹 centrado en la hoja */
+    width: 75%;
+    min-height: 25mm;
     text-align: center;
+    box-sizing: border-box;
+    overflow: visible;              /* 🔹 permite que el título sobresalga */
   }
   
+  /* 🔹 Título flotante y centrado */
   .bloco-titulo {
-    background: #1e3a8a;
-    color: white;
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2f6fa3;            /* 🔹 azul igual al del encabezado */
+    color: #fff;
     font-weight: 600;
     border-radius: 50px;
-    padding: 8px 20px;
-    display: inline-block;
-    margin-bottom: 10px;
+    padding: 8px 28px;
+    font-size: 12pt;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    white-space: nowrap;
+    width: 60%;
   }
   
+  /* 🔹 Contenido dentro */
   .bloco-conteudo {
     font-size: 12pt;
     color: #333;
+    margin-top: 10px;
   }
-  
-  /* 🔹 RODAPÉ */
+
   .rodape {
-    width: 90%;
-    margin: 30px auto;
+    width: 75%;
+    margin: 10mm auto auto 25mm;
     text-align: left;
     font-size: 11pt;
+    color:#000000;
   }
   
   .rodape p {
@@ -630,7 +658,7 @@
         text-align:center; margin:0; padding:0;
       ">
         <div style="max-width:120mm;">
-          <div style="font-size:18px; font-weight:600; margin:0 0 10mm 0; color:#0f172a;">
+          <div style="font-size:20px; font-weight:600; margin:50mm 0 10mm 0; color:#ffffff;">
             Evolução de:
           </div>
           <div style="
@@ -638,12 +666,12 @@
             border:1px solid #e5e7eb; border-radius:9999px; background:#fff;
             font-size:14px; font-weight:700; min-width:90mm; line-height:1.15;
           ">
-            {{ nome_pessoa }}{{ sobrenome_pessoa }}
+            {{ nome_pessoa }}  {{ sobrenome_pessoa }}
           </div>
-          <div style="font-size:10px; color:#334155; line-height:1.35; font-weight:600;">
-            {{ profissional.nombre_completo }}<br>
+          <div style="font-size:10px; color:#ffffff; line-height:1.35; font-weight:600;">
+            Israel Adolfo<br>
             Nutricionista do Esporte<br>
-            Cel: {{ profissional.telefono }}
+            Cel: (11) 98770.7556
           </div>
         </div>
       </div>
@@ -656,8 +684,7 @@
           alt="Logo Nutrição Esportiva"
           class="logo-medico">
       </div>
-      <div>    
-      <div class="box-retornos centrada">
+      <div class="box-retornos centrada" >    
         <table class="tabla-retornos">
           <colgroup>
             <col span="6">
@@ -665,33 +692,33 @@
           <tbody>
             <tr>
               <td class="lbl">Consulta 0:</td>
-              <td class="val val-roja">{{ consulta0|default:"00/00/0000" }}</td>
+              <td class="val val-roja">{{ datas_planos.data_1|default:"00/00/0000" }}</td>
 
               <td class="lbl sep">Retorno 30D:</td>
-              <td class="val">{{ retorno30d|default:"00/00/0000" }}</td>
+              <td class="val">{{ datas_planos.data_2|default:"00/00/0000" }}</td>
 
               <td class="lbl sep">Manutenção 1:</td>
-              <td class="val">{{ manutencao1|default:"00/00/0000" }}</td>
+              <td class="val">{{ manutencao1|default:"-" }}</td>
             </tr>
             <tr>
               <td class="lbl">Retorno 0 D:</td>
-              <td class="val val-roja">{{ retorno0d|default:"00/00/0000" }}</td>
+              <td class="val val-roja">{{ datas_planos.data_3|default:"00/00/0000" }}</td>
 
               <td class="lbl sep">Retorno 45D:</td>
-              <td class="val">{{ retorno45d|default:"00/00/0000" }}</td>
+              <td class="val">{{ datas_planos.data_4|default:"00/00/0000" }}</td>
 
               <td class="lbl sep">Manutenção 2:</td>
-              <td class="val">{{ manutencao2|default:"00/00/0000" }}</td>
+              <td class="val">{{ manutencao2|default:"-" }}</td>
             </tr>
             <tr>
               <td class="lbl">Retorno 15D:</td>
-              <td class="val">{{ retorno15d|default:"00/00/0000" }}</td>
+              <td class="val">{{ datas_planos.data_5|default:"00/00/0000" }}</td>
 
               <td class="lbl sep">Retorno 60D:</td>
-              <td class="val">{{ retorno60d|default:"00/00/0000" }}</td>
+              <td class="val">{{ datas_planos.data_6|default:"00/00/0000" }}</td>
 
               <td class="lbl sep">Manutenção 3:</td>
-              <td class="val">{{ manutencao3|default:"00/00/0000" }}</td>
+              <td class="val">{{ manutencao3|default:"-" }}</td>
             </tr>
           </tbody>    
         </table>
@@ -720,6 +747,9 @@
               <td>{{ t.peso_4|default:"-" }}</td>
               <td>{{ t.peso_5|default:"-" }}</td>
               <td>{{ t.peso_6|default:"-" }}</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
             </tr>
           
             <tr><th>% Gordura</th>
@@ -729,6 +759,10 @@
               <td>{{ t.per_gordura_4|default:"-" }}</td>
               <td>{{ t.per_gordura_5|default:"-" }}</td>
               <td>{{ t.per_gordura_6|default:"-" }}</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              
             </tr>
           
             <tr><th>M. Magra</th>
@@ -738,6 +772,9 @@
               <td>{{ t.massa_magra_4|default:"-" }}</td>
               <td>{{ t.massa_magra_5|default:"-" }}</td>
               <td>{{ t.massa_magra_6|default:"-" }}</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
             </tr>
           
             <tr><th>Peso Gordura</th>
@@ -747,6 +784,9 @@
               <td>{{ t.peso_gordura_4|default:"-" }}</td>
               <td>{{ t.peso_gordura_5|default:"-" }}</td>
               <td>{{ t.peso_gordura_6|default:"-" }}</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
             </tr>
             <tr><th>Ombros</th>
               <td>{{ t.ombros.ci|default:"-" }}</td><td>{{ t.ombros.r0|default:"-" }}</td><td>{{ t.ombros.r15|default:"-" }}</td><td>{{ t.ombros.r30|default:"-" }}</td><td>{{ t.ombros.r45|default:"-" }}</td><td>{{ t.ombros.r60|default:"-" }}</td><td>{{ t.ombros.m1|default:"-" }}</td><td>{{ t.ombros.m2|default:"-" }}</td><td>{{ t.ombros.m3|default:"-" }}</td>
@@ -761,6 +801,9 @@
               <td>{{ t.cintura_4|default:"-" }}</td>
               <td>{{ t.cintura_5|default:"-" }}</td>
               <td>{{ t.cintura_6|default:"-" }}</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
             </tr>
           
             <tr><th>Abdomen</th>
@@ -770,6 +813,9 @@
               <td>{{ t.abdomen_4|default:"-" }}</td>
               <td>{{ t.abdomen_5|default:"-" }}</td>
               <td>{{ t.abdomen_6|default:"-" }}</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
             </tr>
           
             <tr><th>Quadril</th>
@@ -779,6 +825,9 @@
               <td>{{ t.quadril_4|default:"-" }}</td>
               <td>{{ t.quadril_5|default:"-" }}</td>
               <td>{{ t.quadril_6|default:"-" }}</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
             </tr>
             <tr class="separador"><td colspan="10">Dobras</td></tr>
             <tr><th>Tríceps</th>
@@ -811,87 +860,92 @@
                   padding:12px 20px;text-align:center;width:600px;margin:20px auto;color:#fff;">
         RISCOS PREDITOS POR CIRCUNFERÊNCIAS
       </div>
-      <div style="display:flex;align-items:flex-start;justify-content:center;width:100%;margin:0 auto;">
-        <div style="flex:0 0 75%;padding-right:15px;">
-          <table style="width:100%;border-collapse:collapse;text-align:center;font-weight:500;">
-            <thead>
-              <tr style="background:#2f6fa3;color:#fff;">
-                <th style="padding:6px 10px;text-align:left;">&nbsp;</th>
-                <th>CI</th>
-                <th>R0</th>
-                <th>R15</th>
-                <th>R30</th>
-                <th>R45</th>
-                <th>R60</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr style="background:#f3f3f3;">
-                <td style="color:#2f6fa3;font-weight:600;text-align:left;padding:6px 10px;">Abdomen</td>
-                <td>{{ riscos.abdomen_1 }}</td>
-                <td>{{ riscos.abdomen_2 }}</td>
-                <td>{{ riscos.abdomen_3 }}</td>
-                <td>{{ riscos.abdomen_4 }}</td>
-                <td>{{ riscos.abdomen_5 }}</td>
-                <td>{{ riscos.abdomen_6 }}</td>
-              </tr>
-
-              <tr>
-                <td style="color:#2f6fa3;font-weight:600;text-align:left;padding:6px 10px;">Cintura</td>
-                <td>{{ riscos.cintura_1 }}</td>
-                <td>{{ riscos.cintura_2 }}</td>
-                <td>{{ riscos.cintura_3 }}</td>
-                <td>{{ riscos.cintura_4 }}</td>
-                <td>{{ riscos.cintura_5 }}</td>
-                <td>{{ riscos.cintura_6 }}</td>
-              </tr>
-
-              <tr style="background:#f3f3f3;">
-                <td style="color:#2f6fa3;font-weight:600;text-align:left;padding:6px 10px;">Quadril</td>
-                <td>{{ riscos.quadril_1 }}</td>
-                <td>{{ riscos.quadril_2 }}</td>
-                <td>{{ riscos.quadril_3 }}</td>
-                <td>{{ riscos.quadril_4 }}</td>
-                <td>{{ riscos.quadril_5 }}</td>
-                <td>{{ riscos.quadril_6 }}</td>
-              </tr>
-
-              <tr>
-                <td style="color:#2f6fa3;font-weight:600;text-align:left;padding:6px 10px;">Cintura/Quadril</td>
-                <td>{{ riscos.cintura_quadril_1 }}</td>
-                <td>{{ riscos.cintura_quadril_2 }}</td>
-                <td>{{ riscos.cintura_quadril_3 }}</td>
-                <td>{{ riscos.cintura_quadril_4 }}</td>
-                <td>{{ riscos.cintura_quadril_5 }}</td>
-                <td>{{ riscos.cintura_quadril_6 }}</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <p style="font-size:12px;text-align:center;margin-top:8px;color:#555;">
-            <strong style="color:#2f6fa3;">N</strong> – Normal |
-            <strong style="color:#dc3545;">AU</strong> – Aumentado |
-            <strong style="color:#dc3545;">MA</strong> – Muito Aumentado
-          </p>
-        </div>
-
-        <div style="flex:0 0 25%;text-align:center;padding-left:10px;">
-          <p style="font-size:14px;line-height:1.5;margin-top:5px;">
-            Elas predizem a<br>
-            probabilidade de<br>
-            desenvolver, a<br>
-            longo prazo,<br>
-            doenças do<br>
-            coração, diabetes,<br>
-            entre outras.
-          </p>
-          <img src="{% static 'images/fita.png' %}" alt="Fita métrica" style="width:80px;margin-top:8px;">
+      <div class="tabla-riscos-wrap3">
+        <div class="tabla-riscos-inner">
+          <!-- 🔹 Bloque de tabla -->
+          <div class="tabla-riscos-table">
+            <table class="tabla-riscos">
+              <thead>
+                <tr>
+                  <th>&nbsp;</th>
+                  <th>CI</th>
+                  <th>R0</th>
+                  <th>R15</th>
+                  <th>R30</th>
+                  <th>R45</th>
+                  <th>R60</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Abdomen</td>
+                  <td>{{ riscos.abdomen_1 }}</td>
+                  <td>{{ riscos.abdomen_2 }}</td>
+                  <td>{{ riscos.abdomen_3 }}</td>
+                  <td>{{ riscos.abdomen_4 }}</td>
+                  <td>{{ riscos.abdomen_5 }}</td>
+                  <td>{{ riscos.abdomen_6 }}</td>
+                </tr>
+                <tr>
+                  <td>Cintura</td>
+                  <td>{{ riscos.cintura_1 }}</td>
+                  <td>{{ riscos.cintura_2 }}</td>
+                  <td>{{ riscos.cintura_3 }}</td>
+                  <td>{{ riscos.cintura_4 }}</td>
+                  <td>{{ riscos.cintura_5 }}</td>
+                  <td>{{ riscos.cintura_6 }}</td>
+                </tr>
+                <tr>
+                  <td>Quadril</td>
+                  <td>{{ riscos.quadril_1 }}</td>
+                  <td>{{ riscos.quadril_2 }}</td>
+                  <td>{{ riscos.quadril_3 }}</td>
+                  <td>{{ riscos.quadril_4 }}</td>
+                  <td>{{ riscos.quadril_5 }}</td>
+                  <td>{{ riscos.quadril_6 }}</td>
+                </tr>
+                <tr>
+                  <td>Cintura/Quadril</td>
+                  <td>{{ riscos.cintura_quadril_1 }}</td>
+                  <td>{{ riscos.cintura_quadril_2 }}</td>
+                  <td>{{ riscos.cintura_quadril_3 }}</td>
+                  <td>{{ riscos.cintura_quadril_4 }}</td>
+                  <td>{{ riscos.cintura_quadril_5 }}</td>
+                  <td>{{ riscos.cintura_quadril_6 }}</td>
+                </tr>
+              </tbody>
+            </table>
+      
+            <p class="tabla-riscos-leyenda">
+              <strong class="n">N</strong> – Normal |
+              <strong class="au">AU</strong> – Aumentado |
+              <strong class="ma">MA</strong> – Muito Aumentado
+            </p>
+          </div>
+      
+          <!-- 🔹 Bloque lateral -->
+          <div class="tabla-riscos-info">
+            <p>
+              Elas predizem a<br>
+              probabilidade de<br>
+              desenvolver, a longo<br>
+              prazo, doenças do<br>
+              coração, diabetes,<br>
+              entre outras.
+            </p>
+           </div>
         </div>
       </div>
     </section>
       <!-- Contenido de la PÁGINA 3 -->
-    <section class="page-break with-header">     
-        <div class="contenedor">
+    <section class="page-break with-header"style="page: page3;">     
+      <div class="run-hdr">
+        <img
+          src="https://newemagrecimento2.s3.amazonaws.com/django-summernote/2025-01-30/c2789af5-32a6-4184-a2ce-5c4e32b581f5.png"
+          alt="Logo Nutrição Esportiva"
+          class="logo-medico">
+      </div>
+      <div class="contenedor-pag3" style="margin-top:45mm;">
           <div class="fila">
             <div class="bloque bloque-izq">
               <div class="col-6" style="text-align:center;">
@@ -918,11 +972,11 @@
             </div>
           </div>
         </div>  
-        <div class="box-resultados" style="border:2px solid #d1d5db; border-radius:50px; padding:16px 20px; margin-top:22px; display:flex; gap:20px; flex-wrap:wrap;">
+        <div class="box-resultados" style="padding:16px 20px; margin-top:-10px; display:flex; gap:20px; flex-wrap:wrap;">
 
           <!-- 🔹 Columna imagen -->
           <div class="RC-resumo-img">
-            <img src="{% static 'images/corredor.png' %}" alt="Atleta correndo" style="border-radius:10px;">
+            <img src="" alt="" style="border-radius:10px;">
           </div>
         
           <!-- 🔹 Columna datos -->
@@ -1065,12 +1119,11 @@
             </div>
     </section>
     <!-- Contenido de la PÁGINA 4 -->
-    <section class="page-break with-header">     
+    <section class="page-break with-header"style="page: page4;">     
       <div class="capsula-container-full">
         <div class="capsula-izq-full">FREQUÊNCIA:</div>
         <div class="capsula-der-full">CLASSIFICAÇÃO: -/-</div>
-        <div class="logo-vo2-pag4">
-          <img src="{% static 'images/logo_vo2.png' %}" alt="VO2+" />
+        <div class="logo-vo2-pag4">         
         </div>
       </div>
       <div class="titulo-etapas-pag4">
@@ -1113,43 +1166,31 @@
     
 
   </section>
-  <section class="page-break with-header">     
-    <div class="relatorio-capa">
-
-      <!-- 🔹 Encabezado azul con franja roja -->
-      <div class="header-capa">
-        <div class="header-faixa"></div>
-        <img src="{% static 'images/logo_nutricao.png' %}" alt="Nutrição & Esporte" class="logo-capa">
-      </div>
-    
+  <section class="page-break with-header"style="page: page5;">     
+    <div class="relatorio-capa">    
       <!-- 🔹 Sección de suplementos -->
       <div class="box-capa">
         <div class="suplementos">
-          {{ suplementos|default:"Multivitamínico, Ashwagandha, Vitamina C, Ômega 3, Curcuma, Magnésio e Fórmula 1 e 2" }}
-        </div>
-        <img src="{% static 'images/capsulas.png' %}" alt="Cápsulas" class="img-capsulas">
+         
+        </div>       
       </div>
     
-      <!-- 🔹 Bloque Planejamento Alimentar -->
       <div class="bloco">
         <div class="bloco-titulo">Planejamento Alimentar</div>
         <div class="bloco-conteudo">
-          {{ planejamento|default:"COM alterações." }}
         </div>
       </div>
     
-      <!-- 🔹 Bloque Comentários -->
+
       <div class="bloco">
         <div class="bloco-titulo">Comentários</div>
-        <div class="bloco-conteudo">
-          {{ comentarios|default:"-" }}
+        <div class="bloco-conteudo">       
         </div>
       </div>
     
       <!-- 🔹 Firma -->
       <div class="rodape">
         <p>Fico à disposição para quaisquer esclarecimentos que se fizerem necessários.<br>Atenciosamente,</p>
-        <img src="{% static 'images/assinatura.png' %}" alt="Assinatura" class="assinatura">
       </div>
     
     </div>

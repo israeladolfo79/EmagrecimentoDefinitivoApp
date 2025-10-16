@@ -2507,30 +2507,31 @@ class CapaRelatorioView(TemplateView):
             'kcals': kcals,
            'filas_metas': filas_metas,
         }
+
         import pprint
-        print("🧩 Contenido de t (consultas):", consultas)
-        print("🧠 Tipo de t:", type(consultas))
-        print("\n=== CONSULTAS (debug) ===")
-        pprint.pprint(consultas)
-        print("=========================\n")
+        print(datas_planos)
+        # import pprint
+        # print("🧩 Contenido de t (consultas):", consultas)
+        # print("🧠 Tipo de t:", type(consultas))
+        # print("\n=== CONSULTAS (debug) ===")
+        # pprint.pprint(consultas)
+        # print("=========================\n")
+        # print("📆 DATAS:")
+        # for k, v in datas.items():
+        #     print(f"   {k}: {v}")
 
-        print("───────────────────────────────")
-        print("📆 DATAS:")
-        for k, v in datas.items():
-            print(f"   {k}: {v}")
+        # print("\n🔥 KCALS:")
+        # for k, v in consultas.items():
+        #     print(f"   {k}: {v}")
 
-        print("\n🔥 KCALS:")
-        for k, v in kcals.items():
-            print(f"   {k}: {v}")
+        # print("\n⚖️  DIFERENÇAS:")
+        # for k, v in diferencas.items():
+        #     print(f"   {k}: {v}")
 
-        print("\n⚖️  DIFERENÇAS:")
-        for k, v in diferencas.items():
-            print(f"   {k}: {v}")
-
-        print("\n🎯 VALORES (meta de evolução):")
-        for k, v in valores.items():
-            print(f"   {k}: {v}")
-        print("───────────────────────────────")
+        # print("\n🎯 VALORES (meta de evolução):")
+        # for k, v in valores.items():
+        #     print(f"   {k}: {v}")
+        # print("───────────────────────────────")
 
         # return render(self.request, self.template_name, context)
         return self._gerar_pdf(context)
