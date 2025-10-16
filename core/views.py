@@ -2507,7 +2507,10 @@ class CapaRelatorioView(TemplateView):
             'kcals': kcals,
            'filas_metas': filas_metas,
         }
-
+        import requests
+        url = "https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/img2RelM.webp"
+        r = requests.get(url)
+        print(r.status_code)
         import pprint
         print(datas_planos)
         # import pprint
