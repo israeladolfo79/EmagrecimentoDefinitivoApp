@@ -60,16 +60,17 @@
       }
     }
 
-    @page page4 {
+    /* --- POg4 --- */
+    @page pageHdr {
       size: A4;
-      margin: 0;
+      margin: 0mm 0mm 0mm 0mm;
       background: url("https://newemagrecimento2.s3.sa-east-1.amazonaws.com/core/img/img4RelM.webp") no-repeat center center;
       background-size: cover;
       @top-right {
-        content: element(run-hdr);  
+        content: element(run-hdr);    /* inyecta el header en @top-right */
         vertical-align: top;
       }
-    }
+    }   
 
     @page page5 {
       size: A4;
@@ -101,7 +102,6 @@
     .page-break { page-break-before: always; }
     
     /*********PAG2  TABLA 1********/
-
     .box-retornos.centrada{
       max-width: 600px;
       width: min(92vw, 720px);
@@ -197,19 +197,18 @@
 
   /*********PAG2  TABLA 3********/
   .tabla-riscos-wrap3 {
-    width: 80%;              /* igual que la tabla-metricas-wrap */
+    width: 80%;              
     max-width: 700px;
-    margin: 0 auto 15mm auto; /* centrada y con aire inferior */
+    margin: 0 auto 15mm auto; 
   }
 
   .tabla-riscos-inner {
     display: flex;
-    align-items: flex-start; /* o center si querés alinear verticalmente */
+    align-items: flex-start; 
     justify-content: space-between;
     gap: 10px;
   }
   
-  /* 🔹 Tabla principal */
   .tabla-riscos-table {
     flex: 0 0 72%;
   }
@@ -225,7 +224,6 @@
     overflow: hidden;
   }
   
-  /* 🔹 Cabecera */
   .tabla-riscos thead th {
     background: #2f6fa3;
     color: #fff;
@@ -235,7 +233,6 @@
     font-size: 12px;
   }
   
-  /* 🔹 Primera columna más angosta */
   .tabla-riscos td:first-child,
   .tabla-riscos th:first-child {
     width: 22%;
@@ -249,7 +246,6 @@
   padding: 8px 8px;
 }
   
-  /* 🔹 Zebra gris elegante */
   .tabla-riscos tbody tr:nth-child(odd) {
     background: #f3f4f6;
   }
@@ -257,7 +253,6 @@
     background: #ffffff;
   }
   
-  /* 🔹 Leyenda */
   .tabla-riscos-leyenda {
     font-size: 11px;
     text-align: center;
@@ -265,7 +260,6 @@
     color: #555;
   }
   
-  /* 🔹 Bloque lateral */
   .tabla-riscos-info {
     flex: 0 0 25%;
     text-align: center;
@@ -298,12 +292,12 @@
     display: flex;
     justify-content: space-between; /* o center, según lo que necesites */
     align-items: flex-start;
-    width: 100%;        /* 🔹 ocupa todo el ancho disponible */
-    margin: 0;          /* 🔹 elimina márgenes */
-    padding: 0 0px;    /* 🔹 opcional: agrega aire a los lados */
+    width: 100%;        
+    margin: 0;          
+    padding: 0 0px;   
     box-sizing: border-box;
   }
-  /* Coluna imagem */
+
   .RC-resumo-img {
     flex: 0 0 35%;
     text-align: center;
@@ -314,12 +308,11 @@
     height: auto;
     max-width: none;
   }
-  /* Coluna texto */
+
   .RC-resumo-dados {
     flex: 0 0 65%;
   }
 
-  /* Cabeçalho */
   .RC-resumo-titulo {
     background: #1e3a8a;
     color: #fff;
@@ -331,7 +324,6 @@
     margin-bottom: 12px;
   }
 
-  /* Linhas de resultado */
   .RC-item {
     display: flex;
     align-items: center;
@@ -380,8 +372,6 @@
   .RC-composicao strong {
     color: #2f6fa3;
   }
-
-
   /* ==========================================================
     PAG 4 RC-RESUMO DE RESULTADOS 
     ========================================================== */
@@ -395,7 +385,6 @@
     font-weight: 600;
     font-size: 11pt;
     color: #1e3a8a;
-
     justify-content: center; 
   }
 
@@ -468,51 +457,48 @@
     margin: 0;
   }
   
-
-
-
   .bloque-der {
-    width: 50%;             /* 🔹 ocupa la mitad derecha */
+    width: 50%;             
     padding: 20px;
     box-sizing: border-box;
-    text-align: center;     /* 🔹 centra el texto y las cápsulas */
+    text-align: center;     
     align-items: center;
   }
 
   .bloque-der .titulo-azul {
-    display: block;         /* 🔹 se comporta como bloque */
-    width: 100%;            /* 🔹 ocupa todo el ancho del bloque derecho */
+    display: block;        
+    width: 100%;           
     background: #2f6fa3;
     border-radius: 9999px;
     padding: 12px 0px;
     color: #fff;
     font-weight: 600;
     text-align: center;
-    margin: 0 0 0px 0;     /* 🔹 reduce el espacio debajo */
+    margin: 0 0 0px 0;     
     font-size: 14px;
     flex-direction: column;  
   }
+
   .bloque-izq {
     width: 50%;       
-    padding: 20px;     /* 🔹 opcional: espacio interno */
+    padding: 20px;    
     box-sizing: border-box;
   }
 
   .bloque-izq .titulo-azul {
-    display: block;         /* 🔹 se comporta como bloque */
-    width: 100%;            /* 🔹 ocupa todo el ancho del bloque derecho */
+    display: block;         
+    width: 100%;           
     background: #2f6fa3;
     border-radius: 9999px;
     padding: 12px 0px;
     color: #fff;
     font-weight: 600;
     text-align: center;
-    margin: 0 0 0px 0;     /* 🔹 reduce el espacio debajo */
+    margin: 0 0 0px 0;     
     font-size: 14px;
     flex-direction: column;  
   }
 
-  /* 🔹 Cápsulas horizontales */
   .capsula-container {
     display: inline-flex;
     align-items: center;
@@ -520,7 +506,6 @@
     overflow: hidden;
     box-shadow: 0 1px 2px rgba(0,0,0,0.08);
     justify-content: center; 
-
   }
 
   .capsula {
@@ -560,7 +545,6 @@
     height: 90%; 
   }
   
-  /* 🔹 CAJA DE SUPLEMENTOS */
   .box-capa {
     display: flex;
     align-items: center;
@@ -570,21 +554,21 @@
     padding: 20px 25px;
     margin: 55mm auto auto 25mm;
     width: 75%;
-    min-height: 4cm;      /* 🔹 mantiene un alto mínimo de 3 cm */
-    box-sizing: border-box; /* 🔹 asegura que el padding no aumente el alto total */
+    min-height: 4cm;      
+    box-sizing: border-box;
   }
 
   .bloco {
     position: relative;
-    background: #f3f3f3;            /* 🔹 gris suave (más limpio que #f9f9f9) */
+    background: #f3f3f3;           
     border-radius: 12px;
-    padding: 25px 20px 20px 20px;   /* 🔹 deja espacio para el texto interno */
-    margin: 20mm auto 0 auto;       /* 🔹 centrado en la hoja */
+    padding: 25px 20px 20px 20px;   
+    margin: 20mm auto 0 auto;     
     width: 75%;
     min-height: 25mm;
     text-align: center;
     box-sizing: border-box;
-    overflow: visible;              /* 🔹 permite que el título sobresalga */
+    overflow: visible;              
   }
   
   /* 🔹 Título flotante y centrado */
@@ -593,7 +577,7 @@
     top: -14px;
     left: 50%;
     transform: translateX(-50%);
-    background: #2f6fa3;            /* 🔹 azul igual al del encabezado */
+    background: #2f6fa3;           
     color: #fff;
     font-weight: 600;
     border-radius: 50px;
@@ -604,7 +588,6 @@
     width: 60%;
   }
   
-  /* 🔹 Contenido dentro */
   .bloco-conteudo {
     font-size: 12pt;
     color: #333;
@@ -627,10 +610,9 @@
   .assinatura {
     width: 120px;
     margin-left: 10px;
-  }
-  
-  
+  }  
   </style>
+  
   </head>
   <body>
       <!-- Contenido de la PÁGINA 1 -->
