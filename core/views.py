@@ -26,6 +26,13 @@ from django.conf import settings
 from django.contrib.staticfiles import finders
 import logging
 
+import time
+import tempfile
+from django.conf import settings
+from django.template.loader import render_to_string
+from django.http import HttpResponse
+from weasyprint import HTML, CSS
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -2507,44 +2514,21 @@ class CapaRelatorioView(TemplateView):
             'kcals': kcals,
            'filas_metas': filas_metas,
         }
-        import requests
-        url = "https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/img2RelM.webp"
-        r = requests.get(url)
-        print(r.status_code)
-        import pprint
-        print(datas_planos)
-        # import pprint
-        # print("🧩 Contenido de t (consultas):", consultas)
-        # print("🧠 Tipo de t:", type(consultas))
-        # print("\n=== CONSULTAS (debug) ===")
-        # pprint.pprint(consultas)
-        # print("=========================\n")
-        # print("📆 DATAS:")
-        # for k, v in datas.items():
-        #     print(f"   {k}: {v}")
-
-        # print("\n🔥 KCALS:")
-        # for k, v in consultas.items():
-        #     print(f"   {k}: {v}")
-
-        # print("\n⚖️  DIFERENÇAS:")
-        # for k, v in diferencas.items():
-        #     print(f"   {k}: {v}")
-
-        # print("\n🎯 VALORES (meta de evolução):")
-        # for k, v in valores.items():
-        #     print(f"   {k}: {v}")
-        # print("───────────────────────────────")
-
-        # return render(self.request, self.template_name, context)
+        
         return self._gerar_pdf(context)
         
     
 
-
     def _gerar_pdf(self, context):
-        from django.conf import settings
+        # ⏱ Inicio total
+        start_total = time.time()
+
+        # --- Render HTML ---
+        start_render = time.time()
         html_string = render_to_string(self.template_name, context)
+        render_time = time.time() - start_render
+
+        # --- CSS ---
         css = CSS(string='''
             @page { size: A4; margin: 20mm; }
             body { font-family: 'Open Sans', sans-serif; font-size: 11pt; color: #333; }
@@ -2552,11 +2536,28 @@ class CapaRelatorioView(TemplateView):
             .RC-label { font-weight: 600; color: #1e3a8a; }
             .RC-desc { font-size: 10pt; color: #555; margin-left: 6px; }
         ''')
+
+        # --- Generar PDF ---
+        start_pdf = time.time()
         with tempfile.NamedTemporaryFile(delete=True) as output:
             HTML(string=html_string, base_url=str(settings.BASE_DIR)).write_pdf(output.name, stylesheets=[css])
             output.seek(0)
             pdf = output.read()
+        pdf_time = time.time() - start_pdf
+
+        # --- Calcular tiempo total ---
+        total_time = time.time() - start_total
+
+        # --- Respuesta HTTP ---
         response = HttpResponse(pdf, content_type='application/pdf')
         response['Content-Disposition'] = 'inline; filename="relatorio_capa.pdf"'
+
+        # --- Log en consola ---
+        print("📄 [PDF Performance]")
+        print(f"   🧩 Render HTML: {render_time:.2f}s")
+        print(f"   🖨️  Generar PDF: {pdf_time:.2f}s")
+        print(f"   ⚙️  Total backend: {total_time:.2f}s")
+        print(f"   -----------------------------")
+
         return response
 
