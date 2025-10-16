@@ -8,15 +8,11 @@
     /* --- Página A4 y numeración --- */
     @page {
       size: A4;
-      margin: 0mm 0mm 5mm 0mm;
-    
-
-    
+      margin: 0mm 0mm 5mm 0mm;       
       background: url("https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/portadaRelatorioM-convertido-de-webp.jpeg") no-repeat center center;
       background-size: cover;
     }
     @page:first {
-      {% comment %} background: url("{{ portada_bg_url }}") no-repeat center center; {% endcomment %}
       background-size: cover;
     }
 
@@ -31,13 +27,13 @@
 
     /* --- PORTADA --- */
     .cover{
-      min-height: calc(100vh - 38mm);   /* alto útil (A4 menos márgenes ~20+18mm) */
+      min-height: calc(100vh - 38mm);   
       display: grid;
-      grid-template-rows: 75% 25%;      /* 75% vacío arriba, 25% para el contenido */
+      grid-template-rows: 75% 25%;      
     }
     .cover__stack{
-      grid-row: 2;                      /* ubica en el cuarto inferior */
-      place-self: center;               /* centra dentro de ese 25% */
+      grid-row: 2;                      
+      place-self: center;              
       text-align: center;
     }
 
@@ -45,7 +41,7 @@
     @page pageHdr {
       size: A4;
       margin: 0mm 0mm 0mm 0mm;
-      background: url("https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/img3RelM-convertido-de-webp.jpeg") no-repeat center center;
+      background: url("https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/img2RelM-convertido-de-webp.jpeg") no-repeat center center;
       background-size: cover;
       @top-right {
         content: element(run-hdr);    /* inyecta el header en @top-right */
@@ -56,7 +52,7 @@
     @page page3 {
       size: A4;
       margin: 0;
-      background: url("https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/img4RelM-convertido-de-webp.jpeg") no-repeat center center;
+      background: url("https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/img3RelM-convertido-de-webp.jpeg") no-repeat center center;
       background-size: cover;
       @top-right {
         content: element(run-hdr);  
