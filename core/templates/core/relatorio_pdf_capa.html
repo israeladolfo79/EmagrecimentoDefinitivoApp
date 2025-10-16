@@ -37,51 +37,56 @@
       text-align: center;
     }
 
-    /* --- POg2 --- */
+
     @page page2 {
       size: A4;
-      margin: 0mm 0mm 0mm 0mm;
       background: url("https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/img2RelM-convertido-de-webp.jpeg") no-repeat center center;
       background-size: cover;
+      margin: 0;
       @top-right {
         content: element(run-hdr);    /* inyecta el header en @top-right */
         vertical-align: top;
       }
-    }   
-
+    }
+    
+    /* --- Página 3 --- */
     @page page3 {
       size: A4;
-      margin: 0;
       background: url("https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/img3RelM-convertido-de-webp.jpeg") no-repeat center center;
       background-size: cover;
-      @top-right {
-        content: element(run-hdr);  
-        vertical-align: top;
-      }
-    }
-
-    /* --- POg4 --- */
-    @page page4 {
-      size: A4;
-      margin: 0mm 0mm 0mm 0mm;
-      background: url("https://newemagrecimento2.s3.sa-east-1.amazonaws.com/core/img/img4RelM.webp") no-repeat center center;
-      background-size: cover;
+      margin: 0;
       @top-right {
         content: element(run-hdr);    /* inyecta el header en @top-right */
         vertical-align: top;
       }
-    }   
-
-    @page page5 {
+    }
+    
+    /* --- Página 4 --- */
+    @page page4 {
       size: A4;
-      margin: 0;
-      background: url("https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/img5RelM-convertido-de-webp.jpeg") no-repeat center center;
+      background: url("https://newemagrecimento2.s3.sa-east-1.amazonaws.com/core/img/img4RelM.webp") no-repeat center center;
       background-size: cover;
+      margin: 0;
       @top-right {
-        content: element(run-hdr);  
-        vertical-align: top;        
+        content: element(run-hdr);    /* inyecta el header en @top-right */
+        vertical-align: top;
       }
     }
+    
+    /* --- Página 5 --- */
+    @page page5 {
+      size: A4;
+      background: url("https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/img5RelM-convertido-de-webp.jpeg") no-repeat center center;
+      background-size: cover;
+      margin: 0;
+      @top-right {
+        content: element(run-hdr);    /* inyecta el header en @top-right */
+        vertical-align: top;
+      }
+    }
+
+
+
 
     .run-hdr {
       position: running(run-hdr);
