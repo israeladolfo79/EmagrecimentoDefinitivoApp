@@ -42,7 +42,6 @@
     }
 
     /* --- POg2 --- */
-    /* === Páginas con header (2, 3 y 4) === */
     @page pageHdr {
       size: A4;
       margin: 0mm 0mm 0mm 0mm;
@@ -52,49 +51,41 @@
         content: element(run-hdr);    /* inyecta el header en @top-right */
         vertical-align: top;
       }
-    }
-    
+    }   
 
-    /* === Página 3 === */
     @page page3 {
       size: A4;
       margin: 0;
       background: url("https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/img4RelM-convertido-de-webp.jpeg") no-repeat center center;
       background-size: cover;
       @top-right {
-        content: element(run-hdr);  /* 🔹 Esto “inyecta” el header */
+        content: element(run-hdr);  
         vertical-align: top;
       }
-
     }
 
-    /* === Página 4 === */
     @page page4 {
       size: A4;
       margin: 0;
       background: url("https://newemagrecimento2.s3.sa-east-1.amazonaws.com/core/img/img4RelM.webp") no-repeat center center;
       background-size: cover;
       @top-right {
-        content: element(run-hdr);  /* 🔹 Esto “inyecta” el header */
+        content: element(run-hdr);  
         vertical-align: top;
       }
     }
 
-    /* === Página 5 === */
     @page page5 {
       size: A4;
       margin: 0;
       background: url("https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/img5RelM-convertido-de-webp.jpeg") no-repeat center center;
       background-size: cover;
       @top-right {
-        content: element(run-hdr);  /* 🔹 Esto “inyecta” el header */
-        vertical-align: top;
-        
+        content: element(run-hdr);  
+        vertical-align: top;        
       }
     }
 
-
-    /* Elemento “corriendo” que se pinta en el margin box @top-right */
     .run-hdr {
       position: running(run-hdr);
       text-align: right;
@@ -102,18 +93,15 @@
       padding-right: 10mm;
     }
     
-    /* Tamaño del logo */
     .logo-medico {
-      width: 65mm;   /* ajustá si hace falta */
+      width: 65mm;   
       height: auto;
     }
     
-    /* Aplica la página nombrada con header */
     .with-header {
       page: pageHdr;
     }
     
-    /* Salto de página controlado */
     .page-break { page-break-before: always; }
     
     /*********PAG2  TABLA 1********/
@@ -125,7 +113,8 @@
       padding: 6px;
       background: #ffffff;                      
       box-shadow: none;          
-      margin-top:42mm;
+      margin-top:45mm;
+      border: 0.5px solid #e5e5e5;
     }
 
     .tabla-retornos{
@@ -144,7 +133,6 @@
       white-space: nowrap;
     }
     
-    /* filas alternadas sutiles */
     .tabla-retornos tr:nth-child(odd){ background: #e1e1e1; }
     .tabla-retornos tr:nth-child(even){ background: #ffffff; }
        
@@ -684,12 +672,6 @@
           alt="Logo Nutrição Esportiva"
           class="logo-medico">
       </div>
-      <div class="run-hdr">
-        <img
-          src="https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/img2RelM.webp"
-          alt="Logo Nutrição Esportiva"
-          class="logo-medico">
-      </div>
       <div class="box-retornos centrada" >    
         <table class="tabla-retornos">
           <colgroup>
@@ -730,7 +712,7 @@
         </table>
       </div>
       <div style="position:relative;z-index:99999;background:#2f6fa3;border-radius:9999px;
-                  padding:12px 20px;text-align:center;width:600px;margin:20px auto;color:#fff;">
+                  padding:12px 20px;text-align:center;width:700px;margin:15px auto;color:#fff;">
         EVOLUÇÃO DA MASSA MAGRA x GORDURA CORPORAL
       </div>
       <div class="tabla-metricas-wrap">
