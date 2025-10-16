@@ -38,7 +38,7 @@
     }
 
     /* --- POg2 --- */
-    @page pageHdr {
+    @page page2 {
       size: A4;
       margin: 0mm 0mm 0mm 0mm;
       background: url("https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/img2RelM-convertido-de-webp.jpeg") no-repeat center center;
@@ -61,7 +61,7 @@
     }
 
     /* --- POg4 --- */
-    @page pageHdr {
+    @page page4 {
       size: A4;
       margin: 0mm 0mm 0mm 0mm;
       background: url("https://newemagrecimento2.s3.sa-east-1.amazonaws.com/core/img/img4RelM.webp") no-repeat center center;
@@ -262,16 +262,12 @@
   
   .tabla-riscos-info {
     flex: 0 0 25%;
-    text-align: center;
+    text-align: right;
   }
   .tabla-riscos-info p {
     font-size: 13px;
     line-height: 1.5;
     color: #444;
-  }
-  .tabla-riscos-info img {
-    width: 80px;
-    margin-top: 8px;
   }
   
   /* ==========================================================
@@ -348,8 +344,8 @@
     font-size: 14px;
   }
   .RC-valor {
-    font-weight: 700;
-    color: #0f172a;
+    font-weight: 600;
+    color: #f7f7f7;
   }
 
   /* Cores especiais */
@@ -424,32 +420,60 @@
     font-size: 10pt;
     text-align: center;
     margin: 5mm auto 0 25mm;
+    table-layout: fixed;
   }
   
   .tabela-meta th {
-    background-color: #f66c6c; /* rojo del encabezado */
-    color: white;
-    padding: 5px 4px;
+    background-color: #f66c6c;
+    color: #fff;
     font-weight: 600;
+    border: 1px solid #ddd;
+    padding: 6px 4px;
+    height: 24px;
+    vertical-align: middle;
   }
   
+  
   .tabela-meta td {
-    padding: 5px 5px;
-    border-bottom: 1px solid #ddd;
+    border: 1px solid #ddd;
+    padding: 6px 4px;
+    height: 24px;
+    vertical-align: middle;
+    background-color: #ffffff;
   }
   .tabela-meta tr:nth-child(even) td {
   background-color: #f8f8f8;
 }
-  
-  .tabela-meta td.meta {
-    background-color: #2b6ca3 !important;
-    color: white !important;
-    font-weight: 500;
-  }
-  
-  .tabela-meta td.status {
-    font-weight: 700;
-  }
+.tabela-meta tr:nth-child(even) td.meta,
+.tabela-meta tr:nth-child(odd) td.meta {
+  background-color: #2b6ca3 !important;
+  color: #fff !important;
+} 
+.tabela-meta th {
+  background-color: #f66c6c;
+  color: white;
+  font-weight: 600;
+}
+
+.tabela-meta td.meta {
+  background-color: #2b6ca3;
+  color: #fff;
+  font-weight: 500;
+  border: 1px solid #ddd;  /* ✅ asegura borde igual que las demás */
+  height: 24px;
+  padding: 6px 4px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.tabela-meta td.status {
+  font-weight: 700;
+  color: #111;
+}
+.tabela-meta th,
+.tabela-meta td {
+  width: calc(100% / 6);
+}
   .relatorio-capa {
     font-family: 'Montserrat', sans-serif;
     color: #333;
@@ -545,25 +569,11 @@
     height: 90%; 
   }
   
-  .box-capa {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #f9f9f9;
-    border-radius: 10px;
-    padding: 20px 25px;
-    margin: 55mm auto auto 25mm;
-    width: 75%;
-    min-height: 4cm;      
-    box-sizing: border-box;
-  }
-
   .bloco {
     position: relative;
     background: #f3f3f3;           
     border-radius: 12px;
-    padding: 25px 20px 20px 20px;   
-    margin: 20mm auto 0 auto;     
+    padding: 25px 20px 20px 20px;
     width: 75%;
     min-height: 25mm;
     text-align: center;
@@ -612,7 +622,7 @@
     margin-left: 10px;
   }  
   </style>
-  
+
   </head>
   <body>
       <!-- Contenido de la PÁGINA 1 -->
@@ -643,7 +653,7 @@
       </div>
     </section>
       <!-- Contenido de la PÁGINA 2 -->
-    <section class="page-break with-header">
+    <section class="page-break with-header"style="page: page2">
       <div class="run-hdr">
         <img
           src="https://newemagrecimento2.s3.amazonaws.com/django-summernote/2025-01-30/c2789af5-32a6-4184-a2ce-5c4e32b581f5.png"
@@ -658,7 +668,7 @@
           <tbody>
             <tr>
               <td class="lbl">Consulta 0:</td>
-              <td class="val val-roja">{{ datas_planos.data_1|default:"00/00/0000" }}</td>
+              <td class="val">{{ datas_planos.data_1|default:"00/00/0000" }}</td>
 
               <td class="lbl sep">Retorno 30D:</td>
               <td class="val">{{ datas_planos.data_2|default:"00/00/0000" }}</td>
@@ -668,7 +678,7 @@
             </tr>
             <tr>
               <td class="lbl">Retorno 0 D:</td>
-              <td class="val val-roja">{{ datas_planos.data_3|default:"00/00/0000" }}</td>
+              <td class="val ">{{ datas_planos.data_3|default:"00/00/0000" }}</td>
 
               <td class="lbl sep">Retorno 45D:</td>
               <td class="val">{{ datas_planos.data_4|default:"00/00/0000" }}</td>
@@ -690,9 +700,10 @@
         </table>
       </div>
       <div style="position:relative;z-index:99999;background:#2f6fa3;border-radius:9999px;
-                  padding:12px 20px;text-align:center;width:700px;margin:15px auto;color:#fff;">
-        EVOLUÇÃO DA MASSA MAGRA x GORDURA CORPORAL
+      padding:12px 20px;text-align:center;width:650px;margin:15px auto;color:#fff; font-weight:700;">
+      EVOLUÇÃO DA MASSA MAGRA x GORDURA CORPORAL
       </div>
+
       <div class="tabla-metricas-wrap">
         <table class="tabla-metricas compact">
           <colgroup>
@@ -823,8 +834,8 @@
         </table>
       </div>
       <div style="position:relative;z-index:99999;background:#2f6fa3;border-radius:9999px;
-                  padding:12px 20px;text-align:center;width:600px;margin:15px auto;color:#fff;">
-        RISCOS PREDITOS POR CIRCUNFERÊNCIAS
+      padding:12px 20px;text-align:center;width:650px;margin:15px auto;color:#fff; font-weight:700;">
+      RISCOS PREDITOS POR CIRCUNFERÊNCIAS
       </div>
       <div class="tabla-riscos-wrap3">
         <div class="tabla-riscos-inner">
@@ -1126,28 +1137,34 @@
           </tbody>
           
         </table>
-      </div>
-      
-    
-
+      </div>    
   </section>
   <section class="page-break with-header"style="page: page5;">     
     <div class="relatorio-capa">    
-      <!-- 🔹 Sección de suplementos -->
-      <div class="box-capa">
-        <div class="suplementos">
-         
-        </div>       
+      <div class="bloco" style="margin:50mm auto 0 auto; position:relative;">
+        <div class="bloco-titulo">Suplementos</div>
+      
+        <div class="bloco-conteudo" style="padding-right:220px;">
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+        </div>
+      
+        <img src="https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/cu.png" 
+             alt="Cápsulas"
+             style="position:absolute; top:0px; right:0px; width:250px; height:auto;">
       </div>
-    
-      <div class="bloco">
+      
+      <div class="bloco"style="margin:15mm auto 0 auto;">
         <div class="bloco-titulo">Planejamento Alimentar</div>
         <div class="bloco-conteudo">
         </div>
       </div>
     
-
-      <div class="bloco">
+      <div class="bloco" style="margin:15mm auto 0 auto;">
         <div class="bloco-titulo">Comentários</div>
         <div class="bloco-conteudo">       
         </div>
