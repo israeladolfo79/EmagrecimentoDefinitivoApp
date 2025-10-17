@@ -1659,9 +1659,6 @@ class RelatorioEvolucao(TemplateView):
         }
         import pprint
 
-        print("\n===== CONTEXTO COMPLETO DO RELATÓRIO =====")
-        pprint.pprint(context)
-        print("==========================================\n")
         if sexo == "masculino":
             self.template_name = "core/relatorio_m.html"
             user = self.request.user.username
@@ -1903,24 +1900,6 @@ class EvolucaoFinal(TemplateView):
             'valores': valores,
             'kcals': kcals
         }
-
-        print("───────────────────────────────")
-        print("📆 DATAS:")
-        for k, v in datas.items():
-            print(f"   {k}: {v}")
-
-        print("\n🔥 KCALS:")
-        for k, v in kcals.items():
-            print(f"   {k}: {v}")
-
-        print("\n⚖️  DIFERENÇAS:")
-        for k, v in diferencas.items():
-            print(f"   {k}: {v}")
-
-        print("\n🎯 VALORES (meta de evolução):")
-        for k, v in valores.items():
-            print(f"   {k}: {v}")
-        print("───────────────────────────────")
 
         return render(self.request, self.template_name, context)
 
@@ -2183,7 +2162,6 @@ def gerar_pdf(request):
         }
 
     elif tipo == "sem_treino":
-        # ---- reutilizamos la lógica de ExibeAvaliacaoSemTreino ----
         avaliacao_mais_recente = list(
             models.PlanoAlimentar.objects.filter(user=user).values()
         )[-1]
@@ -2247,10 +2225,7 @@ def gerar_pdf(request):
                     page-break-inside: avoid;
                 }
 
-
-
             """)]
-
 
         )
         output.seek(0)
@@ -2264,13 +2239,9 @@ def gerar_pdf(request):
 
 # === Logging para debug controlado ===
 logger = logging.getLogger(__name__)
-
-class CapaRelatorioView(TemplateView):
-    
-    template_name = 'core/relatorio_pdf_capa.html'
-
+class CapaRelatorioView(TemplateView):    
+    template_name = 'core/relatorio_pdf_femenino.html'
     def get(self, *args, **kwargs):
-
         # verificando se o usuario preencheu os dados pessoais
         user = self.request.user.username
         if not categorias_models.DadosPessoais.objects.filter(usuario=user).exists():
@@ -2286,6 +2257,18 @@ class CapaRelatorioView(TemplateView):
         idade = int((datetime.now().date() - dict(categorias_models.DadosPessoais.objects.filter(
             user=user).values()[0])["nascimento"]).days // 365.25)
         usuario = dict(models.Usuario.objects.filter(usuario=user).values()[0])
+
+        if sexo in ("m", "masculino"):
+            self.template_name = "core/relatorio_pdf_masculino.html"
+        elif sexo in ("f", "feminino"):
+            self.template_name = "core/relatorio_pdf_feminino.html"
+        else:
+            messages.error(self.request, "Sexo não identificado. Verifique seu cadastro.")
+            return redirect('/dados_pessoais')
+
+
+
+
         for k, v in usuario.items():
             if sexo == 'masculino':
                 if v == None and k != 'ciclo_menstrual_id':
@@ -2520,13 +2503,8 @@ class CapaRelatorioView(TemplateView):
     
 
     def _gerar_pdf(self, context):
-        # ⏱ Inicio total
-        start_total = time.time()
 
-        # --- Render HTML ---
-        start_render = time.time()
         html_string = render_to_string(self.template_name, context)
-        render_time = time.time() - start_render
 
         # --- CSS ---
         css = CSS(string='''
@@ -2543,21 +2521,9 @@ class CapaRelatorioView(TemplateView):
             HTML(string=html_string, base_url=str(settings.BASE_DIR)).write_pdf(output.name, stylesheets=[css])
             output.seek(0)
             pdf = output.read()
-        pdf_time = time.time() - start_pdf
 
-        # --- Calcular tiempo total ---
-        total_time = time.time() - start_total
-
-        # --- Respuesta HTTP ---
         response = HttpResponse(pdf, content_type='application/pdf')
         response['Content-Disposition'] = 'inline; filename="relatorio_capa.pdf"'
-
-        # --- Log en consola ---
-        print("📄 [PDF Performance]")
-        print(f"   🧩 Render HTML: {render_time:.2f}s")
-        print(f"   🖨️  Generar PDF: {pdf_time:.2f}s")
-        print(f"   ⚙️  Total backend: {total_time:.2f}s")
-        print(f"   -----------------------------")
 
         return response
 

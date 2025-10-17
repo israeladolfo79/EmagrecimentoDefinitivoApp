@@ -1,0 +1,1196 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>{{ titulo|default:"Informe" }}</title>
+  <style>
+    /* --- Página A4 y numeración --- */
+    @page {
+      size: A4;
+      margin: 0mm 0mm 5mm 0mm;       
+      background: url("https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/EVN+Feminina.jpg") no-repeat center center;
+      background-size: cover;
+    }
+    @page:first {
+      background-size: cover;
+    }
+
+    /* --- Reset mínimo --- */
+    * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    html, body { height: 100%; }
+    body { font-family: sans-serif; font-size: 12px; color: #111; margin: 0; }
+
+    /* --- Utilidades --- */
+    .page-break { page-break-before: always; }
+    .avoid-break { page-break-inside: avoid; }
+
+    /* --- PORTADA --- */
+    .cover{
+      min-height: calc(100vh - 38mm);   
+      display: grid;
+      grid-template-rows: 75% 25%;      
+    }
+    .cover__stack{
+      grid-row: 2;                      
+      place-self: center;              
+      text-align: center;
+    }
+
+
+    @page page2 {
+      size: A4;
+      background: url("https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/img2RE.jpeg") no-repeat center center;
+      background-size: cover;
+      margin: 0;
+      @top-right {
+        content: element(run-hdr);    /* inyecta el header en @top-right */
+        vertical-align: top;
+      }
+    }
+    
+    /* --- Página 3 --- */
+    @page page3 {
+      size: A4;
+      background: url("https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/EVN+Feminina2.jpg") no-repeat center center;
+      background-size: cover;
+      margin: 0;
+      @top-right {
+        content: element(run-hdr);    /* inyecta el header en @top-right */
+        vertical-align: top;
+      }
+    }
+    
+    /* --- Página 4 --- */
+    @page page4 {
+      size: A4;
+      background: url("https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/imagenM4.jpeg") no-repeat center center;
+      background-size: cover;
+      margin: 0;
+      @top-right {
+        content: element(run-hdr);    /* inyecta el header en @top-right */
+        vertical-align: top;
+      }
+    }
+    
+    /* --- Página 5 --- */
+    @page page5 {
+      size: A4;
+      background: url("https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/img5RelM-convertido-de-webp.jpeg") no-repeat center center;
+      background-size: cover;
+      margin: 0;
+      @top-right {
+        content: element(run-hdr);    /* inyecta el header en @top-right */
+        vertical-align: top;
+      }
+    }
+
+
+    .run-hdr {
+      position: running(run-hdr);
+      text-align: right;
+      padding-top: 10mm;
+      padding-right: 10mm;
+    }
+    
+    .logo-medico {
+      width: 65mm;   
+      height: auto;
+    }
+    
+    .with-header {
+      page: pageHdr;
+    }
+    
+    .page-break { page-break-before: always; }
+    
+    /*********PAG2  TABLA 1********/
+    .box-retornos.centrada{
+      max-width: 600px;
+      width: min(92vw, 720px);
+      margin: 12px auto;
+      padding: 4px;
+      background: #ffffff;                      
+      box-shadow: none;          
+      margin-top:43mm;
+      border: 0.5px solid #e5e5e5;
+    }
+
+    .tabla-retornos{
+      width: 100%;
+      table-layout: fixed;        
+      border-spacing: 0;
+      font: 500 13px/1.3 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: #1F1E1E;                       
+    }
+
+    .tabla-retornos col{
+      width: calc(100%/6);            
+    }
+    .tabla-retornos td{
+      padding: 8px 12px;
+      white-space: nowrap;
+    }
+    
+    .tabla-retornos tr:nth-child(odd){ background: #e1e1e1; }
+    .tabla-retornos tr:nth-child(even){ background: #ffffff; }
+       
+    /*********PAG2  TABLA 2********/
+    .tabla-metricas-wrap {
+      width: 80%;             
+      max-width: 700px;       
+      margin: 15px auto;       
+    }
+
+    .tabla-metricas{
+      width: 100%;
+      table-layout: fixed;                
+      border-collapse: separate;
+      border-spacing: 0;
+      font: 500 13px/1.1 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+      color: #344256;                     
+      background: #fff;
+      border: 1px solid #dfe7f2;        
+      border-radius: 8px;
+      overflow: hidden;                  
+    }
+
+  .tabla-metricas.compact thead th{
+    padding: 9px 6px;                 
+    font-size: 12px;  
+    background:#ff5d5d;
+    color:#fff;                     
+  }
+
+  .tabla-metricas.compact tbody th{
+    padding: 6px 8px;               
+    font-size: 12px;
+    background:#2b6ca3;
+    color:#fff;
+  }
+
+  .tabla-metricas.compact td{
+    padding: 6px 6px;                
+    font-size: 12px;
+  }
+
+  .tabla-metricas.compact .separador td{
+    background:#dfe7f2;
+    color:#344256;
+    text-align:center;
+  }
+
+  .tabla-metricas col.col-label{ width:17%; }
+  .tabla-metricas col.col-data { width:calc(67%/9); }
+  .tabla-metricas thead th{
+    background:#edf3fa;
+    color:#2b3b51;
+    font-weight:700;
+    text-align:center;
+    padding:6px 6px;
+    border-bottom:1px solid #d6e1ef;
+  }
+
+.tabla-metricas tbody tr:nth-child(odd)  td { background: rgba(240, 240, 240, 0.9); }  /* #F0F0F0 */
+.tabla-metricas tbody tr:nth-child(even) td { background: rgba(250, 250, 250, 0.9); } /* #FAFAFA */
+
+  .tabla-metricas tr > *:last-child{ border-right:0; }
+
+  .tabla-metricas td:empty::before{ content:"\00a0"; }
+
+  /*********PAG2  TABLA 3********/
+  .tabla-riscos-wrap3 {
+    width: 80%;              
+    max-width: 700px;
+    margin: 0 auto 15mm auto; 
+  }
+
+  .tabla-riscos-inner {
+    display: flex;
+    align-items: flex-start; 
+    justify-content: space-between;
+    gap: 10px;
+  }
+  
+  .tabla-riscos-table {
+    flex: 0 0 72%;
+  }
+  
+  .tabla-riscos {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    font-weight: 500;
+    font-size: 12px;
+    border: 1px solid #e0e6ee;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  
+  .tabla-riscos thead th {
+    background: #2f6fa3;
+    color: #fff;
+    text-align: center;
+    font-weight: 600;
+    font-size: 12px;
+  }
+
+  
+  .tabla-riscos td:first-child,
+  .tabla-riscos th:first-child {
+    width: 26%;
+    text-align: left;
+    color: #2f6fa3;
+    font-weight: 600;
+    padding-left: 10px;
+  }
+
+  .tabla-riscos th:not(:first-child),
+  .tabla-riscos td:not(:first-child) {
+    width: calc((100% - 26%) / 9); /* 🔹 divide el resto equitativamente (para 9 columnas C1–C9) */
+  }
+
+
+
+  .tabla-riscos th,
+.tabla-riscos td {
+  padding: 8px 8px;
+}
+  
+  .tabla-riscos tbody tr:nth-child(odd) {
+    background: #f3f4f6;
+  }
+  .tabla-riscos tbody tr:nth-child(even) {
+    background: #ffffff;
+  }
+  
+  .tabla-riscos-leyenda {
+    font-size: 11px;
+    text-align: center;
+    margin-top: 8px;
+    color: #555;
+  }
+  
+  .tabla-riscos-info {
+    flex: 0 0 28%;
+    text-align: right;
+  }
+  .tabla-riscos-info p {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #444;
+  }
+  
+  /* ==========================================================
+    PAG 3 RC-RESUMO DE RESULTADOS 
+    ========================================================== */
+  .RC-resumo {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 24px;
+    margin: 20px auto;
+    max-width: 100%;   /* o eliminá esta línea */
+    width: 100%;
+    font-family: 'Open Sans', sans-serif;
+    color: #1e293b;
+  }
+  .fila {
+    display: flex;
+    justify-content: space-between; /* o center, según lo que necesites */
+    align-items: flex-start;
+    width: 100%;        
+    margin: 0;          
+    padding: 0 0px;   
+    box-sizing: border-box;
+  }
+
+  .RC-resumo-img {
+    flex: 0 0 35%;
+    text-align: center;
+  }
+
+  .RC-resumo-img img {
+    width: 100%;
+    height: auto;
+    max-width: none;
+  }
+
+  .RC-resumo-dados {
+    flex: 0 0 65%;
+  }
+
+  .RC-resumo-titulo {
+    background: #1e3a8a;
+    color: #fff;
+    text-align: center;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-weight: 600;
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  .RC-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 12px;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    font-size: 13px;
+  }
+  .RC-item:nth-child(odd) { background: #f8fafc; }
+  .RC-item:nth-child(even) { background: #f1f5f9; }
+
+  .RC-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+  }
+  .RC-label i {
+    color: #22c55e;
+    font-style: normal;
+    font-size: 14px;
+  }
+  .RC-valor {
+    font-weight: 600;
+    color: #f7f7f7;
+  }
+
+  /* Cores especiais */
+  .RC-azul { background: #0284c7; color: #fff; }
+  .RC-verde { background: #65a30d; color: #fff; }
+  .RC-vermelho { background: #ef4444; color: #fff; }
+  .RC-laranja { background: #ea580c; color: #fff; }
+  .RC-Blanco{ background: #ffffff;}
+
+  /* Rodapé composição */
+  .RC-composicao {
+    margin-top: 8px;
+    padding: 8px 10px;
+    background: #f9fafb;
+    border-radius: 8px;
+    font-size: 12px;
+    text-align: center;
+    line-height: 1.4;
+  }
+  .RC-composicao strong {
+    color: #2f6fa3;
+  }
+  /* ==========================================================
+    PAG 4 RC-RESUMO DE RESULTADOS 
+    ========================================================== */
+
+  .capsula-container-full {
+    display: flex;
+    align-items: center;
+    width: 70%;
+    max-width: 600px; 
+    margin: 45mm auto 0 25mm;
+    font-weight: 600;
+    font-size: 11pt;
+    color: #1e3a8a;
+    justify-content: center; 
+  }
+
+  .titulo-etapas-pag4 {
+    text-align: center;
+    color: #404040;
+    font-weight: 400;
+    font-size: 11pt;
+    line-height: 1.4;
+    margin-top: 15px;
+  }
+
+  .capsula-izq-full {
+    background: #2b6ca3;
+    padding: 10px 24px;
+    border-radius: 50px 50px 50px 50px;
+    z-index: 2;
+    position: relative;
+    color:#ffffff;
+  }
+  
+  .capsula-der-full {
+    background: #d2d2d2;
+    padding: 10px 24px;
+    border-radius: 0 50px 50px 0;
+    flex: 1; 
+    margin-left: -20px; 
+    z-index: 1;
+    text-align: center; 
+    color:#3465a4;
+  }
+  
+  .tabela-meta table {
+    width: 75%;
+    border-collapse: collapse;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10pt;
+    text-align: center;
+    margin: 5mm auto 0 25mm;
+    table-layout: fixed;
+  }
+  
+  .tabela-meta th {
+    background-color: #f66c6c;
+    color: #fff;
+    font-weight: 600;
+    border: 1px solid #ddd;
+    padding: 6px 4px;
+    height: 24px;
+    vertical-align: middle;
+  }
+  
+  
+  .tabela-meta td {
+    border: 1px solid #ddd;
+    padding: 6px 4px;
+    height: 24px;
+    vertical-align: middle;
+    background-color: #ffffff;
+  }
+  .tabela-meta tr:nth-child(even) td {
+  background-color: #f8f8f8;
+}
+.tabela-meta tr:nth-child(even) td.meta,
+.tabela-meta tr:nth-child(odd) td.meta {
+  background-color: #2b6ca3 !important;
+  color: #fff !important;
+} 
+.tabela-meta th {
+  background-color: #f66c6c;
+  color: white;
+  font-weight: 600;
+}
+
+.tabela-meta td.meta {
+  background-color: #2b6ca3;
+  color: #fff;
+  font-weight: 500;
+  border: 1px solid #ddd;  /* ✅ asegura borde igual que las demás */
+  height: 24px;
+  padding: 6px 4px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.tabela-meta td.status {
+  font-weight: 700;
+  color: #111;
+}
+.tabela-meta th,
+.tabela-meta td {
+  width: calc(100% / 6);
+}
+  .relatorio-capa {
+    font-family: 'Montserrat', sans-serif;
+    color: #333;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .bloque-der {
+    width: 50%;             
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;     
+    align-items: center;
+  }
+
+  .bloque-der .titulo-azul {
+    display: block;        
+    width: 100%;           
+    background: #2f6fa3;
+    border-radius: 9999px;
+    padding: 12px 0px;
+    color: #fff;
+    font-weight: 600;
+    text-align: center;
+    margin: 0 0 0px 0;     
+    font-size: 14px;
+    flex-direction: column;  
+  }
+
+  .bloque-izq {
+    width: 50%;       
+    padding: 20px;    
+    box-sizing: border-box;
+  }
+
+  .bloque-izq .titulo-azul {
+    display: block;         
+    width: 100%;           
+    background: #2f6fa3;
+    border-radius: 9999px;
+    padding: 12px 0px;
+    color: #fff;
+    font-weight: 600;
+    text-align: center;
+    margin: 0 0 0px 0;     
+    font-size: 14px;
+    flex-direction: column;  
+  }
+
+  .capsula-container {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 50px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+    justify-content: center; 
+  }
+
+  .capsula {
+    font-weight: 600;
+    font-size: 11pt;
+    padding: 8px 24px;
+    color: #1e3a8a;
+  }
+
+  .capsula-gris {
+    background: #f5f5f5;
+    z-index: 1;
+    margin-right: -30px; 
+    position: relative;
+    border-radius: 50px;
+    padding-top:10px;
+    padding-bottom: 10px;
+  }
+
+  .capsula-verde {
+    background: #a6d96a;
+    margin-right: -20px;
+    border-radius: 50px;
+    padding: 8px 38px;
+    padding-top:10px;
+    padding-bottom: 10px;
+  }
+
+  .capsula-lado-der {
+    flex: 1;
+    border-radius: 50px; 
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 8px; 
+    height: 90%; 
+  }
+  
+  .bloco {
+    position: relative;
+    background: #f3f3f3;           
+    border-radius: 12px;
+    padding: 25px 20px 20px 20px;
+    width: 75%;
+    min-height: 25mm;
+    text-align: center;
+    box-sizing: border-box;
+    overflow: visible;              
+  }
+  
+  /* 🔹 Título flotante y centrado */
+  .bloco-titulo {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2f6fa3;           
+    color: #fff;
+    font-weight: 600;
+    border-radius: 50px;
+    padding: 8px 28px;
+    font-size: 12pt;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    white-space: nowrap;
+    width: 60%;
+  }
+  
+  .bloco-conteudo {
+    font-size: 12pt;
+    color: #333;
+    margin-top: 10px;
+  }
+
+  .rodape {
+    width: 75%;
+    margin: 10mm auto auto 25mm;
+    text-align: left;
+    font-size: 11pt;
+    color:#000000;
+  }
+  
+  .rodape p {
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  
+  .assinatura {
+    width: 120px;
+    margin-left: 10px;
+  }  
+  </style>
+
+  </head>
+  <body>
+      <!-- Contenido de la PÁGINA 1 -->
+    <section style="height:259mm; margin:0; padding:0;">
+      <div style="height:194.25mm;"></div>
+      <div style="
+        height:64.75mm;
+        display:flex; align-items:center; justify-content:center;
+        text-align:center; margin:0; padding:0;
+      ">
+        <div style="max-width:120mm;">
+          <div style="font-size:20px; font-weight:600; margin:50mm 0 10mm 0; color:#ffffff;">
+            Evolução de:
+          </div>
+          <div style="
+            display:inline-block; padding:6mm 10mm; margin:0 0 8mm 0;
+            border:1px solid #e5e7eb; border-radius:9999px; background:#fff;
+            font-size:14px; font-weight:700; min-width:90mm; line-height:1.15;
+          ">
+            {{ nome_pessoa }}  {{ sobrenome_pessoa }}
+          </div>
+          <div style="font-size:10px; color:#ffffff; line-height:1.35; font-weight:600;">
+            Israel Adolfo<br>
+            Nutricionista do Esporte<br>
+            Cel: (11) 98770.7556
+          </div>
+        </div>
+      </div>
+    </section>
+      <!-- Contenido de la PÁGINA 2 -->
+    <section class="page-break with-header"style="page: page2">
+      <div class="run-hdr">
+        <img
+          src="https://newemagrecimento2.s3.amazonaws.com/django-summernote/2025-01-30/c2789af5-32a6-4184-a2ce-5c4e32b581f5.png"
+          alt="Logo Nutrição Esportiva"
+          class="logo-medico">
+      </div>
+      <div class="box-retornos centrada" >    
+        <table class="tabla-retornos">
+          <colgroup>
+            <col span="6">
+          </colgroup>
+          <tbody>
+            <tr>
+              <td class="lbl">Consulta 0:</td>
+              <td class="val">{{ datas_planos.data_1|default:"00/00/0000" }}</td>
+
+              <td class="lbl sep">Retorno 30D:</td>
+              <td class="val">{{ datas_planos.data_2|default:"00/00/0000" }}</td>
+
+              <td class="lbl sep">Manutenção 1:</td>
+              <td class="val">{{ manutencao1|default:"-" }}</td>
+            </tr>
+            <tr>
+              <td class="lbl">Retorno 0 D:</td>
+              <td class="val ">{{ datas_planos.data_3|default:"00/00/0000" }}</td>
+
+              <td class="lbl sep">Retorno 45D:</td>
+              <td class="val">{{ datas_planos.data_4|default:"00/00/0000" }}</td>
+
+              <td class="lbl sep">Manutenção 2:</td>
+              <td class="val">{{ manutencao2|default:"-" }}</td>
+            </tr>
+            <tr>
+              <td class="lbl">Retorno 15D:</td>
+              <td class="val">{{ datas_planos.data_5|default:"00/00/0000" }}</td>
+
+              <td class="lbl sep">Retorno 60D:</td>
+              <td class="val">{{ datas_planos.data_6|default:"00/00/0000" }}</td>
+
+              <td class="lbl sep">Manutenção 3:</td>
+              <td class="val">{{ manutencao3|default:"-" }}</td>
+            </tr>
+          </tbody>    
+        </table>
+      </div>
+      <div style="position:relative;z-index:99999;background:#2f6fa3;border-radius:9999px;
+      padding:12px 20px;text-align:center;width:650px;margin:15px auto;color:#fff; font-weight:700;">
+      EVOLUÇÃO DA MASSA MAGRA x GORDURA CORPORAL
+      </div>
+
+      <div class="tabla-metricas-wrap">
+        <table class="tabla-metricas compact">
+          <colgroup>
+            <col class="col-label">              
+            <col class="col-data" span="9">    
+          </colgroup>
+          <thead>
+            <tr>
+              <th></th>
+              <th>C-1</th><th>C-2</th><th>C-3</th><th>C-4</th><th>C-5</th><th>C-6</th><th>C-7</th><th>C-8</th><th>C-9</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th>Peso</th>
+              <td>{{ t.peso_1|default:"-" }}</td>
+              <td>{{ t.peso_2|default:"-" }}</td>
+              <td>{{ t.peso_3|default:"-" }}</td>
+              <td>{{ t.peso_4|default:"-" }}</td>
+              <td>{{ t.peso_5|default:"-" }}</td>
+              <td>{{ t.peso_6|default:"-" }}</td>
+              <td>{{ t.peso_7|default:"-" }}</td>
+              <td>{{ t.peso_8|default:"-" }}</td>
+              <td>{{ t.peso_9|default:"-" }}</td>
+            </tr>
+          
+            <tr><th>% Gordura</th>
+              <td>{{ t.per_gordura_1|default:"-" }}</td>
+              <td>{{ t.per_gordura_2|default:"-" }}</td>
+              <td>{{ t.per_gordura_3|default:"-" }}</td>
+              <td>{{ t.per_gordura_4|default:"-" }}</td>
+              <td>{{ t.per_gordura_5|default:"-" }}</td>
+              <td>{{ t.per_gordura_6|default:"-" }}</td>
+              <td>{{ t.per_gordura_7|default:"-" }}</td>
+              <td>{{ t.per_gordura_8|default:"-" }}</td>
+              <td>{{ t.per_gordura_9|default:"-" }}</td>             
+            </tr>
+          
+            <tr><th>M. Magra</th>
+              <td>{{ t.massa_magra_1|default:"-" }}</td>
+              <td>{{ t.massa_magra_2|default:"-" }}</td>
+              <td>{{ t.massa_magra_3|default:"-" }}</td>
+              <td>{{ t.massa_magra_4|default:"-" }}</td>
+              <td>{{ t.massa_magra_5|default:"-" }}</td>
+              <td>{{ t.massa_magra_6|default:"-" }}</td>
+              <td>{{ t.massa_magra_7|default:"-" }}</td>
+              <td>{{ t.massa_magra_8|default:"-" }}</td>
+              <td>{{ t.massa_magra_9|default:"-" }}</td>
+            </tr>
+          
+            <tr><th>Peso Gordura</th>
+              <td>{{ t.peso_gordura_1|default:"-" }}</td>
+              <td>{{ t.peso_gordura_2|default:"-" }}</td>
+              <td>{{ t.peso_gordura_3|default:"-" }}</td>
+              <td>{{ t.peso_gordura_4|default:"-" }}</td>
+              <td>{{ t.peso_gordura_5|default:"-" }}</td>
+              <td>{{ t.peso_gordura_6|default:"-" }}</td>
+              <td>{{ t.peso_gordura_7|default:"-" }}</td>
+              <td>{{ t.peso_gordura_8|default:"-" }}</td>
+              <td>{{ t.peso_gordura_9|default:"-" }}</td>
+            </tr>
+            <tr><th>Ombros</th>
+              <td>{{ t.ombros.ci|default:"-" }}</td><td>{{ t.ombros.r0|default:"-" }}</td><td>{{ t.ombros.r15|default:"-" }}</td><td>{{ t.ombros.r30|default:"-" }}</td><td>{{ t.ombros.r45|default:"-" }}</td><td>{{ t.ombros.r60|default:"-" }}</td><td>{{ t.ombros.m1|default:"-" }}</td><td>{{ t.ombros.m2|default:"-" }}</td><td>{{ t.ombros.m3|default:"-" }}</td>
+            </tr>
+            <tr><th>Braço Contraído</th>
+              <td>{{ t.braco_contraido.ci|default:"-" }}</td><td>{{ t.braco_contraido.r0|default:"-" }}</td><td>{{ t.braco_contraido.r15|default:"-" }}</td><td>{{ t.braco_contraido.r30|default:"-" }}</td><td>{{ t.braco_contraido.r45|default:"-" }}</td><td>{{ t.braco_contraido.r60|default:"-" }}</td><td>{{ t.braco_contraido.m1|default:"-" }}</td><td>{{ t.braco_contraido.m2|default:"-" }}</td><td>{{ t.braco_contraido.m3|default:"-" }}</td>
+            </tr>
+            <tr><th>Cintura</th>
+              <td>{{ t.cintura_1|default:"-" }}</td>
+              <td>{{ t.cintura_2|default:"-" }}</td>
+              <td>{{ t.cintura_3|default:"-" }}</td>
+              <td>{{ t.cintura_4|default:"-" }}</td>
+              <td>{{ t.cintura_5|default:"-" }}</td>
+              <td>{{ t.cintura_6|default:"-" }}</td>
+              <td>{{ t.cintura_7|default:"-" }}</td>
+              <td>{{ t.cintura_8|default:"-" }}</td>
+              <td>{{ t.cintura_9|default:"-" }}</td>
+            </tr>
+          
+            <tr><th>Abdomen</th>
+              <td>{{ t.abdomen_1|default:"-" }}</td>
+              <td>{{ t.abdomen_2|default:"-" }}</td>
+              <td>{{ t.abdomen_3|default:"-" }}</td>
+              <td>{{ t.abdomen_4|default:"-" }}</td>
+              <td>{{ t.abdomen_5|default:"-" }}</td>
+              <td>{{ t.abdomen_6|default:"-" }}</td>
+              <td>{{ t.abdomen_7|default:"-" }}</td>
+              <td>{{ t.abdomen_8|default:"-" }}</td>
+              <td>{{ t.abdomen_9|default:"-" }}</td>
+            </tr>
+          
+            <tr><th>Quadril</th>
+              <td>{{ t.quadril_1|default:"-" }}</td>
+              <td>{{ t.quadril_2|default:"-" }}</td>
+              <td>{{ t.quadril_3|default:"-" }}</td>
+              <td>{{ t.quadril_4|default:"-" }}</td>
+              <td>{{ t.quadril_5|default:"-" }}</td>
+              <td>{{ t.quadril_6|default:"-" }}</td>
+              <td>{{ t.quadril_7|default:"-" }}</td>
+              <td>{{ t.quadril_8|default:"-" }}</td>
+              <td>{{ t.quadril_9|default:"-" }}</td>
+            </tr>
+            <tr class="separador"><td colspan="10">Dobras</td></tr>
+            <tr><th>Tríceps</th>
+              <td>{{ t.triceps.ci|default:"-" }}</td><td>{{ t.triceps.r0|default:"-" }}</td><td>{{ t.triceps.r15|default:"-" }}</td><td>{{ t.triceps.r30|default:"-" }}</td><td>{{ t.triceps.r45|default:"-" }}</td><td>{{ t.triceps.r60|default:"-" }}</td><td>{{ t.triceps.m1|default:"-" }}</td><td>{{ t.triceps.m2|default:"-" }}</td><td>{{ t.triceps.m3|default:"-" }}</td>
+            </tr>
+            <tr><th>Costas</th>
+              <td>{{ t.costas.ci|default:"-" }}</td><td>{{ t.costas.r0|default:"-" }}</td><td>{{ t.costas.r15|default:"-" }}</td><td>{{ t.costas.r30|default:"-" }}</td><td>{{ t.costas.r45|default:"-" }}</td><td>{{ t.costas.r60|default:"-" }}</td><td>{{ t.costas.m1|default:"-" }}</td><td>{{ t.costas.m2|default:"-" }}</td><td>{{ t.costas.m3|default:"-" }}</td>
+            </tr>
+            <tr><th>Peito</th>
+              <td>{{ t.peito.ci|default:"-" }}</td><td>{{ t.peito.r0|default:"-" }}</td><td>{{ t.peito.r15|default:"-" }}</td><td>{{ t.peito.r30|default:"-" }}</td><td>{{ t.peito.r45|default:"-" }}</td><td>{{ t.peito.r60|default:"-" }}</td><td>{{ t.peito.m1|default:"-" }}</td><td>{{ t.peito.m2|default:"-" }}</td><td>{{ t.peito.m3|default:"-" }}</td>
+            </tr>
+            <tr><th>Axila</th>
+              <td>{{ t.axila.ci|default:"-" }}</td><td>{{ t.axila.r0|default:"-" }}</td><td>{{ t.axila.r15|default:"-" }}</td><td>{{ t.axila.r30|default:"-" }}</td><td>{{ t.axila.r45|default:"-" }}</td><td>{{ t.axila.r60|default:"-" }}</td><td>{{ t.axila.m1|default:"-" }}</td><td>{{ t.axila.m2|default:"-" }}</td><td>{{ t.axila.m3|default:"-" }}</td>
+            </tr>
+            <tr><th>Abdome Lateral</th>
+              <td>{{ t.abdome_lateral.ci|default:"-" }}</td><td>{{ t.abdome_lateral.r0|default:"-" }}</td><td>{{ t.abdome_lateral.r15|default:"-" }}</td><td>{{ t.abdome_lateral.r30|default:"-" }}</td><td>{{ t.abdome_lateral.r45|default:"-" }}</td><td>{{ t.abdome_lateral.r60|default:"-" }}</td><td>{{ t.abdome_lateral.m1|default:"-" }}</td><td>{{ t.abdome_lateral.m2|default:"-" }}</td><td>{{ t.abdome_lateral.m3|default:"-" }}</td>
+            </tr>
+            <tr><th>Abdome</th>
+              <td>{{ t.abdome.ci|default:"-" }}</td><td>{{ t.abdome.r0|default:"-" }}</td><td>{{ t.abdome.r15|default:"-" }}</td><td>{{ t.abdome.r30|default:"-" }}</td><td>{{ t.abdome.r45|default:"-" }}</td><td>{{ t.abdome.r60|default:"-" }}</td><td>{{ t.abdome.m1|default:"-" }}</td><td>{{ t.abdome.m2|default:"-" }}</td><td>{{ t.abdome.m3|default:"-" }}</td>
+            </tr>
+            <tr><th>Coxa</th>
+              <td>{{ t.coxa.ci|default:"-" }}</td><td>{{ t.coxa.r0|default:"-" }}</td><td>{{ t.coxa.r15|default:"-" }}</td><td>{{ t.coxa.r30|default:"-" }}</td><td>{{ t.coxa.r45|default:"-" }}</td><td>{{ t.coxa.r60|default:"-" }}</td><td>{{ t.coxa.m1|default:"-" }}</td><td>{{ t.coxa.m2|default:"-" }}</td><td>{{ t.coxa.m3|default:"-" }}</td>
+            </tr>
+          </tbody>
+
+          
+        </table>
+      </div>
+      <div style="position:relative;z-index:99999;background:#2f6fa3;border-radius:9999px;
+      padding:12px 20px;text-align:center;width:650px;margin:15px auto;color:#fff; font-weight:700;">
+      RISCOS PREDITOS POR CIRCUNFERÊNCIAS
+      </div>
+      <div class="tabla-riscos-wrap3">
+        <div class="tabla-riscos-inner">
+          <div class="tabla-riscos-table">
+            <table class="tabla-riscos">
+              <thead>
+                <tr>
+                  <th>&nbsp;</th>
+                  <th>C1</th>
+                  <th>C2</th>
+                  <th>C3</th>
+                  <th>C4</th>
+                  <th>C5</th>
+                  <th>C6</th>
+                  <th>C7</th>
+                  <th>C8</th>
+                  <th>C9</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Abdomen</td>
+                  <td>{{ riscos.abdomen_1 }}</td>
+                  <td>{{ riscos.abdomen_2 }}</td>
+                  <td>{{ riscos.abdomen_3 }}</td>
+                  <td>{{ riscos.abdomen_4 }}</td>
+                  <td>{{ riscos.abdomen_5 }}</td>
+                  <td>{{ riscos.abdomen_6 }}</td>
+                  <td>{{ riscos.abdomen_7 }}</td>
+                  <td>{{ riscos.abdomen_8 }}</td>
+                  <td>{{ riscos.abdomen_9 }}</td>
+                </tr>
+                <tr>
+                  <td>Cintura</td>
+                  <td>{{ riscos.cintura_1 }}</td>
+                  <td>{{ riscos.cintura_2 }}</td>
+                  <td>{{ riscos.cintura_3 }}</td>
+                  <td>{{ riscos.cintura_4 }}</td>
+                  <td>{{ riscos.cintura_5 }}</td>
+                  <td>{{ riscos.cintura_6 }}</td>
+                  <td>{{ riscos.cintura_7 }}</td>
+                  <td>{{ riscos.cintura_8 }}</td>
+                  <td>{{ riscos.cintura_9 }}</td>
+                </tr>
+                <tr>
+                  <td>Quadril</td>
+                  <td>{{ riscos.quadril_1 }}</td>
+                  <td>{{ riscos.quadril_2 }}</td>
+                  <td>{{ riscos.quadril_3 }}</td>
+                  <td>{{ riscos.quadril_4 }}</td>
+                  <td>{{ riscos.quadril_5 }}</td>
+                  <td>{{ riscos.quadril_6 }}</td>
+                  <td>{{ riscos.quadril_7 }}</td>
+                  <td>{{ riscos.quadril_8 }}</td>
+                  <td>{{ riscos.quadril_9 }}</td>
+                </tr>
+                <tr>
+                  <td>Cintura/Quadril</td>
+                  <td>{{ riscos.cintura_quadril_1 }}</td>
+                  <td>{{ riscos.cintura_quadril_2 }}</td>
+                  <td>{{ riscos.cintura_quadril_3 }}</td>
+                  <td>{{ riscos.cintura_quadril_4 }}</td>
+                  <td>{{ riscos.cintura_quadril_5 }}</td>
+                  <td>{{ riscos.cintura_quadril_6 }}</td>
+                  <td>{{ riscos.cintura_quadril_7 }}</td>
+                  <td>{{ riscos.cintura_quadril_8 }}</td>
+                  <td>{{ riscos.cintura_quadril_9 }}</td>
+                </tr>
+              </tbody>
+            </table>
+      
+            <p class="tabla-riscos-leyenda">
+              <strong class="n">N</strong> – Normal |
+              <strong class="au">AU</strong> – Aumentado |
+              <strong class="ma">MA</strong> – Muito Aumentado
+            </p>
+          </div>
+      
+          <!-- 🔹 Bloque lateral -->
+          <div class="tabla-riscos-info">
+            <p>
+              Elas predizem a probabilidade de desenvolver, a longo prazo, doenças do coração, diabetes, entre outras.
+            </p>
+           </div>
+        </div>
+      </div>
+    </section>
+      <!-- Contenido de la PÁGINA 3 -->
+    <section class="page-break with-header"style="page: page3;">     
+      <div class="run-hdr">
+        <img
+          src="https://newemagrecimento2.s3.amazonaws.com/django-summernote/2025-01-30/c2789af5-32a6-4184-a2ce-5c4e32b581f5.png"
+          alt="Logo Nutrição Esportiva"
+          class="logo-medico">
+      </div>
+      <div class="contenedor-pag3" style="margin-top:45mm;">
+          <div class="fila">
+            <div class="bloque bloque-izq">
+              <div class="col-6" style="text-align:center;">
+                <div class="titulo-azul" style=" background:#2f6fa3;">
+                  GASTO ENERGÉTICO
+                </div>    
+                <div class="capsula-container" style="display:inline-flex;">
+                  <div class="capsula capsula-gris">OMS 1998</div>
+                  <div class="capsula capsula-verde">{{ kcals.kcal_1|default:"-" }} kcal</div>
+                </div>
+              </div>
+              
+            </div>
+            <div class=" bloque-der">
+              <div class="col-6" style="text-align:center;">
+                <div class="titulo-azul" style=" background:#2f6fa3;">
+                GASTO ENERGÉTICO P/ O PERÍODO
+                </div>    
+                <div class="capsula-container" style="display:inline-flex;">
+                  <div class="capsula capsula-gris">{{ kcals.mes|default:"-" }}</div>
+                  <div class="capsula capsula-verde">{{ kcals.kcal_2|default:"-" }} kcal</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>  
+        <div class="box-resultados" style="padding:16px 20px; margin-top:-10px; display:flex; gap:20px; flex-wrap:wrap;">
+
+          <!-- 🔹 Columna imagen -->
+          <div class="RC-resumo-img">
+            <img src="" alt="" style="border-radius:10px;">
+          </div>
+        
+          <!-- 🔹 Columna datos -->
+          <div class="RC-resumo-dados">
+            <div class="RC-titulo">
+              <div style="position:relative; z-index:99999; background:#2f6fa3; border-radius:9999px;
+              padding:10px 10px; text-align:center; margin:10px auto; color:#fff;">
+              <h3 style="display:inline;">Resultado de {{ datas.data_1 }} à {{ datas.data_2 }}</h3>
+              </div>
+            </div>    
+            <div class="capsula-grupo" style="height:90px; display:flex; background:#f2f2f2; border-radius:100px">
+              <div class="capsula-lado-esq" 
+                style="flex:1; display:flex; align-items:center; justify-content:flex-start; border-radius:100px; padding:0 16px;height:90px;">
+                <div style="flex:0 0 15%; display:flex; justify-content:center; align-items:center; height:100%;">
+                  {% if diferencas.peso_descricao == "DIMINUICAO" %}
+                    <div style="width:0; height:0; border-left:12px solid transparent; border-right:12px solid transparent; border-top:18px solid #22c55e; margin:auto;"> </div>            
+                  {% elif diferencas.peso_descricao == "AUMENTO" or diferencas.peso_descricao == "GRANDE AUMENTO" %}
+                  <div style="width:0; height:0; border-left:12px solid transparent; border-right:12px solid transparent; border-bottom:18px solid #ef4444; margin:auto;"></div>
+                  {% else %}
+                    <div style=" width:0; height:0; border-left:12px solid transparent; border-right:12px solid transparent; border-top:18px solid #9ca3af; margin:auto;"></div>
+                  {% endif %}            
+                </div>        
+                <div style="flex:0 0 85%; display:flex; align-items:center; justify-content:flex-start; height:100%;">
+                  <span style="color:#1e3a8a; margin-left:25px; font-weight:700; font-size:11pt;">{{diferencas.peso_descricao}}</span>
+                </div>
+              </div>          
+              <div class="capsula-lado-der">
+                <div class="capsula-a" 
+                style="background:#00aaff; color:#ffffff; font-weight:700; font-size:15px; border-radius:9999px; text-align:center; padding:10px 0;"> Peso </div>
+                <div class="capsula-b" style="background:#dbeafe; color:#2b6ca3; font-weight:700; font-size:15px; border-radius:9999px; text-align:center; padding:10px 0;">{{ diferencas.peso }} Kg</div>
+              </div>
+            </div>    
+
+            <div class="capsula-grupo" style="height:90px; display:flex; margin-top:30px; background:#f2f2f2; border-radius:100px">
+              <div class="capsula-lado-esq" 
+                style="flex:1; display:flex; align-items:center; justify-content:flex-start; border-radius:100px; padding:0 16px;height:90px;">
+                <div style="flex:0 0 15%; display:flex; justify-content:center; align-items:center; height:100%;">
+                  {% if diferencas.percentual_gordura_descricao == "DIMINUICAO" %}
+                    <div style="width:0; height:0; border-left:12px solid transparent; border-right:12px solid transparent; border-top:18px solid #22c55e; margin:auto;"> </div>            
+                  {% elif diferencas.percentual_gordura_descricao == "AUMENTO" or diferencas.percentual_gordura_descricao == "GRANDE AUMENTO" %}
+                  <div style="width:0; height:0; border-left:12px solid transparent; border-right:12px solid transparent; border-bottom:18px solid #ef4444; margin:auto;"></div>
+                  {% else %}
+                    <div style=" width:0; height:0; border-left:12px solid transparent; border-right:12px solid transparent; border-top:18px solid #9ca3af; margin:auto;"></div>
+                  {% endif %}            
+                </div>        
+                <div style="flex:0 0 85%; display:flex; align-items:center; justify-content:flex-start; height:100%;">
+                  <span style="color:#1e3a8a; margin-left:25px; font-weight:700; font-size:11pt;">{{diferencas.percentual_gordura_descricao}}</span>
+                </div>
+              </div>          
+              <div class="capsula-lado-der">
+                <div class="capsula-a" 
+                style="background:#FF6B6B; color:#ffffff; font-weight:700; font-size:15px; border-radius:9999px; text-align:center; padding:10px 0;"> % Gordura </div>
+                <div class="capsula-b" style="background:#dbeafe; color:#2b6ca3; font-weight:700; font-size:15px; border-radius:9999px; text-align:center; padding:10px 0;">{{ diferencas.percentual_gordura }} Kg</div>
+              </div>
+            </div>  
+
+            <div class="capsula-grupo" style="height:90px; display:flex; margin-top:30px; background:#f2f2f2; border-radius:100px">
+              <div class="capsula-lado-esq" 
+                style="flex:1; display:flex; align-items:center; justify-content:flex-start; border-radius:100px; padding:0 16px;height:90px;">
+                <div style="flex:0 0 15%; display:flex; justify-content:center; align-items:center; height:100%;">
+                  {% if diferencas.peso_gordura_descricao == "DIMINUICAO" %}
+                    <div style="width:0; height:0; border-left:12px solid transparent; border-right:12px solid transparent; border-top:18px solid #22c55e; margin:auto;"> </div>            
+                  {% elif diferencas.peso_gordura_descricao == "AUMENTO" or diferencas.peso_gordura_descricao == "GRANDE AUMENTO" %}
+                  <div style="width:0; height:0; border-left:12px solid transparent; border-right:12px solid transparent; border-bottom:18px solid #ef4444; margin:auto;"></div>
+                  {% else %}
+                    <div style=" width:0; height:0; border-left:12px solid transparent; border-right:12px solid transparent; border-top:18px solid #9ca3af; margin:auto;"></div>
+                  {% endif %}            
+                </div>        
+                <div style="flex:0 0 85%; display:flex; align-items:center; justify-content:flex-start; height:100%;">
+                  <span style="color:#1e3a8a; margin-left:25px; font-weight:700; font-size:11pt;">{{diferencas.peso_gordura_descricao}}</span>
+                </div>
+              </div>          
+              <div class="capsula-lado-der">
+                <div class="capsula-a" 
+                style="background:#89C540; color:#ffffff; font-weight:700; font-size:15px; border-radius:9999px; text-align:center; padding:10px 0;"> Peso em Gordura </div>
+                <div class="capsula-b" style="background:#dbeafe; color:#2b6ca3; font-weight:700; font-size:15px; border-radius:9999px; text-align:center; padding:10px 0;">{{ diferencas.peso_gordura }} Kg</div>
+              </div>
+            </div> 
+
+            <div class="capsula-grupo" style="height:90px; display:flex; margin-top:30px; background:#f2f2f2; border-radius:100px">
+              <div class="capsula-lado-esq" 
+                style="flex:1; display:flex; align-items:center; justify-content:flex-start; border-radius:100px; padding:0 16px;height:90px;">
+                <div style="flex:0 0 15%; display:flex; justify-content:center; align-items:center; height:100%;">
+                  {% if diferencas.peso_MM_descricao == "DIMINUICAO" %}
+                    <div style="width:0; height:0; border-left:12px solid transparent; border-right:12px solid transparent; border-top:18px solid #22c55e; margin:auto;"> </div>            
+                  {% elif diferencas.peso_MM_descricao == "AUMENTO" or diferencas.peso_MM_descricao == "GRANDE AUMENTO" %}
+                  <div style="width:0; height:0; border-left:12px solid transparent; border-right:12px solid transparent; border-bottom:18px solid #ef4444; margin:auto;"></div>
+                  {% else %}
+                    <div style=" width:0; height:0; border-left:12px solid transparent; border-right:12px solid transparent; border-top:18px solid #9ca3af; margin:auto;"></div>
+                  {% endif %}            
+                </div>        
+                <div style="flex:0 0 85%; display:flex; align-items:center; justify-content:flex-start; height:100%;">
+                  <span style="color:#1e3a8a; margin-left:25px; font-weight:700; font-size:11pt;">{{diferencas.peso_MM_descricao}}</span>
+                </div>
+              </div>          
+              <div class="capsula-lado-der">
+                <div class="capsula-a" 
+                style="background:#4BB1C5; color:#ffffff; font-weight:700; font-size:15px; border-radius:9999px; text-align:center; padding:10px 0;"> Massa Magra </div>
+                <div class="capsula-b" style="background:#dbeafe; color:#2b6ca3; font-weight:700; font-size:15px; border-radius:9999px; text-align:center; padding:10px 0;">{{ diferencas.peso_MM }} Kg</div>
+              </div>
+            </div> 
+
+            <div style="background:#E77817; color:#fff; font-weight:700; font-size:15px; border-radius:9999px; text-align:center; padding:10px 0; width:100%; margin-top:25px;">
+              Composição Corporal
+            </div>
+            <div style="background:#f5f5f5; border-radius:25px; padding:10px 15px; margin-top:0px;">
+              <!-- 🔹 Massa Magra -->
+              <div style="display:flex; align-items:center; justify-content:flex-start; height:50px;">
+                <div style="flex:0 0 15%; display:flex; justify-content:center; align-items:center;">
+                  {% if diferencas.peso_MM_descricao == "DIMINUICAO" %}
+                    <div style="width:0; height:0; border-left:12px solid transparent; border-right:12px solid transparent; border-top:18px solid #22c55e; margin:auto;"></div>
+                  {% elif diferencas.peso_MM_descricao == "AUMENTO" or diferencas.peso_MM_descricao == "GRANDE AUMENTO" %}
+                    <div style="width:0; height:0; border-left:12px solid transparent; border-right:12px solid transparent; border-bottom:18px solid #ef4444; margin:auto;"></div>
+                  {% else %}
+                    <div style="width:0; height:0; border-left:12px solid transparent; border-right:12px solid transparent; border-top:18px solid #9ca3af; margin:auto;"></div>
+                  {% endif %}
+                </div>
+                <div style="flex:0 0 85%; display:flex; align-items:center;">
+                  <span style="color:#1e3a8a; font-weight:700; font-size:11pt;">{{ diferencas.peso_MM_descricao|title }} Massa Magra</span>
+                </div>
+              </div>
+              <!-- 🔹 Percentual de Gordura -->
+              <div style="display:flex; align-items:center; justify-content:flex-start; height:50px;">
+                <div style="flex:0 0 15%; display:flex; justify-content:center; align-items:center;">
+                  {% if diferencas.percentual_gordura_descricao == "DIMINUICAO" %}
+                    <div style="width:0; height:0; border-left:12px solid transparent; border-right:12px solid transparent; border-top:18px solid #22c55e; margin:auto;"></div>
+                  {% elif diferencas.percentual_gordura_descricao == "AUMENTO" or diferencas.percentual_gordura_descricao == "GRANDE AUMENTO" %}
+                    <div style="width:0; height:0; border-left:12px solid transparent; border-right:12px solid transparent; border-bottom:18px solid #ef4444; margin:auto;"></div>
+                  {% else %}
+                    <div style="width:0; height:0; border-left:12px solid transparent; border-right:12px solid transparent; border-top:18px solid #9ca3af; margin:auto;"></div>
+                  {% endif %}
+                </div>
+                <div style="flex:0 0 85%; display:flex; align-items:center;">
+                  <span style="color:#1e3a8a; font-weight:700; font-size:11pt;">{{ diferencas.percentual_gordura_descricao|title }} % de Gordura</span>
+                </div>
+              </div>
+
+            </div>
+    </section>
+    <!-- Contenido de la PÁGINA 4 -->
+    <section class="page-break with-header"style="page: page4;">     
+      <div class="capsula-container-full">
+        <div class="capsula-izq-full">FREQUÊNCIA:</div>
+        <div class="capsula-der-full">CLASSIFICAÇÃO: -/-</div>
+        <div class="logo-vo2-pag4">         
+        </div>
+      </div>
+      <div class="titulo-etapas-pag4">
+        Etapas de Diminuição do Percentual de Gordura<br>
+        e Aumento de Massa Muscular
+      </div>
+      <div class="tabela-meta">
+        <table>
+          <thead>
+            <tr>
+              <th>Meta</th>
+              <th>% Gordura</th>
+              <th>Status</th>
+              <th>Meta</th>
+              <th>% Gordura</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for m1, m2 in filas_metas %}
+            <tr>
+              <td class="meta">{{ m1.num }}</td>
+              <td>{{ m1.valor }}</td>
+              <td class="status">{{ m1.estado }}</td>
+          
+              {% if m2 %}
+                <td class="meta">{{ m2.num }}</td>
+                <td>{{ m2.valor }}</td>
+                <td class="status">{{ m2.estado }}</td>
+              {% else %}
+                <td></td><td></td><td></td>
+              {% endif %}
+            </tr>
+            {% endfor %}
+          </tbody>
+          
+        </table>
+      </div>    
+  </section>
+  <section class="page-break with-header"style="page: page5;">     
+    <div class="relatorio-capa">    
+      <div class="bloco" style="margin:50mm auto 0 auto; position:relative;">
+        <div class="bloco-titulo">Suplementos</div>      
+        <div class="bloco-conteudo" style="padding-right:220px;">
+          <br>
+          <br>
+          Pergunte ao Nutricionista
+          <br>
+          <br>
+          <br>
+        </div>      
+        <img src="https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/cu.png" 
+             alt="Cápsulas"
+             style="position:absolute; top:0px; right:0px; width:250px; height:auto;">
+      </div>      
+      <div class="bloco"style="margin:15mm auto 0 auto;">
+        <div class="bloco-titulo">Planejamento Alimentar</div>
+      <div class="bloco-conteudo"style="padding-right:220px">
+          Baixe seu Planos Alimentares
+        </div>
+      </div>
+    
+      <div class="bloco" style="margin:15mm auto 0 auto;">
+        <div class="bloco-titulo">Comentários</div>
+        <div class="bloco-conteudo">       
+        </div>
+      </div>
+    
+      <!-- 🔹 Firma -->
+      <div class="rodape">
+        <p>Fico à disposição para quaisquer esclarecimentos que se fizerem necessários.<br>Atenciosamente,</p>
+      </div>    
+    </div>  
+</section>
+  </body>
+</html>
