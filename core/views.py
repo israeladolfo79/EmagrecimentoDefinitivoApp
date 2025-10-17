@@ -2261,7 +2261,7 @@ class CapaRelatorioView(TemplateView):
         if sexo in ("m", "masculino"):
             self.template_name = "core/relatorio_pdf_masculino.html"
         elif sexo in ("f", "feminino"):
-            self.template_name = "core/relatorio_pdf_feminino.html"
+            self.template_name = "core/relatorio_pdf_femenino.html"
         else:
             messages.error(self.request, "Sexo não identificado. Verifique seu cadastro.")
             return redirect('/dados_pessoais')
