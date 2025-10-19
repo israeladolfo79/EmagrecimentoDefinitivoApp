@@ -40,7 +40,7 @@
 
     @page page2 {
       size: A4;
-      background: url("https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/img2RelM-convertido-de-webp.jpeg") no-repeat center center;
+      background: url("https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/img2RE.jpeg") no-repeat center center;
       background-size: cover;
       margin: 0;
       @top-right {
@@ -52,7 +52,7 @@
     /* --- Página 3 --- */
     @page page3 {
       size: A4;
-      background: url("https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/img3RelM-convertido-de-webp.jpeg") no-repeat center center;
+   background: url("https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/img3RelM-convertido-de-webp.jpeg") no-repeat center center;
       background-size: cover;
       margin: 0;
       @top-right {
@@ -84,8 +84,6 @@
         vertical-align: top;
       }
     }
-
-
 
 
     .run-hdr {
@@ -232,20 +230,28 @@
   .tabla-riscos thead th {
     background: #2f6fa3;
     color: #fff;
-
     text-align: center;
     font-weight: 600;
     font-size: 12px;
   }
+
   
   .tabla-riscos td:first-child,
   .tabla-riscos th:first-child {
-    width: 22%;
+    width: 26%;
     text-align: left;
     color: #2f6fa3;
     font-weight: 600;
     padding-left: 10px;
   }
+
+  .tabla-riscos th:not(:first-child),
+  .tabla-riscos td:not(:first-child) {
+    width: calc((100% - 26%) / 9); /* 🔹 divide el resto equitativamente (para 9 columnas C1–C9) */
+  }
+
+
+
   .tabla-riscos th,
 .tabla-riscos td {
   padding: 8px 8px;
@@ -266,7 +272,7 @@
   }
   
   .tabla-riscos-info {
-    flex: 0 0 25%;
+    flex: 0 0 28%;
     text-align: right;
   }
   .tabla-riscos-info p {
@@ -718,7 +724,7 @@
           <thead>
             <tr>
               <th></th>
-              <th>CI</th><th>R0</th><th>R15</th><th>R30</th><th>R45</th><th>R60</th><th>M1</th><th>M2</th><th>M3</th>
+              <th>C-1</th><th>C-2</th><th>C-3</th><th>C-4</th><th>C-5</th><th>C-6</th><th>C-7</th><th>C-8</th><th>C-9</th>
             </tr>
           </thead>
           <tbody>
@@ -729,9 +735,9 @@
               <td>{{ t.peso_4|default:"-" }}</td>
               <td>{{ t.peso_5|default:"-" }}</td>
               <td>{{ t.peso_6|default:"-" }}</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
+              <td>{{ t.peso_7|default:"-" }}</td>
+              <td>{{ t.peso_8|default:"-" }}</td>
+              <td>{{ t.peso_9|default:"-" }}</td>
             </tr>
           
             <tr><th>% Gordura</th>
@@ -741,10 +747,9 @@
               <td>{{ t.per_gordura_4|default:"-" }}</td>
               <td>{{ t.per_gordura_5|default:"-" }}</td>
               <td>{{ t.per_gordura_6|default:"-" }}</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              
+              <td>{{ t.per_gordura_7|default:"-" }}</td>
+              <td>{{ t.per_gordura_8|default:"-" }}</td>
+              <td>{{ t.per_gordura_9|default:"-" }}</td>             
             </tr>
           
             <tr><th>M. Magra</th>
@@ -754,9 +759,9 @@
               <td>{{ t.massa_magra_4|default:"-" }}</td>
               <td>{{ t.massa_magra_5|default:"-" }}</td>
               <td>{{ t.massa_magra_6|default:"-" }}</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
+              <td>{{ t.massa_magra_7|default:"-" }}</td>
+              <td>{{ t.massa_magra_8|default:"-" }}</td>
+              <td>{{ t.massa_magra_9|default:"-" }}</td>
             </tr>
           
             <tr><th>Peso Gordura</th>
@@ -766,9 +771,9 @@
               <td>{{ t.peso_gordura_4|default:"-" }}</td>
               <td>{{ t.peso_gordura_5|default:"-" }}</td>
               <td>{{ t.peso_gordura_6|default:"-" }}</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
+              <td>{{ t.peso_gordura_7|default:"-" }}</td>
+              <td>{{ t.peso_gordura_8|default:"-" }}</td>
+              <td>{{ t.peso_gordura_9|default:"-" }}</td>
             </tr>
             <tr><th>Ombros</th>
               <td>{{ t.ombros.ci|default:"-" }}</td><td>{{ t.ombros.r0|default:"-" }}</td><td>{{ t.ombros.r15|default:"-" }}</td><td>{{ t.ombros.r30|default:"-" }}</td><td>{{ t.ombros.r45|default:"-" }}</td><td>{{ t.ombros.r60|default:"-" }}</td><td>{{ t.ombros.m1|default:"-" }}</td><td>{{ t.ombros.m2|default:"-" }}</td><td>{{ t.ombros.m3|default:"-" }}</td>
@@ -783,9 +788,9 @@
               <td>{{ t.cintura_4|default:"-" }}</td>
               <td>{{ t.cintura_5|default:"-" }}</td>
               <td>{{ t.cintura_6|default:"-" }}</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
+              <td>{{ t.cintura_7|default:"-" }}</td>
+              <td>{{ t.cintura_8|default:"-" }}</td>
+              <td>{{ t.cintura_9|default:"-" }}</td>
             </tr>
           
             <tr><th>Abdomen</th>
@@ -795,9 +800,9 @@
               <td>{{ t.abdomen_4|default:"-" }}</td>
               <td>{{ t.abdomen_5|default:"-" }}</td>
               <td>{{ t.abdomen_6|default:"-" }}</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
+              <td>{{ t.abdomen_7|default:"-" }}</td>
+              <td>{{ t.abdomen_8|default:"-" }}</td>
+              <td>{{ t.abdomen_9|default:"-" }}</td>
             </tr>
           
             <tr><th>Quadril</th>
@@ -807,9 +812,9 @@
               <td>{{ t.quadril_4|default:"-" }}</td>
               <td>{{ t.quadril_5|default:"-" }}</td>
               <td>{{ t.quadril_6|default:"-" }}</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
+              <td>{{ t.quadril_7|default:"-" }}</td>
+              <td>{{ t.quadril_8|default:"-" }}</td>
+              <td>{{ t.quadril_9|default:"-" }}</td>
             </tr>
             <tr class="separador"><td colspan="10">Dobras</td></tr>
             <tr><th>Tríceps</th>
@@ -849,12 +854,15 @@
               <thead>
                 <tr>
                   <th>&nbsp;</th>
-                  <th>CI</th>
-                  <th>R0</th>
-                  <th>R15</th>
-                  <th>R30</th>
-                  <th>R45</th>
-                  <th>R60</th>
+                  <th>C1</th>
+                  <th>C2</th>
+                  <th>C3</th>
+                  <th>C4</th>
+                  <th>C5</th>
+                  <th>C6</th>
+                  <th>C7</th>
+                  <th>C8</th>
+                  <th>C9</th>
                 </tr>
               </thead>
               <tbody>
@@ -866,6 +874,9 @@
                   <td>{{ riscos.abdomen_4 }}</td>
                   <td>{{ riscos.abdomen_5 }}</td>
                   <td>{{ riscos.abdomen_6 }}</td>
+                  <td>{{ riscos.abdomen_7 }}</td>
+                  <td>{{ riscos.abdomen_8 }}</td>
+                  <td>{{ riscos.abdomen_9 }}</td>
                 </tr>
                 <tr>
                   <td>Cintura</td>
@@ -875,6 +886,9 @@
                   <td>{{ riscos.cintura_4 }}</td>
                   <td>{{ riscos.cintura_5 }}</td>
                   <td>{{ riscos.cintura_6 }}</td>
+                  <td>{{ riscos.cintura_7 }}</td>
+                  <td>{{ riscos.cintura_8 }}</td>
+                  <td>{{ riscos.cintura_9 }}</td>
                 </tr>
                 <tr>
                   <td>Quadril</td>
@@ -884,6 +898,9 @@
                   <td>{{ riscos.quadril_4 }}</td>
                   <td>{{ riscos.quadril_5 }}</td>
                   <td>{{ riscos.quadril_6 }}</td>
+                  <td>{{ riscos.quadril_7 }}</td>
+                  <td>{{ riscos.quadril_8 }}</td>
+                  <td>{{ riscos.quadril_9 }}</td>
                 </tr>
                 <tr>
                   <td>Cintura/Quadril</td>
@@ -893,6 +910,9 @@
                   <td>{{ riscos.cintura_quadril_4 }}</td>
                   <td>{{ riscos.cintura_quadril_5 }}</td>
                   <td>{{ riscos.cintura_quadril_6 }}</td>
+                  <td>{{ riscos.cintura_quadril_7 }}</td>
+                  <td>{{ riscos.cintura_quadril_8 }}</td>
+                  <td>{{ riscos.cintura_quadril_9 }}</td>
                 </tr>
               </tbody>
             </table>
@@ -907,11 +927,7 @@
           <!-- 🔹 Bloque lateral -->
           <div class="tabla-riscos-info">
             <p>
-              Elas predizem a<br>
-              probabilidade de<br>
-              desenvolver, a longo<br>
-              prazo, doenças do coração,<br>
-              diabetes, entre outras.
+              Elas predizem a probabilidade de desenvolver, a longo prazo, doenças do coração, diabetes, entre outras.
             </p>
            </div>
         </div>
@@ -1063,7 +1079,6 @@
               Composição Corporal
             </div>
             <div style="background:#f5f5f5; border-radius:25px; padding:10px 15px; margin-top:0px;">
-
               <!-- 🔹 Massa Magra -->
               <div style="display:flex; align-items:center; justify-content:flex-start; height:50px;">
                 <div style="flex:0 0 15%; display:flex; justify-content:center; align-items:center;">
@@ -1079,7 +1094,6 @@
                   <span style="color:#1e3a8a; font-weight:700; font-size:11pt;">{{ diferencas.peso_MM_descricao|title }} Massa Magra</span>
                 </div>
               </div>
-
               <!-- 🔹 Percentual de Gordura -->
               <div style="display:flex; align-items:center; justify-content:flex-start; height:50px;">
                 <div style="flex:0 0 15%; display:flex; justify-content:center; align-items:center;">
@@ -1146,25 +1160,23 @@
   <section class="page-break with-header"style="page: page5;">     
     <div class="relatorio-capa">    
       <div class="bloco" style="margin:50mm auto 0 auto; position:relative;">
-        <div class="bloco-titulo">Suplementos</div>
-      
+        <div class="bloco-titulo">Suplementos</div>      
         <div class="bloco-conteudo" style="padding-right:220px;">
           <br>
           <br>
+          Pergunte ao Nutricionista
           <br>
           <br>
           <br>
-          <br>
-        </div>
-      
+        </div>      
         <img src="https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/cu.png" 
              alt="Cápsulas"
              style="position:absolute; top:0px; right:0px; width:250px; height:auto;">
-      </div>
-      
+      </div>      
       <div class="bloco"style="margin:15mm auto 0 auto;">
         <div class="bloco-titulo">Planejamento Alimentar</div>
-        <div class="bloco-conteudo">
+      <div class="bloco-conteudo"style="padding-right:220px">
+          Baixe seu Planos Alimentares
         </div>
       </div>
     
@@ -1177,14 +1189,8 @@
       <!-- 🔹 Firma -->
       <div class="rodape">
         <p>Fico à disposição para quaisquer esclarecimentos que se fizerem necessários.<br>Atenciosamente,</p>
-      </div>
-    
-    </div>
-    
-    
-  
-
+      </div>    
+    </div>  
 </section>
-
   </body>
 </html>
