@@ -1236,13 +1236,25 @@ PAG 7 RC-RESUMO DE RESULTADOS
               <span class=""><strong>{{ peso_ideal_max }}</strong></span> kg, 
               sem considerar massa óssea desenvolvida.
             </p>
+            {% if percentual_gordura_real < percentual_gordura_ideal %}
             <p>
-              Para chegarmos ao seu peso ideal, vamos ao menos manter a massa magra e trazer o percentual 
-              de gordura para <strong class="">NORMAL ({{ percentual_gordura_ideal }}%)</strong>, 
-              o que daria um peso por volta de 
-              <strong class="">{{ peso_ideal|floatformat:1 }} kg</strong> 
+
+              <br>
+              O <strong>PESO ATUAL</strong> pode ser considerado<strong> IDEAL</strong>
+            <br>
+            <br>
+            <br>
+            </p>
+          {% else %}
+            <p>
+              Para chegarmos ao seu peso ideal, vamos ao menos manter a massa magra
+              e trazer o percentual de gordura para
+              <strong>NORMAL ({{ percentual_gordura_ideal }}%)</strong>,
+              o que daria um peso por volta de
+              <strong>{{ peso_ideal|floatformat:1 }} kg</strong>
               (sem considerar ganho de massa magra).
             </p>
+          {% endif %}
           </div>
         </div>      
       </div>  
@@ -1271,51 +1283,51 @@ PAG 7 RC-RESUMO DE RESULTADOS
               <tbody>
                 <tr>
                   <td>Abdomen</td>
-                  <td>{{ riscos_abdomen}}</td>
-                  <td>{{ riscos.abdomen_2 }}</td>
-                  <td>{{ riscos.abdomen_3 }}</td>
-                  <td>{{ riscos.abdomen_4 }}</td>
-                  <td>{{ riscos.abdomen_5 }}</td>
-                  <td>{{ riscos.abdomen_6 }}</td>
-                  <td>{{ riscos.abdomen_7 }}</td>
-                  <td>{{ riscos.abdomen_8 }}</td>
-                  <td>{{ riscos.abdomen_9 }}</td>
+                  <td>{{ riscos_abdomen }}</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
                 </tr>
                 <tr>
                   <td>Cintura</td>
                   <td>{{ riscos_cintura }}</td>
-                  <td>{{ riscos.cintura_2 }}</td>
-                  <td>{{ riscos.cintura_3 }}</td>
-                  <td>{{ riscos.cintura_4 }}</td>
-                  <td>{{ riscos.cintura_5 }}</td>
-                  <td>{{ riscos.cintura_6 }}</td>
-                  <td>{{ riscos.cintura_7 }}</td>
-                  <td>{{ riscos.cintura_8 }}</td>
-                  <td>{{ riscos.cintura_9 }}</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
                 </tr>
                 <tr>
                   <td>Quadril</td>
                   <td>{{ riscos_quadril }}</td>
-                  <td>{{ riscos.quadril_2 }}</td>
-                  <td>{{ riscos.quadril_3 }}</td>
-                  <td>{{ riscos.quadril_4 }}</td>
-                  <td>{{ riscos.quadril_5 }}</td>
-                  <td>{{ riscos.quadril_6 }}</td>
-                  <td>{{ riscos.quadril_7 }}</td>
-                  <td>{{ riscos.quadril_8 }}</td>
-                  <td>{{ riscos.quadril_9 }}</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
                 </tr>
                 <tr>
                   <td>Cintura/Quadril</td>
                   <td>{{ riscos_quad_cint }}</td>
-                  <td>{{ riscos.cintura_quadril_2 }}</td>
-                  <td>{{ riscos.cintura_quadril_3 }}</td>
-                  <td>{{ riscos.cintura_quadril_4 }}</td>
-                  <td>{{ riscos.cintura_quadril_5 }}</td>
-                  <td>{{ riscos.cintura_quadril_6 }}</td>
-                  <td>{{ riscos.cintura_quadril_7 }}</td>
-                  <td>{{ riscos.cintura_quadril_8 }}</td>
-                  <td>{{ riscos.cintura_quadril_9 }}</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
                 </tr>
               </tbody>
             </table>
@@ -1394,7 +1406,7 @@ PAG 7 RC-RESUMO DE RESULTADOS
         </div>
         <div style="position:relative; z-index:99999; background:#f3f4f6; border-radius:9999px;
         padding:15px 15px; text-align:center; margin:10px auto; color:#2f6fa3;">
-        <h3 style="display:inline;"> Peso ESTIMADO em gordura: {{ peso_real_gordura }}</h3>
+        <h3 style="display:inline;"> Peso ESTIMADO em gordura: {{ peso_real_gordura }}Kg</h3>
         </div>   
         <div style="position:relative; z-index:99999; background:#f3f4f6; border-radius:9999px;
         padding:15px 15px; text-align:center; margin:10px auto; color:#2f6fa3;">
@@ -1402,7 +1414,7 @@ PAG 7 RC-RESUMO DE RESULTADOS
         </div>
         <div style="position:relative; z-index:99999; background:#f3f4f6; border-radius:9999px;
         padding:15px 15px; text-align:center; margin:10px auto; color:#2f6fa3;">
-        <h3 style="display:inline;">  Peso ESTIMADO em massa magra: {{ peso_real_MM }}</h3>
+        <h3 style="display:inline;">  Peso ESTIMADO em massa magra: {{ peso_real_MM }}Kg</h3>
         </div>
         <div class="">
           <div class="">
@@ -1475,9 +1487,9 @@ PAG 7 RC-RESUMO DE RESULTADOS
         </table>
       </div>
       
-  </section>
+    </section>
  
-  <section class="page-break with-header" style="page: page5;">
+   <section class="page-break with-header" style="page: page5;">
     <div class="run-hdr">
       <img src="https://newemagrecimento2.s3.amazonaws.com/django-summernote/2025-01-30/c2789af5-32a6-4184-a2ce-5c4e32b581f5.png"
            alt="Logo Nutrição Esportiva" class="logo-medico">
@@ -1543,198 +1555,198 @@ PAG 7 RC-RESUMO DE RESULTADOS
         </div>
       </div>
     </div>
-  </section>
+   </section>
   
-  <section class="page-break with-header" style="page: page6;">
-    <div class="run-hdr">
-      <img src="https://newemagrecimento2.s3.amazonaws.com/django-summernote/2025-01-30/c2789af5-32a6-4184-a2ce-5c4e32b581f5.png"
-           alt="Logo Nutrição Esportiva" class="logo-medico">
-    </div>
-  
-    <div class="relatorio-capa" style="margin:45mm auto 0 auto; position:relative;">
-      <div class="bloco-5">       
-               <!-- 🔹 BLOCO 2 - MASTIGAÇÃO -->
-        <div class="bloco-secao">
-          <div class="titulo-secao5">
-            <div class="circulo-numero">3</div>
-            <div class="capsula-titulo">MECÂNICOS</div>
-          </div>
-  
-          <div class="texto-secao5" style="margin-top: 6px;">
-            <p>
-              Existem alimentos que ajudam na saciedade por pesarem no seu estômago. As fibras dos folhosos e vegetais tem a capacidade de absorver várias vezes seu peso em água, fazendo assim peso extra no estômago. Esta informação também é levada ao sistema nervoso.
-            </p>     
-          </div>  
-          <div class="imagem-dupla" style="text-align:center;">
-            <img 
-              src="https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/img-1-6.png" 
-              alt="Mastigação e Saciedade"
-              style="width:480px; height:auto; border-radius:8px; box-shadow:0 3px 6px rgba(0,0,0,0.25);">
-          </div>
+   <section class="page-break with-header" style="page: page6;">
+      <div class="run-hdr">
+        <img src="https://newemagrecimento2.s3.amazonaws.com/django-summernote/2025-01-30/c2789af5-32a6-4184-a2ce-5c4e32b581f5.png"
+            alt="Logo Nutrição Esportiva" class="logo-medico">
+      </div>  
+      <div class="relatorio-capa" style="margin:45mm auto 0 auto; position:relative;">
+        <div class="bloco-5">       
+                <!-- 🔹 BLOCO 2 - MASTIGAÇÃO -->
+          <div class="bloco-secao">
+            <div class="titulo-secao5">
+              <div class="circulo-numero">3</div>
+              <div class="capsula-titulo">MECÂNICOS</div>
+            </div>
+    
+            <div class="texto-secao5" style="margin-top: 6px;">
+              <p>
+                Existem alimentos que ajudam na saciedade por pesarem no seu estômago. As fibras dos folhosos e vegetais tem a capacidade de absorver várias vezes seu peso em água, fazendo assim peso extra no estômago. Esta informação também é levada ao sistema nervoso.
+              </p>     
+            </div>  
+            <div class="imagem-dupla" style="text-align:center;">
+              <img 
+                src="https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/img-1-6.png" 
+                alt="Mastigação e Saciedade"
+                style="width:480px; height:auto; border-radius:8px; box-shadow:0 3px 6px rgba(0,0,0,0.25);">
+            </div>
+        </div>
       </div>
-    </div>
-    <div class="relatorio-capa" style="margin:0mm auto 0 auto; position:relative;">
-      <div class="bloco-5">       
-               <!-- 🔹 BLOCO 2 - MASTIGAÇÃO -->
-        <div class="bloco-secao">
-          <div class="titulo-secao5">
-            <div class="circulo-numero">4</div>
-            <div class="capsula-titulo">TIPOS DE ALIMENTO</div>
-          </div>
-  
-          <div class="texto-secao5" style="margin-top: 6px;">
-            <p>
-              Não basta consumir a quantidade adequada de fibras, mastigá-las corretamente fará com que o hormônio da saciedade seja liberado mais rapidamente e, via corrente sanguínea, seja levado ao sistema nervoso.
-            </p>
+      <div class="relatorio-capa" style="margin:0mm auto 0 auto; position:relative;">
+        <div class="bloco-5">       
+                <!-- 🔹 BLOCO 2 - MASTIGAÇÃO -->
+          <div class="bloco-secao">
+            <div class="titulo-secao5">
+              <div class="circulo-numero">4</div>
+              <div class="capsula-titulo">TIPOS DE ALIMENTO</div>
+            </div>
+    
+            <div class="texto-secao5" style="margin-top: 6px;">
+              <p>
+                Não basta consumir a quantidade adequada de fibras, mastigá-las corretamente fará com que o hormônio da saciedade seja liberado mais rapidamente e, via corrente sanguínea, seja levado ao sistema nervoso.
+              </p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="relatorio-capa" style="margin:0mm auto 0 auto; position:relative;">
-      <div class="bloco-5">       
-        <div class="bloco-secao">
-          <div class="titulo-secao5">
-            <div class="circulo-numero">5</div>
-            <div class="capsula-titulo">SEDE</div>
-          </div>
-  
-          <div class="texto-secao5" style="margin-top: 6px;">
-            <p>
-              Muitas vezes nosso sistema nervoso confunde a sensação de FOME com a de SEDE. Isto acontece, pois os dois centros estão muito próximos em nosso SN. Para ter certeza se está com fome ou sede siga este procedimento:
-            </p>     
-          </div>  
-          <div class="imagem-dupla">
-           
-          </div>
-          <div class="imagem-dupla" style="text-align:center; margin-top:-2mm">
-            <img 
-              src="https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/img-2-6.png"
-              alt="Mastigação e Saciedade"
-              style="width:700px; height:auto; border-radius:8px; box-shadow:0 3px 6px rgba(0,0,0,0.25);">
+      <div class="relatorio-capa" style="margin:0mm auto 0 auto; position:relative;">
+        <div class="bloco-5">       
+          <div class="bloco-secao">
+            <div class="titulo-secao5">
+              <div class="circulo-numero">5</div>
+              <div class="capsula-titulo">SEDE</div>
+            </div>
+    
+            <div class="texto-secao5" style="margin-top: 6px;">
+              <p>
+                Muitas vezes nosso sistema nervoso confunde a sensação de FOME com a de SEDE. Isto acontece, pois os dois centros estão muito próximos em nosso SN. Para ter certeza se está com fome ou sede siga este procedimento:
+              </p>     
+            </div>  
+            <div class="imagem-dupla">
+            
+            </div>
+            <div class="imagem-dupla" style="text-align:center; margin-top:-2mm">
+              <img 
+                src="https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/img-2-6.png"
+                alt="Mastigação e Saciedade"
+                style="width:700px; height:auto; border-radius:8px; box-shadow:0 3px 6px rgba(0,0,0,0.25);">
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+   </section>
 
-  <section class="pagina-nutricao page-break with-header" style="page: page7;">
-    <div class="bloco-dietetica" style="margin:40mm auto 0 auto; position:relative;">
-      <div class="titulo-capsula7">PROPOSTA DE REFORMULAÇÃO DIETÉTICA</div>
-      <p class="texto-intro">
-        O planejamento proposto permite que alterações sejam<br> feitas conforme as suas “necessidades”, contanto que<br> não seja ultrapassado o limite de:
-      </p>
-  
-      <div class="box-limites">
-        <p><strong>COM TREINO –</strong>{{ kcal_2 }} kcal</p>
-        <p><strong>SEM TREINO –</strong> {{ kcal_3 }} kcal</p>
-        <p><strong>Final de Semana –</strong> PLANO ALIMENTAR <span class="extra">+ 2 REFEIÇÕES EXTRAS</span></p>
-      </div> 
-      <img class="img-frutas" src="https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/fruta.png" alt="Frutas decorativas">
+    <section class="pagina-nutricao page-break with-header" style="page: page7;">
+        <div class="bloco-dietetica" style="margin:40mm auto 0 auto; position:relative;">
+          <div class="titulo-capsula7">PROPOSTA DE REFORMULAÇÃO DIETÉTICA</div>
+          <p class="texto-intro">
+            O planejamento proposto permite que alterações sejam<br> feitas conforme as suas “necessidades”, contanto que<br> não seja ultrapassado o limite de:
+          </p>
+      
+          <div class="box-limites">
+            <p><strong>COM TREINO –</strong>{{ kcal_2 }} kcal</p>
+            <p><strong>SEM TREINO –</strong> {{ kcal_3 }} kcal</p>
+            <p><strong>Final de Semana –</strong> PLANO ALIMENTAR <span class="extra">+ 2 REFEIÇÕES EXTRAS</span></p>
+          </div> 
+          <img class="img-frutas" src="https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/fruta.png" alt="Frutas decorativas">
 
-    </div>  
+        </div>  
 
-    <div class="bloco-orientacoes">
-      <div class="titulo-capsula7">ORIENTAÇÕES GERAIS</div>
+        <div class="bloco-orientacoes">
+          <div class="titulo-capsula7">ORIENTAÇÕES GERAIS</div>
+      
+          <div class="item">
+            <div class="numero">1</div>
+            <p><strong>Óleo para cozinhar.</strong> Em ordem, os melhores são: manteiga clarificada, banha e óleo de coco. Evitar todos os outros.</p>
+          </div>
+      
+          <div class="item">
+            <div class="numero">2</div>
+            <p><strong>Todas as frutas</strong> podem ser consumidas, sempre respeitando o número limite de unidades. Quanto aos legumes, podem ser consumidos os de sua preferência sempre respeitando o limite calórico e tentando consumir dois pires ao dia. </p>
+          </div>
+      
+          <div class="item">
+            <div class="numero">3</div>
+            <p><strong>Coma muita salada</strong> de folhas verdes no almoço e jantar para ajudar na saciedade. Alterne sempre que possível as folhas. <strong>Cuidado com o excesso de azeite ou óleos. </strong></p>
+          </div>
+      
+          <div class="item">
+            <div class="numero">4</div>
+            <p><strong>Frutas, legumes e folhas</strong> são fontes de vitaminas, minerais, fibras e principalmente alguns compostos funcionais. É a partir deles, que conseguimos as vitaminas e minerais importantes para o bom funcionamento das vias metabólicas, entre elas a envolvida na queima de gordura e ganho de massa magra. As não menos importantes fibras podem diminuir a incidência de desenvolver doenças como o câncer.</p>
+          </div>
+      
+          <div class="item">
+            <div class="numero">5</div>
+            <p>Os compostos funcionais são substâncias que evitam a ocorrências de diversas doenças crônicas, como por exemplo, doença coronariana, são antioxidantes, antienvelhecimento, entre outros. Uma ótima fonte destes é o chá verde. Seria de grande valia passar a consumir 2 xícaras do mesmo ao dia. </p>
+          </div>
+        </div>
+    
+    </section>
+
+    <section class="pagina-nutricao page-break with-header" style="page: page8;">
+      <div class="bloco-orientacoes"style="margin:40mm auto 0 auto; position:relative;">
   
-      <div class="item">
-        <div class="numero">1</div>
-        <p><strong>Óleo para cozinhar.</strong> Em ordem, os melhores são: manteiga clarificada, banha e óleo de coco. Evitar todos os outros.</p>
+        <div class="item">
+          <div class="numero">6</div>
+          <p>É de grande importância que <strong>não se pule refeições</strong> e que não se compense na seguinte uma eventual falta da anterior.</p>
+        </div>
+    
+        <div class="item">
+          <div class="numero">7</div>
+          <p>Sempre que possível evite alimentos <strong>com alto teor de gordura,</strong> mesmo que haja a possibilidade de encaixá-lo no consumo de calorias permitidas. Mas se for importante fazê-lo, faça com pouca frequência.</p>
+        </div>
+    
+        <div class="item">
+          <div class="numero">8</div>
+          <p><strong>Lanches intermediários</strong> são de grande importância para que não haja exageros nas grandes refeições. Desta forma, mesmo em caso de reuniões, é de grande importância que não se deixe de fazê-los.</p>
+        </div>
+    
+        <div class="item">
+          <div class="numero">9</div>
+          <p><strong>Consumir frituras</strong> (mandioca, batata, milanesas) no máximo <u>1 vez na semana</u>.</p>
+        </div>
+    
+        <div class="item">
+          <div class="numero">10</div>
+          <p>
+            <strong>O consumo de água</strong> é livre e de no mínimo 2.0 l. Contabilizar como água, sucos, água de coco, café, chá.</p>
+        </div>
+        <div class="item">
+          <div class="numero">11</div>
+          <p> <strong>Quanto ao consumo de sucos, </strong> de preferência aos naturais dietéticos e não industrializados. </p>
+        </div>
       </div>
+      <div class="imagem-dupla" style="text-align:center; margin-top:-2mm">
+        <img 
+          src="https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/bala.jpg"
+          alt="Mastigação e Saciedade"
+          style="width:700px; height:auto; border-radius:8px; box-shadow:0 3px 6px rgba(0,0,0,0.25);">
+      </div>  
+    </section>
   
-      <div class="item">
-        <div class="numero">2</div>
-        <p><strong>Todas as frutas</strong> podem ser consumidas, sempre respeitando o número limite de unidades. Quanto aos legumes, podem ser consumidos os de sua preferência sempre respeitando o limite calórico e tentando consumir dois pires ao dia. </p>
-      </div>
-  
-      <div class="item">
-        <div class="numero">3</div>
-        <p><strong>Coma muita salada</strong> de folhas verdes no almoço e jantar para ajudar na saciedade. Alterne sempre que possível as folhas. <strong>Cuidado com o excesso de azeite ou óleos. </strong></p>
-      </div>
-  
-      <div class="item">
-        <div class="numero">4</div>
-        <p><strong>Frutas, legumes e folhas</strong> são fontes de vitaminas, minerais, fibras e principalmente alguns compostos funcionais. É a partir deles, que conseguimos as vitaminas e minerais importantes para o bom funcionamento das vias metabólicas, entre elas a envolvida na queima de gordura e ganho de massa magra. As não menos importantes fibras podem diminuir a incidência de desenvolver doenças como o câncer.</p>
-      </div>
-  
-      <div class="item">
-        <div class="numero">5</div>
-        <p>Os compostos funcionais são substâncias que evitam a ocorrências de diversas doenças crônicas, como por exemplo, doença coronariana, são antioxidantes, antienvelhecimento, entre outros. Uma ótima fonte destes é o chá verde. Seria de grande valia passar a consumir 2 xícaras do mesmo ao dia. </p>
-      </div>
-    </div>
-  
-  </section>
-  <section class="pagina-nutricao page-break with-header" style="page: page8;">
-    <div class="bloco-orientacoes"style="margin:40mm auto 0 auto; position:relative;">
- 
-      <div class="item">
-        <div class="numero">6</div>
-        <p>É de grande importância que <strong>não se pule refeições</strong> e que não se compense na seguinte uma eventual falta da anterior.</p>
-      </div>
-  
-      <div class="item">
-        <div class="numero">7</div>
-        <p>Sempre que possível evite alimentos <strong>com alto teor de gordura,</strong> mesmo que haja a possibilidade de encaixá-lo no consumo de calorias permitidas. Mas se for importante fazê-lo, faça com pouca frequência.</p>
-      </div>
-  
-      <div class="item">
-        <div class="numero">8</div>
-        <p><strong>Lanches intermediários</strong> são de grande importância para que não haja exageros nas grandes refeições. Desta forma, mesmo em caso de reuniões, é de grande importância que não se deixe de fazê-los.</p>
-      </div>
-  
-      <div class="item">
-        <div class="numero">9</div>
-        <p><strong>Consumir frituras</strong> (mandioca, batata, milanesas) no máximo <u>1 vez na semana</u>.</p>
-      </div>
-  
-      <div class="item">
-        <div class="numero">10</div>
-        <p>
-          <strong>O consumo de água</strong> é livre e de no mínimo 2.0 l. Contabilizar como água, sucos, água de coco, café, chá.</p>
-      </div>
-      <div class="item">
-        <div class="numero">11</div>
-        <p> <strong>Quanto ao consumo de sucos, </strong> de preferência aos naturais dietéticos e não industrializados. </p>
-      </div>
-    </div>
-    <div class="imagem-dupla" style="text-align:center; margin-top:-2mm">
-      <img 
-        src="https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/bala.jpg"
-        alt="Mastigação e Saciedade"
-        style="width:700px; height:auto; border-radius:8px; box-shadow:0 3px 6px rgba(0,0,0,0.25);">
-    </div>  
-  </section>
-  
-  <section class="page-break with-header"style="page: page9;">   
-    <div class="run-hdr">
-      <img
-        src="https://newemagrecimento2.s3.amazonaws.com/django-summernote/2025-01-30/c2789af5-32a6-4184-a2ce-5c4e32b581f5.png"
-        alt="Logo Nutrição Esportiva"
-        class="logo-medico">
-    </div>    
-    <div class="relatorio-capa">    
-      <div class="bloco" style="margin:70mm auto 0 auto; position:relative;">
-        <div class="bloco-titulo">Suplementos</div>      
-        <div class="bloco-conteudo" style="padding-right:220px;">
-          <br>
-          <br>
-          <br>
-          Pergunte ao Nutricionista
-          <br>
-          <br>
-          <br>
-          <br>
-          <br>
-        </div>      
-        <img src="https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/cu.png" 
-             alt="Cápsulas"
-             style="position:absolute; top:0px; right:0px; width:250px; height:auto;">
+    <section class="page-break with-header"style="page: page9;">   
+      <div class="run-hdr">
+        <img
+          src="https://newemagrecimento2.s3.amazonaws.com/django-summernote/2025-01-30/c2789af5-32a6-4184-a2ce-5c4e32b581f5.png"
+          alt="Logo Nutrição Esportiva"
+          class="logo-medico">
       </div>    
-   
-      <!-- 🔹 Firma -->
-      <div class="rodape" style="margin-top:15mm; line-height:1.8 !important;">
-        <p>No primeiro momento, a proposta deste plano alimentar é fazer com que seu PESO DIMINUA; e a longo prazo fazer com que se consiga desenvolver um conhecimento nutricional, e desta forma, seja capaz de manter, com conhecimento de causa, uma alimentação balanceada.<br><br><br><br><br>Atenciosamente,</p>
-      </div>    
-    </div>  
-</section>
+      <div class="relatorio-capa">    
+        <div class="bloco" style="margin:70mm auto 0 auto; position:relative;">
+          <div class="bloco-titulo">Suplementos</div>      
+          <div class="bloco-conteudo" style="padding-right:220px;">
+            <br>
+            <br>
+            <br>
+            Pergunte ao Nutricionista
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+          </div>      
+          <img src="https://newemagrecimento2.s3.sa-east-1.amazonaws.com/django-summernote/2025-10-16/cu.png" 
+              alt="Cápsulas"
+              style="position:absolute; top:0px; right:0px; width:250px; height:auto;">
+        </div>    
+    
+        <!-- 🔹 Firma -->
+        <div class="rodape" style="margin-top:15mm; line-height:1.8 !important;">
+          <p>No primeiro momento, a proposta deste plano alimentar é fazer com que seu PESO DIMINUA; e a longo prazo fazer com que se consiga desenvolver um conhecimento nutricional, e desta forma, seja capaz de manter, com conhecimento de causa, uma alimentação balanceada.<br><br><br><br><br>Atenciosamente,</p>
+        </div>    
+      </div>  
+    </section>
   </body>
 </html>

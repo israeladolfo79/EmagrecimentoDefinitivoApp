@@ -1152,191 +1152,203 @@ PAG 7 RC-RESUMO DE RESULTADOS
 
   </head>
   <body>
-      <!-- Contenido de la PÁGINA 1 -->
-    <section style="height:259mm; margin:0; padding:0;">
-      <div style="height:194.25mm;"></div>
-      <div style="
-        height:64.75mm;
-        display:flex; align-items:center; justify-content:center;
-        text-align:center; margin:0; padding:0;
-      ">
-        <div style="max-width:120mm;">
-          <div style="font-size:20px; font-weight:600; margin:50mm 0 10mm 0; color:#ffffff;">
-            Evolução de:
-          </div>
-          <div style="
-            display:inline-block; padding:6mm 10mm; margin:0 0 8mm 0;
-            border:1px solid #e5e7eb; border-radius:9999px; background:#fff;
-            font-size:14px; font-weight:700; min-width:90mm; line-height:1.15;
-          ">
-            {{ nome_pessoa }}  {{ sobrenome_pessoa }}
-          </div>
-          <div style="font-size:10px; color:#ffffff; line-height:1.35; font-weight:600;">
-            Israel Adolfo<br>
-            Nutricionista do Esporte<br>
-            Cel: (11) 98770.7556
-          </div>
+    <!-- Contenido de la PÁGINA 1 -->
+  <section style="height:259mm; margin:0; padding:0;">
+    <div style="height:194.25mm;"></div>
+    <div style="
+      height:64.75mm;
+      display:flex; align-items:center; justify-content:center;
+      text-align:center; margin:0; padding:0;
+    ">
+      <div style="max-width:120mm;">
+        <div style="font-size:20px; font-weight:600; margin:50mm 0 10mm 0; color:#ffffff;">
+          Evolução de:
+        </div>
+        <div style="
+          display:inline-block; padding:6mm 10mm; margin:0 0 8mm 0;
+          border:1px solid #e5e7eb; border-radius:9999px; background:#fff;
+          font-size:14px; font-weight:700; min-width:90mm; line-height:1.15;
+        ">
+          {{ nome_pessoa }}  {{ sobrenome_pessoa }}
+        </div>
+        <div style="font-size:10px; color:#ffffff; line-height:1.35; font-weight:600;">
+          Israel Adolfo<br>
+          Nutricionista do Esporte<br>
+          Cel: (11) 98770.7556
         </div>
       </div>
-    </section>
-      <!-- Contenido de la PÁGINA 2 -->
-    <section class="page-break with-header"style="page: page2">
-      <div class="run-hdr">
-        <img
-          src="https://newemagrecimento2.s3.amazonaws.com/django-summernote/2025-01-30/c2789af5-32a6-4184-a2ce-5c4e32b581f5.png"
-          alt="Logo Nutrição Esportiva"
-          class="logo-medico">
-      </div>
-      <div class="relatorio-capa">    
-        <div class="bloco0" style="margin:50mm auto 0 auto; position:relative;">
-          <div class="bloco-titulo-capsula"style="  background: #2f6fa3;">
-            Em primeiro lugar
-          </div>
-          <div class="bloco-conteudo">
-            <br>
-            Nada do que eu escrever durante o acompanhamento é pessoal, e sim para manter você no caminho do resultado. 
-            Você me pagou para planejar sua alimentação. Portanto, não siga o que sua cabeça ACHAR, e sim o que eu DEFINIR. 
-            Sendo assim, se tiver dúvida, me pergunte. Preste muita atenção nas orientações, pois o que mais vejo no dia a dia 
-            são erros por falta de atenção.
-            <br><br><br>
-          </div>     
+    </div>
+  </section>
+    <!-- Contenido de la PÁGINA 2 -->
+  <section class="page-break with-header"style="page: page2">
+    <div class="run-hdr">
+      <img
+        src="https://newemagrecimento2.s3.amazonaws.com/django-summernote/2025-01-30/c2789af5-32a6-4184-a2ce-5c4e32b581f5.png"
+        alt="Logo Nutrição Esportiva"
+        class="logo-medico">
+    </div>
+    <div class="relatorio-capa">    
+      <div class="bloco0" style="margin:50mm auto 0 auto; position:relative;">
+        <div class="bloco-titulo-capsula"style="  background: #2f6fa3;">
+          Em primeiro lugar
         </div>
-        <div class="bloco-ideal">
-          <div class="bloco-titulo-ideal">
-            PESO IDEAL
+        <div class="bloco-conteudo">
+          <br>
+          Nada do que eu escrever durante o acompanhamento é pessoal, e sim para manter você no caminho do resultado. 
+          Você me pagou para planejar sua alimentação. Portanto, não siga o que sua cabeça ACHAR, e sim o que eu DEFINIR. 
+          Sendo assim, se tiver dúvida, me pergunte. Preste muita atenção nas orientações, pois o que mais vejo no dia a dia 
+          são erros por falta de atenção.
+          <br><br><br>
+        </div>     
+      </div>
+      <div class="bloco-ideal">
+        <div class="bloco-titulo-ideal">
+          PESO IDEAL
+        </div>
+      
+        <div class="peso-circulo">
+          <div class="peso-circulo-texto">
+            <span class="peso-label">Peso Atual:</span>
+            <span class="peso-numero">{{ peso }} kg</span>
           </div>
-        
-          <div class="peso-circulo">
-            <div class="peso-circulo-texto">
-              <span class="peso-label">Peso Atual:</span>
-              <span class="peso-numero">{{ peso }} kg</span>
-            </div>
-          </div>
-        
-          <div class="bloco-conteudo-ideal">
-            <p>
-              Em relação à <span class="texto-azul">MASSA MAGRA</span>: apresenta-se 
-              <span class="texto-azul">{{ massa_media|upper }}</span> em relação a pessoas da mesma idade 
-              e sexo com percentual de gordura ideal;
-            </p>
-            <p>
-              Em relação à <span class="texto-azul">% GORDURA</span>: apresenta-se 
-              <span class="texto-azul">{{ per_gordura|upper }}</span> da normalidade 
-              para pessoas de mesma idade e sexo.
-            </p>
-          </div>        
+        </div>
+      
+        <div class="bloco-conteudo-ideal">
+          <p>
+            Em relação à <span class="texto-azul">MASSA MAGRA</span>: apresenta-se 
+            <span class="texto-azul">{{ massa_media|upper }}</span> em relação a pessoas da mesma idade 
+            e sexo com percentual de gordura ideal;
+          </p>
+          <p>
+            Em relação à <span class="texto-azul">% GORDURA</span>: apresenta-se 
+            <span class="texto-azul">{{ per_gordura|upper }}</span> da normalidade 
+            para pessoas de mesma idade e sexo.
+          </p>
         </div>        
-        <div class="bloco-ideal1">        
-          <div class="bloco-conteudo-ideal1">
-            <p>
-              O <strong>peso ideal médio</strong> para pessoas de mesma idade 
-              (<span class=""><strong>{{ idade }}</strong></span>), com altura de 
-              <span class=""><strong>{{ altura|floatformat:2 }}</strong></span> m e sexo masculino 
-              estaria entre <span class=""><strong>{{ peso_ideal_min }}</strong></span> e 
-              <span class=""><strong>{{ peso_ideal_max }}</strong></span> kg, 
-              sem considerar massa óssea desenvolvida.
-            </p>
-            <p>
-              Para chegarmos ao seu peso ideal, vamos ao menos manter a massa magra e trazer o percentual 
-              de gordura para <strong class="">NORMAL ({{ percentual_gordura_ideal }}%)</strong>, 
-              o que daria um peso por volta de 
-              <strong class="">{{ peso_ideal|floatformat:1 }} kg</strong> 
-              (sem considerar ganho de massa magra).
-            </p>
-          </div>
-        </div>      
-      </div>  
-      <div style="position:relative;z-index:99999;background:#2f6fa3;border-radius:9999px;
-      padding:12px 20px;text-align:center;width:600px;margin:15px auto;color:#fff; font-weight:700;">
-      RISCOS PREDITOS POR CIRCUNFERÊNCIAS
-      </div>
-      <div class="tabla-riscos-wrap3">
-        <div class="tabla-riscos-inner">
-          <div class="tabla-riscos-table">
-            <table class="tabla-riscos">
-              <thead>
-                <tr>
-                  <th>&nbsp;</th>
-                  <th>C1</th>
-                  <th>C2</th>
-                  <th>C3</th>
-                  <th>C4</th>
-                  <th>C5</th>
-                  <th>C6</th>
-                  <th>C7</th>
-                  <th>C8</th>
-                  <th>C9</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Abdomen</td>
-                  <td>{{ riscos_abdomen}}</td>
-                  <td>{{ riscos.abdomen_2 }}</td>
-                  <td>{{ riscos.abdomen_3 }}</td>
-                  <td>{{ riscos.abdomen_4 }}</td>
-                  <td>{{ riscos.abdomen_5 }}</td>
-                  <td>{{ riscos.abdomen_6 }}</td>
-                  <td>{{ riscos.abdomen_7 }}</td>
-                  <td>{{ riscos.abdomen_8 }}</td>
-                  <td>{{ riscos.abdomen_9 }}</td>
-                </tr>
-                <tr>
-                  <td>Cintura</td>
-                  <td>{{ riscos_cintura }}</td>
-                  <td>{{ riscos.cintura_2 }}</td>
-                  <td>{{ riscos.cintura_3 }}</td>
-                  <td>{{ riscos.cintura_4 }}</td>
-                  <td>{{ riscos.cintura_5 }}</td>
-                  <td>{{ riscos.cintura_6 }}</td>
-                  <td>{{ riscos.cintura_7 }}</td>
-                  <td>{{ riscos.cintura_8 }}</td>
-                  <td>{{ riscos.cintura_9 }}</td>
-                </tr>
-                <tr>
-                  <td>Quadril</td>
-                  <td>{{ riscos_quadril }}</td>
-                  <td>{{ riscos.quadril_2 }}</td>
-                  <td>{{ riscos.quadril_3 }}</td>
-                  <td>{{ riscos.quadril_4 }}</td>
-                  <td>{{ riscos.quadril_5 }}</td>
-                  <td>{{ riscos.quadril_6 }}</td>
-                  <td>{{ riscos.quadril_7 }}</td>
-                  <td>{{ riscos.quadril_8 }}</td>
-                  <td>{{ riscos.quadril_9 }}</td>
-                </tr>
-                <tr>
-                  <td>Cintura/Quadril</td>
-                  <td>{{ riscos_quad_cint }}</td>
-                  <td>{{ riscos.cintura_quadril_2 }}</td>
-                  <td>{{ riscos.cintura_quadril_3 }}</td>
-                  <td>{{ riscos.cintura_quadril_4 }}</td>
-                  <td>{{ riscos.cintura_quadril_5 }}</td>
-                  <td>{{ riscos.cintura_quadril_6 }}</td>
-                  <td>{{ riscos.cintura_quadril_7 }}</td>
-                  <td>{{ riscos.cintura_quadril_8 }}</td>
-                  <td>{{ riscos.cintura_quadril_9 }}</td>
-                </tr>
-              </tbody>
-            </table>
-      
-            <p class="tabla-riscos-leyenda">
-              <strong class="n">N</strong> – Normal |
-              <strong class="au">AU</strong> – Aumentado |
-              <strong class="ma">MA</strong> – Muito Aumentado
-            </p>
-          </div>
-      
-          <!-- 🔹 Bloque lateral -->
-          <div class="tabla-riscos-info">
-            <p>
-              Elas predizem a probabilidade de desenvolver, a longo prazo, doenças do coração, diabetes, entre outras.
-            </p>
-           </div>
+      </div>        
+      <div class="bloco-ideal1">        
+        <div class="bloco-conteudo-ideal1">
+          <p>
+            O <strong>peso ideal médio</strong> para pessoas de mesma idade 
+            (<span class=""><strong>{{ idade }}</strong></span>), com altura de 
+            <span class=""><strong>{{ altura|floatformat:2 }}</strong></span> m e sexo masculino 
+            estaria entre <span class=""><strong>{{ peso_ideal_min }}</strong></span> e 
+            <span class=""><strong>{{ peso_ideal_max }}</strong></span> kg, 
+            sem considerar massa óssea desenvolvida.
+          </p>
+          {% if percentual_gordura_real < percentual_gordura_ideal %}
+          <p>
+
+            <br>
+            O <strong>PESO ATUAL</strong> pode ser considerado<strong> IDEAL</strong>
+          <br>
+          <br>
+          <br>
+          </p>
+        {% else %}
+          <p>
+            Para chegarmos ao seu peso ideal, vamos ao menos manter a massa magra
+            e trazer o percentual de gordura para
+            <strong>NORMAL ({{ percentual_gordura_ideal }}%)</strong>,
+            o que daria um peso por volta de
+            <strong>{{ peso_ideal|floatformat:1 }} kg</strong>
+            (sem considerar ganho de massa magra).
+          </p>
+        {% endif %}
         </div>
-      </div>
-    </section>
+      </div>      
+    </div>  
+    <div style="position:relative;z-index:99999;background:#2f6fa3;border-radius:9999px;
+    padding:12px 20px;text-align:center;width:600px;margin:15px auto;color:#fff; font-weight:700;">
+    RISCOS PREDITOS POR CIRCUNFERÊNCIAS
+    </div>
+    <div class="tabla-riscos-wrap3">
+      <div class="tabla-riscos-inner">
+        <div class="tabla-riscos-table">
+          <table class="tabla-riscos">
+            <thead>
+              <tr>
+                <th>&nbsp;</th>
+                <th>C1</th>
+                <th>C2</th>
+                <th>C3</th>
+                <th>C4</th>
+                <th>C5</th>
+                <th>C6</th>
+                <th>C7</th>
+                <th>C8</th>
+                <th>C9</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Abdomen</td>
+                <td>{{ riscos_abdomen }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>Cintura</td>
+                <td>{{ riscos_cintura }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>Quadril</td>
+                <td>{{ riscos_quadril }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>Cintura/Quadril</td>
+                <td>{{ riscos_quad_cint }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
     
+          <p class="tabla-riscos-leyenda">
+            <strong class="n">N</strong> – Normal |
+            <strong class="au">AU</strong> – Aumentado |
+            <strong class="ma">MA</strong> – Muito Aumentado
+          </p>
+        </div>
+    
+        <!-- 🔹 Bloque lateral -->
+        <div class="tabla-riscos-info">
+          <p>
+            Elas predizem a probabilidade de desenvolver, a longo prazo, doenças do coração, diabetes, entre outras.
+          </p>
+         </div>
+      </div>
+    </div>
+  </section> 
+  
     {% comment %} <section class="page-break with-header"style="page: page3;">     
       <div class="run-hdr">
         <img
