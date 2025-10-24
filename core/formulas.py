@@ -134,7 +134,7 @@ def gera_estado_e_per_gordura(percentual_gordura_atual, idade, sexo):
             } 
         else:
             dici = {
-                f'{[12, 13, 14, 15, 16]}': 'excelente',
+                f'{[9,10,11,12, 13, 14, 15, 16]}': 'excelente',
                 f'{[17, 18, 19, 20]}': 'muito_bom',
                 f'{[21, 22, 23]}': 'bom',
                 f'{[24, 25, 23]}': 'normal',

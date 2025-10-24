@@ -1973,6 +1973,9 @@ class Calculadora(TemplateView):
             "perder_bom": round(round(peso - MM_real, 1) - round((gordura_i*MM_real)/(100-gordura_i), 1), 2),
             "perder_perfeito": round(round(peso - MM_real, 1) - round((gordura_p*MM_real)/(100-gordura_p), 1), 2)
         }
+        from pprint import pprint
+        pprint(context)
+
         return render(self.request, 'core/calculadora.html', context)
 
 class TermosCondicoes(TemplateView):
@@ -2811,3 +2814,71 @@ class RelatorioEvolucaoNew(TemplateView):
         response = HttpResponse(pdf, content_type='application/pdf')
         response['Content-Disposition'] = 'inline; filename="relatorio_evolucao.pdf"'
         return response
+
+
+class Calculadora_test(TemplateView):
+    def get(self, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            usuario = self.request.user.username
+            if not list(models.Usuario.objects.filter(usuario=usuario).values()):
+                messages.add_message(
+                    self.request, messages.ERROR, "Usuário não encontrado")
+                return redirect('login')
+
+            usuario = list(models.Usuario.objects.filter(
+                usuario=usuario).values())[0]
+            context = {
+                'usuario': usuario,
+                'sem_avaliacao': self.request.GET.get('sem_avaliacao')
+            }
+        else:
+            redirect("login")
+        return render(self.request, 'core/calculadora_test.html', context)
+
+    def post(self, *args, **kwargs):
+        usuario = self.request.user.username
+        usuario = list(models.Usuario.objects.filter(
+            usuario=usuario).values())[0]
+
+        # pegando valores post
+        sexo = self.request.POST.get("sexo")
+        peso = float(self.request.POST.get("peso"))
+        abdomen = float(self.request.POST.get("abdomen"))
+        punho = float(self.request.POST.get("punho"))
+        altura = float(self.request.POST.get("altura"))
+        quadril = float(self.request.POST.get("quadril"))
+        idade = int(self.request.POST.get("idade"))
+        parte = parte_a(peso, abdomen, punho, sexo, quadril, altura)
+        ga = round(gordura_atual(peso, parte, sexo), 1)
+        # calcular massa_magra_real (peso - (peso * percentual_gordura_atual))
+        MM_real = round(peso - (peso * ga/100), 1)
+        # pegar gordura ideal
+        gordura_i = gordura_ideal(sexo, idade)
+
+        fator_multiplicação = 1 + gordura_i/100
+        peso_ideal = round(MM_real * fator_multiplicação, 1)
+        peso_gordura_ideal = round(peso_ideal - MM_real, 1)
+
+        # gordura e peso perfeitos
+        gordura_p = gordura_perfeita(sexo, idade)
+        fator_multiplicação = 1 + gordura_p/100
+        peso_perfeito = round(MM_real * fator_multiplicação, 1)
+        peso_gordura_perfeita = round(peso_perfeito - MM_real, 1)
+
+        context = {
+            'usuario': usuario,
+            'sem_avaliacao': self.request.GET.get('sem_avaliacao'),
+            "percentual_gordura_atual": ga,
+            "peso_atual": peso,
+            "peso_ideal": peso_ideal,
+            "peso_perfeito": peso_perfeito,
+            "MM_real": MM_real,
+            "peso_gordura_real": round(peso - MM_real, 1),
+            "peso_gordura_ideal": round((gordura_i*MM_real)/(100-gordura_i), 1),
+            "peso_gordura_perfeita": round((gordura_p*MM_real)/(100-gordura_p), 1),
+            "gordura_ideal": gordura_i,
+            "gordura_perfeita": gordura_p,
+            "perder_bom": round(round(peso - MM_real, 1) - round((gordura_i*MM_real)/(100-gordura_i), 1), 2),
+            "perder_perfeito": round(round(peso - MM_real, 1) - round((gordura_p*MM_real)/(100-gordura_p), 1), 2)
+        }
+        return render(self.request, 'core/calculadora_test.html', context)
