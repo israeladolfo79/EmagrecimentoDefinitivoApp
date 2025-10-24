@@ -134,7 +134,7 @@ def gera_estado_e_per_gordura(percentual_gordura_atual, idade, sexo):
             } 
         else:
             dici = {
-                f'{[9,10,11,12, 13, 14, 15, 16]}': 'excelente',
+                f'{[12, 13, 14, 15, 16]}': 'excelente',
                 f'{[17, 18, 19, 20]}': 'muito_bom',
                 f'{[21, 22, 23]}': 'bom',
                 f'{[24, 25, 23]}': 'normal',
@@ -163,16 +163,26 @@ def gera_estado_e_per_gordura(percentual_gordura_atual, idade, sexo):
                 f'{[30, 31, 32, 33]}': 'ruim',
                 f'{[i for i in range(34, 100)]}': 'muito_ruim'
             } 
-        elif idade >= 36 and idade <= 45:
-            dici = {
-                f'{[16, 17, 18, 19]}': 'excelente',
-                f'{[20, 21, 22, 23]}': 'muito_bom',
-                f'{[24, 25, 26]}': 'bom',
-                f'{[27, 28, 29]}': 'normal',
-                f'{[30, 31, 32]}': 'regular',
-                f'{[33, 34, 35, 36]}': 'ruim',
-                f'{[i for i in range(37, 100)]}': 'muito_ruim'
-            } 
+        # elif idade >= 36 and idade <= 45:
+        #     dici = {
+        #         f'{[16, 17, 18, 19]}': 'excelente',
+        #         f'{[20, 21, 22, 23]}': 'muito_bom',
+        #         f'{[24, 25, 26]}': 'bom',
+        #         f'{[27, 28, 29]}': 'normal',
+        #         f'{[30, 31, 32]}': 'regular',
+        #         f'{[33, 34, 35, 36]}': 'ruim',
+        #         f'{[i for i in range(37, 100)]}': 'muito_ruim'
+        #     } 
+        elif 36 <= idade <= 45:
+            faixas = [
+                (0, 9,  'excelente'),    # ✅ cubre 0–9 %
+                (10, 14, 'muito_bom'),
+                (15, 17, 'bom'),
+                (18, 21, 'normal'),
+                (22, 26, 'regular'),
+                (27, 30, 'ruim'),
+                (31, 100,'muito_ruim')
+            ]
         else:
             dici = {
             f'{[17, 18, 19, 20, 21]}': 'excelente',
