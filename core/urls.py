@@ -38,7 +38,7 @@ urlpatterns = [
     path('material_apoio_busca', login_required(views.BuscaMaterialApoio.as_view(), login_url='/login'), name="busca_material_apoio"),
     path('criando_plano', login_required(views.TelaCarregamento.as_view(), login_url='/login'), name="criando_plano"),
     path('graficos_de_evolucao', login_required(views.Evolucao.as_view(), login_url='/login'), name="tela_evolucao"),
-    path('minha_avaliacao_nutricional', login_required(views.CapaRelatorioView.as_view(), login_url='/login'), name="relatorio_evolucao"),
+    path('minha_avaliacao_nutricional', login_required(views.RelatorioEvolucaoNew.as_view(), login_url='/login'), name="relatorio_evolucao"),
     #path('minha_avaliacao_nutricional', login_required(views.RelatorioEvolucao.as_view(), login_url='/login'), name="relatorio_evolucao"),
     path('checkout', login_required(views.Checkout.as_view(), login_url='/login'), name="checkout"),
     path('calculadora_de_peso_ideal', login_required(views.Calculadora.as_view(), login_url='/login'), name="calculadora"),
