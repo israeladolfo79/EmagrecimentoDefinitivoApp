@@ -87,145 +87,121 @@ def gordura_perfeita(sexo, idade) -> int:
 
 
 def gera_estado_e_per_gordura(percentual_gordura_atual=0, idade=0, sexo="masculino"):
-    print("🔹 Iniciando função gera_estado_e_per_gordura")
-    print("🧪 TESTE FORÇADO: idade=46, sexo='masculino', gordura=9.5")
-    percentual_gordura_atual = 9.5
-    idade = 46
-    sexo = "masculino"
-
     pga = int(percentual_gordura_atual)
-    print(f"🔸 Percentual inteiro considerado: {pga}%")
 
     if pga < 0 or pga > 100:
-        print("❌ Valor inválido detectado")
-        estado = "Valor inválido"
-        per_gordura = "Valor inválido"
-        return estado, per_gordura
+        return "Valor inválido", "Valor inválido"
 
     tabela = {
-        'excelente': ["ABAIXO DA MÉDIA", 'EXCELENTE'],
-        'muito_bom': ["ABAIXO DA MÉDIA", 'MUITO BOM'],
-        'bom': ["ABAIXO DA MÉDIA", 'BOM'],
-        'normal': ["NA MÉDIA", 'NORMAL'],
-        'regular': ["ACIMA DA MÉDIA", 'REGULAR'],
-        'ruim': ["ACIMA DA MÉDIA", 'RUIM'],
-        'muito_ruim': ["ACIMA DA MÉDIA", 'MUITO RUIM'],
+        'excelente': ["ABAIXO DA MÉDIA", "EXCELENTE"],
+        'muito_bom': ["ABAIXO DA MÉDIA", "MUITO BOM"],
+        'bom': ["ABAIXO DA MÉDIA", "BOM"],
+        'normal': ["NA MÉDIA", "NORMAL"],
+        'regular': ["ACIMA DA MÉDIA", "REGULAR"],
+        'ruim': ["ACIMA DA MÉDIA", "RUIM"],
+        'muito_ruim': ["ACIMA DA MÉDIA", "MUITO RUIM"],
     }
 
-    # ---------------------------------------------
-    # 🔹 Definindo faixas masculinas
-    # ---------------------------------------------
+    #  FAIXAS MASCULINAS
     if sexo == "masculino":
-        if idade >= 18 and idade <= 25:
+        if 18 <= idade <= 25:
             dici = {
-                (4, 5, 6): 'excelente',
-                (7, 8, 9, 10): 'muito_bom',
-                (11, 12, 13): 'bom',
-                (14, 15, 16): 'normal',
-                (17, 18, 19, 20): 'regular',
-                (21, 22, 23, 24, 25): 'ruim',
-                tuple(range(26, 100)): 'muito_ruim'
-            } 
-        elif idade >= 26 and idade <= 35:
-            dici = {
-                (8, 9, 10, 11): 'excelente',
-                (12, 13, 14, 15): 'muito_bom',
-                (16, 17, 18): 'bom',
-                (19, 20): 'normal',
-                (21, 22, 23, 24): 'regular',
-                (25, 26, 27): 'ruim',
-                tuple(range(28, 100)): 'muito_ruim'
-            } 
-        elif idade >= 36 and idade <= 45:
-            dici = {
-                (10, 11, 12, 13, 14): 'excelente',
-                (15, 16, 17, 18): 'muito_bom',
-                (19, 20): 'bom',
-                (21, 22, 23): 'normal',
-                (24, 25, 26, 27): 'regular',
-                (28, 29, 30): 'ruim',
-                tuple(range(31, 100)): 'muito_ruim'
-            } 
-        else:
-            dici = {
-                (4, 5, 6, 7, 8, 9, 10, 11): 'excelente',
-                (12, 13, 14, 15, 16): 'muito_bom',
-                (17, 18, 19, 20): 'bom',
-                (21, 22, 23): 'normal',
-                (24, 25, 26, 27): 'regular',
-                (28, 29, 30): 'ruim',
-                tuple(range(31, 100)): 'muito_ruim'
+                tuple(range(0, 7)): 'excelente',        # <= 6%
+                tuple(range(7, 11)): 'muito_bom',       # 7-10
+                tuple(range(11, 14)): 'bom',            # 11-13
+                tuple(range(14, 17)): 'normal',         # 14-16
+                tuple(range(17, 21)): 'regular',        # 17-20
+                tuple(range(21, 26)): 'ruim',           # 21-25
+                tuple(range(26, 101)): 'muito_ruim'     # 26-100
             }
+
+        elif 26 <= idade <= 35:
+            dici = {
+                tuple(range(0, 12)): 'excelente',       # 8-11
+                tuple(range(12, 16)): 'muito_bom',      # 12-15
+                tuple(range(16, 19)): 'bom',            # 16-18
+                tuple(range(19, 21)): 'normal',         # 19-20
+                tuple(range(21, 25)): 'regular',        # 21-24
+                tuple(range(25, 28)): 'ruim',           # 25-27
+                tuple(range(28, 101)): 'muito_ruim'     # 28-100
+            }
+
+        elif 36 <= idade <= 45:
+            dici = {
+                tuple(range(0, 15)): 'excelente',      # 10-14
+                tuple(range(15, 19)): 'muito_bom',      # 15-18
+                tuple(range(19, 21)): 'bom',            # 19-20
+                tuple(range(21, 24)): 'normal',         # 21-23
+                tuple(range(24, 28)): 'regular',        # 24-27
+                tuple(range(28, 31)): 'ruim',           # 28-30
+                tuple(range(31, 101)): 'muito_ruim'     # 31-100
+            }
+
+        else:  # 46+
+            dici = {
+                tuple(range(0, 14)): 'excelente',       # 4-11
+                tuple(range(14, 17)): 'muito_bom',      # 12-16
+                tuple(range(17, 21)): 'bom',            # 17-20
+                tuple(range(21, 24)): 'normal',         # 21-23
+                tuple(range(24, 28)): 'regular',        # 24-27
+                tuple(range(28, 31)): 'ruim',           # 28-30
+                tuple(range(31, 101)): 'muito_ruim'     # 31-100
+            }
+
+    #  FAIXAS FEMININAS
     else:
-        # 🔹 Faixas femininas
-        if idade >= 18 and idade <= 25:
+        if 18 <= idade <= 25:
             dici = {
-                (13, 14, 15, 16): 'excelente',
-                (17, 18, 19): 'muito_bom',
-                (20, 21, 22): 'bom',
-                (23, 24, 25): 'normal',
-                (26, 27, 28): 'regular',
-                (29, 30, 31): 'ruim',
-                tuple(range(32, 100)): 'muito_ruim'
-            } 
-        elif idade >= 26 and idade <= 35:
-            dici = {
-                (14, 15, 16, 17): 'excelente',
-                (18, 19, 20): 'muito_bom',
-                (21, 22, 23): 'bom',
-                (24, 25): 'normal',
-                (26, 27, 28, 29): 'regular',
-                (30, 31, 32, 33): 'ruim',
-                tuple(range(34, 100)): 'muito_ruim'
-            } 
-        elif idade >= 36 and idade <= 45:
-            dici = {
-                (16, 17, 18, 19): 'excelente',
-                (20, 21, 22, 23): 'muito_bom',
-                (24, 25, 26): 'bom',
-                (27, 28, 29): 'normal',
-                (30, 31, 32): 'regular',
-                (33, 34, 35, 36): 'ruim',
-                tuple(range(37, 100)): 'muito_ruim'
-            } 
-        else:
-            dici = {
-                (17, 18, 19, 20, 21): 'excelente',
-                (22, 23, 24, 25): 'muito_bom',
-                (26, 27, 28): 'bom',
-                (29, 30, 31): 'normal',
-                (32, 33, 34): 'regular',
-                (35, 36, 37, 38): 'ruim',
-                tuple(range(39, 100)): 'muito_ruim'
+                tuple(range(0, 17)): 'excelente',      # 13-16
+                tuple(range(17, 20)): 'muito_bom',      # 17-19
+                tuple(range(20, 23)): 'bom',            # 20-22
+                tuple(range(23, 26)): 'normal',         # 23-25
+                tuple(range(26, 29)): 'regular',        # 26-28
+                tuple(range(29, 32)): 'ruim',           # 29-31
+                tuple(range(32, 101)): 'muito_ruim'     # 32-100
             }
 
-    print("📋 Dicionário de faixas definido:")
-    for k, v in dici.items():
-        print(f"   {k} → {v}")
+        elif 26 <= idade <= 35:
+            dici = {
+                tuple(range(0, 18)): 'excelente',
+                tuple(range(18, 21)): 'muito_bom',
+                tuple(range(21, 24)): 'bom',
+                tuple(range(24, 26)): 'normal',
+                tuple(range(26, 30)): 'regular',
+                tuple(range(30, 34)): 'ruim',
+                tuple(range(34, 101)): 'muito_ruim'
+            }
 
-    classificacao = 'muito_ruim'
-    for key, value in dici.items():
-        if pga in key:
-            classificacao = value
-            print(f"✅ Classificação encontrada: {classificacao}")
-            break
+        elif 36 <= idade <= 45:
+            dici = {
+                tuple(range(0, 20)): 'excelente',
+                tuple(range(20, 24)): 'muito_bom',
+                tuple(range(24, 27)): 'bom',
+                tuple(range(27, 30)): 'normal',
+                tuple(range(30, 33)): 'regular',
+                tuple(range(33, 37)): 'ruim',
+                tuple(range(37, 101)): 'muito_ruim'
+            }
 
-    clas = tabela[classificacao]
-    print("📊 Resultado final:")
-    print(f"➡️ Estado: {clas[1]}")
-    print(f"➡️ Posição relativa: {clas[0]}")
+        else:  # 46+
+            dici = {
+                tuple(range(0, 22)): 'excelente',
+                tuple(range(22, 26)): 'muito_bom',
+                tuple(range(26, 29)): 'bom',
+                tuple(range(29, 32)): 'normal',
+                tuple(range(32, 35)): 'regular',
+                tuple(range(35, 39)): 'ruim',
+                tuple(range(39, 101)): 'muito_ruim'
+            }
 
-    return clas[0], clas[1]
+    # Localiza classificação do PERCENTUAL
+    classificacao = next(
+        (v for k, v in dici.items() if pga in k),
+        'muito_ruim'
+    )
 
-
-# =============================================================
-# 🔹 TESTE DIRETO
-# =============================================================
-gera_estado_e_per_gordura()
-
-
-
-
+    estado, posicao = tabela[classificacao]
+    return estado, posicao
 
 
 
@@ -286,7 +262,7 @@ gera_estado_e_per_gordura()
 #             } 
 #         else:
 #             dici = {
-#                 f'{[9.5, 12, 13, 14, 15, 16]}': 'excelente',
+#                 f'{[12, 13, 14, 15, 16]}': 'excelente',
 #                 f'{[17, 18, 19, 20]}': 'muito_bom',
 #                 f'{[21, 22, 23]}': 'bom',
 #                 f'{[24, 25, 23]}': 'normal',
