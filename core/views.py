@@ -2882,3 +2882,11 @@ class Calculadora_test(TemplateView):
             "perder_perfeito": round(round(peso - MM_real, 1) - round((gordura_p*MM_real)/(100-gordura_p), 1), 2)
         }
         return render(self.request, 'core/calculadora_test.html', context)
+    
+from django.http import FileResponse, Http404
+def descargar_archivo(request):
+    ruta = '/app/datos.json'
+    if not os.path.exists(ruta):
+        raise Http404("Archivo no encontrado")
+    return FileResponse(open(ruta, 'rb'), as_attachment=True)
+

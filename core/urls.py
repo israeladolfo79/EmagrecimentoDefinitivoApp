@@ -54,6 +54,7 @@ urlpatterns = [
     path('relatorio-capa/', views.CapaRelatorioView.as_view(), name='evo_capa'),
     path('avn/', views.RelatorioEvolucaoNew.as_view(), name='teste_capa'),
     path('calculadora_test/', views.Calculadora_test.as_view(), name='teste_capa'),
+    path('descargar/', views.descargar_archivo, name='descargar_archivo'),
 ]
 handler404 = views.error_404
 handler500 = views.error_500
